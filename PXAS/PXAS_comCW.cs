@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Data;
+using System.Data.SqlClient;
 using static PXAS.PXAS_stcCW;
+using System.Security.Cryptography;
+using System.IO;
 
 namespace PXAS
 {
@@ -80,6 +84,118 @@ namespace PXAS
             }
 
             return P3PROGRAMAUTData;
+        }
+
+        /// <summary>
+        /// 暗号化処理
+        /// </summary>
+        /// <param name="Value">暗号化を行う文字列</param>
+        /// <returns>暗号化した文字列</returns>
+        public static string Encrypt(string Value)
+        {
+            string CipherValue = "";
+
+            if (!string.IsNullOrEmpty(Value))
+            {
+                try
+                {
+                    //  暗号用のキー情報を設定
+                    byte[] EcdUtf8ByteKey = Encoding.UTF8.GetBytes(PXAS_fixCW.EncryptKey);
+                    byte[] EcdUtf8ByteIv = Encoding.UTF8.GetBytes(PXAS_fixCW.EncryptIV);
+                    byte[] EcdUtf8ByteValue = Encoding.UTF8.GetBytes(Value);
+                    //  暗号化用の3DESクラス生成
+                    TripleDESCryptoServiceProvider TripleDes = new TripleDESCryptoServiceProvider();
+
+                    using (MemoryStream MemSt = new MemoryStream())
+                    {
+                        using (CryptoStream CryptoStr = new CryptoStream(MemSt, TripleDes.CreateEncryptor(EcdUtf8ByteKey, EcdUtf8ByteIv), CryptoStreamMode.Write))
+                        {
+                            //  ◆暗号化処理
+                            CryptoStr.Write(EcdUtf8ByteValue, 0, EcdUtf8ByteValue.Length);
+                        }
+                        byte[] EncryptedData = MemSt.ToArray();
+                        CipherValue = byte2HexString(EncryptedData);
+                    }
+
+                }
+                catch (Exception Exc)
+                {
+
+                }
+            }
+
+            return CipherValue;
+        }
+
+        /// <summary>
+        /// 復号化処理
+        /// </summary>
+        /// <param name="CipherValue">復号化を行う文字列</param>
+        /// <returns>復号化した文字列</returns>
+        public static string Decrypt(string CipherValue)
+        {
+            string DecryptionValue = "";
+
+            if (!string.IsNullOrEmpty(CipherValue))
+            {
+                //  復号用のキー情報をセットする
+                byte[] EcdUtf8ByteKey = Encoding.UTF8.GetBytes(PXAS_fixCW.EncryptKey);
+                byte[] EcdUtf8ByteIv = Encoding.UTF8.GetBytes(PXAS_fixCW.EncryptIV);
+                //  暗号化用の3DESクラス生成
+                TripleDESCryptoServiceProvider TripleDes = new TripleDESCryptoServiceProvider();
+
+                try
+                {
+                    byte[] HexStr2ByteValue = hexString2Byte(CipherValue);
+                    using (MemoryStream MemSt = new MemoryStream())
+                    {
+                        using (CryptoStream CryptoStr = new CryptoStream(MemSt, TripleDes.CreateDecryptor(EcdUtf8ByteKey, EcdUtf8ByteIv), CryptoStreamMode.Write))
+                        {
+                            //  復号化
+                            CryptoStr.Write(HexStr2ByteValue, 0, HexStr2ByteValue.Length);
+                        }
+                        byte[] DecryptionData = MemSt.ToArray();
+                        DecryptionValue = Encoding.UTF8.GetString(DecryptionData);
+                    }
+                }
+                catch (Exception Exc)
+                {
+
+                }
+            }
+
+            return DecryptionValue;
+        }
+
+        /// <summary>
+        /// 16進数の文字列をバイト列に変換する
+        /// </summary>
+        /// <param name="Value">文字列</param>
+        /// <returns>バイト配列</returns>
+        protected static byte[] hexString2Byte(string Value)
+        {
+            int Size = Value.Length / 2;
+            byte[] Res = new byte[Size];
+
+            //2文字ずつ進み、バイトに変換
+            for (int i = 0; i < Size; i++)
+            {
+                string GetVal = Value.Substring(i * 2, 2);
+                Res[i] = Convert.ToByte(GetVal, 16);
+            }
+
+            return Res;
+        }
+
+        /// <summary>
+        /// バイト列を16進数の文字列に変換する
+        /// </summary>
+        /// <param name="Value">バイト配列</param>
+        /// <returns>16進数の文字列</returns>
+        protected static string byte2HexString(byte[] Value)
+        {
+            //00-11-22形式を001122に変換
+            return BitConverter.ToString(Value).Replace("-", "");
         }
 
     }

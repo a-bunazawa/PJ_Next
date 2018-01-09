@@ -70,7 +70,7 @@ namespace PXAS
                     DbConnection.Append(";User ID=");
                     DbConnection.Append(PxASuserValData.USERDBSVRUR);
                     DbConnection.Append(";Password=");
-                    DbConnection.Append(P3COMMONCW.Decrypt(PxASuserValData.USERDBSVRPW));
+                    DbConnection.Append(PXAS_comCW.Decrypt(PxASuserValData.USERDBSVRPW));
                     DbConnection.Append("; Max Pool Size=100;");
                     ConnectString = DbConnection.ToString();
                 }
@@ -83,7 +83,7 @@ namespace PXAS
                     DbConnection.Append(";User ID=");
                     DbConnection.Append(PxASuserValData.SYSDBSVRUR);
                     DbConnection.Append(";Password=");
-                    DbConnection.Append(P3COMMONCW.Decrypt(PxASuserValData.SYSDBSVRPW));
+                    DbConnection.Append(PXAS_comCW.Decrypt(PxASuserValData.SYSDBSVRPW));
                     DbConnection.Append("; Max Pool Size=100;");
                     ConnectString = DbConnection.ToString();
                 }

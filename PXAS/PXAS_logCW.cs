@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using System.Data;
+using System.Data.SqlClient;
 using static PXAS.PXAS_stcCW;
 
 namespace PXAS
