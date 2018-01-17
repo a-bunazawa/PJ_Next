@@ -1,9 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2010
+VisualStudioVersion = 15.0.27004.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PXAS", "PXAS\PXAS.csproj", "{6CDFCD41-23AC-49ED-ADB4-FBA614E94A87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PXCL", "PXAS\PXCL.csproj", "{6CDFCD41-23AC-49ED-ADB4-FBA614E94A87}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PXAPI", "PXAPI\PXAPI.csproj", "{074A5F57-AE83-4382-BE97-B6244A122041}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PXFRONT", "PXFRONT\PXFRONT.csproj", "{50462F8C-92F3-4356-82B2-68ABD0928636}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{6CDFCD41-23AC-49ED-ADB4-FBA614E94A87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6CDFCD41-23AC-49ED-ADB4-FBA614E94A87}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6CDFCD41-23AC-49ED-ADB4-FBA614E94A87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{074A5F57-AE83-4382-BE97-B6244A122041}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{074A5F57-AE83-4382-BE97-B6244A122041}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{074A5F57-AE83-4382-BE97-B6244A122041}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{074A5F57-AE83-4382-BE97-B6244A122041}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50462F8C-92F3-4356-82B2-68ABD0928636}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50462F8C-92F3-4356-82B2-68ABD0928636}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50462F8C-92F3-4356-82B2-68ABD0928636}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50462F8C-92F3-4356-82B2-68ABD0928636}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
