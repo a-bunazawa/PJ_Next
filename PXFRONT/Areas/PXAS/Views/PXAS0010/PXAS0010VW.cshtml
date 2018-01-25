@@ -1,0 +1,48 @@
+﻿
+@{
+    ViewBag.Title = "PXAS0010VW";
+}
+
+@model PXFRONT.Areas.PXAS.PXAS0010CW
+<!-- MAIN CONTENT -->
+<input type="hidden" id="CurrentPageTitle" />
+<input type="hidden" id="CurrentPageLink" />
+<div id="mainWindow">
+    <!-- RIBBON -->
+    <div id="ribbon" style="display: none;">
+        <ol class="breadcrumb">
+            <li></li>
+            <li></li>
+        </ol>
+    </div>
+    <!-- END RIBBON -->
+    <div id="content" style="width: 100%; height: 100%; overflow-x: hidden;">
+        <div id="breadcrumb" class="row" style="display: none;">
+            <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+                <h1 class="page-title txt-color-blueDark"><i class="fa-fw fa fa-home"></i>&nbsp;ホーム</h1>
+            </div>
+        </div>
+        <!-- widget grid -->
+        <section id="widget-grid" class="">
+            <!-- row -->
+            <div class="row" id="mainMenu">
+                @Html.TextBoxFor(model => Model.LinkURL, new { type = "hidden" })
+            </div>
+            <!-- end row -->
+        </section>
+        <!-- end widget grid -->
+    </div>
+    <div id="dialog"></div>
+    <div id="dialog_dialog"></div>
+    <div id="PrcDialog"></div>
+    <div id="CnvDialog"></div>
+    <div id="GrpDialog"></div>
+    <div id="CsgDialog"></div>
+    <div id="WhsDialog"></div>
+    <div id="CstDialog"></div>
+    <div id="ShpDialog"></div>
+    <div id="SupDialog"></div>
+    <div id="UsrDialog"></div>
+    <div id="SkuDialog"></div>
+</div>
+<!--END MAIN CONTENT -->

@@ -1,5 +1,3 @@
-using System;
-
 namespace PXFRONT.Models
 {
     public class ErrorViewModel

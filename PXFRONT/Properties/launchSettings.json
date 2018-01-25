@@ -7,14 +7,15 @@
       "sslPort": 0
     },
     "iisExpress": {
-      "applicationUrl": "http://localhost:49421/",
-      "sslPort": 0
+      "applicationUrl": "http://localhost:48602/",
+      "sslPort": 44358
     }
   },
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
+      "launchUrl": "https://localhost:44358/",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -25,12 +26,12 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:49422/"
+      "applicationUrl": "http://localhost:48603/"
     },
     "IIS": {
       "commandName": "IIS",
       "launchBrowser": true,
-      "launchUrl": "http://localhost/PXFRONT/PXMS/PXMS0000/PXMS0000VW"
+      "launchUrl": "http://localhost/PXFRONT"
     }
   }
 }
