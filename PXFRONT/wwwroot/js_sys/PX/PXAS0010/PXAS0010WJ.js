@@ -160,7 +160,7 @@ function CreateMenu() {
     //data.MENUID = localStorage.getItem("LOGINEXT_WMSAPI_MENUID");
     data.MENUID = "PGE_WEB_MENU_ADMIN";
 
-    //$.ajax(url, { type: "POST", data: data }).then(function (r) {
+    $.ajax(url, { type: "POST", data: data }).then(function (r) {
     //    data = r;
     //    if (data != "") {
             $('#listMenu').empty();
@@ -257,10 +257,10 @@ function CreateMenu() {
             });
         //}
         //pageReSetUp();
-    //}, function (e) {
-    //    pageReSetUp();
-    //    createDialog("asideDialog", "1,0,システム環境,ALM,通信エラーが発生しました,ＯＫ,ALM000-01,OK");
-    //});
+    }, function (e) {
+        pageReSetUp();
+        createDialog("asideDialog", "1,0,システム環境,ALM,通信エラーが発生しました,ＯＫ,ALM000-01,OK");
+    });
 
         $("#mainMenu").append(
             '<article class="col-lg-6 article-sortable">' +

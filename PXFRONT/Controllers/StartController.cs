@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using PXFRONT.Models;
 using System.Diagnostics;
 using Microsoft.Extensions.Options;
+using static PXFRONT.appsettingsCL;
 
 namespace PXFRONT.Controllers
 {

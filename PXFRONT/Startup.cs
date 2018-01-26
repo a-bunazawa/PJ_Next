@@ -11,6 +11,7 @@ using PXFRONT.Configuration;
 using PXFRONT.Data;
 using PXFRONT.Models;
 using PXFRONT.Services;
+using static PXFRONT.appsettingsCL;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable once ClassNeverInstantiated.Global
