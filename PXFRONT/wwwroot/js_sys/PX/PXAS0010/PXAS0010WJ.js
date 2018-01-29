@@ -151,7 +151,7 @@ function ChgMon(ClickDate) {
 //  メニュー項目の再取得
 function CreateMenu() {
     //var url = localStorage.getItem("LOGINEXT_WMSAPI_URL") + "api/LNAS0000/CreateMenu";
-    var url = "http://kanda/KANDANET/API/api/LNAS0000/CreateMenu";
+    var url = "https://kanda/KANDANET/API/api/LNAS0000/CreateMenu";
     var data = {};
     //data.Id = localStorage.getItem("LOGINEXT_WMSAPI_USERID");
     data.Id = "pmt_admin";

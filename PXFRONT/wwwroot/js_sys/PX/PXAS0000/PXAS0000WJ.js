@@ -4,7 +4,7 @@ $(document).ready(function () {
     SetSysDB();
     resizeWindow();
 
-    Ladda.bind('.button-demo button', { timeout: true });
+    //Ladda.bind('.button-demo button', { timeout: true });
 
     //レイアウトオプションの日本語化
     LocalLayoutOption();
