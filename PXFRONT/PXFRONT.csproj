@@ -22,7 +22,6 @@
 
   <ItemGroup>
     <Folder Include="Areas\PXAS\Data\" />
-    <Folder Include="wwwroot\css_sys\PX\PXAS\" />
     <Folder Include="wwwroot\css_sys\PK\" />
     <Folder Include="wwwroot\img_sys\PK\" />
   </ItemGroup>

@@ -36,12 +36,15 @@ function resizeWindow() {
 
 function Login() {
     //var url = localStorage.getItem("LOGINEXT_WMSAPI_URL") + "api/LNAS0001/Login";
-    var url = "https://kanda/KANDANET/API/api/LNAS0001/Login";
+    var url = "http://kanda/KANDANET/API/api/LNAS0001/Login";
 
     var data = {};
-    data.Id = $("#email").val();
-    data.Pass = $("#password").val();
-    data.DB = localStorage.getItem("LOGINEXT_WMSAPI_SYSTEMDB");
+    //data.Id = $("#email").val();
+    data.Id = "pmt_admin";
+    //data.Pass = $("#password").val();
+    data.Pass = "kcom";
+    //data.DB = localStorage.getItem("LOGINEXT_WMSAPI_SYSTEMDB");
+    data.DB = "KN";
 
     $.ajax(url, { type: "POST", data: data }).then(function (r) {
         localStorage.setItem("LOGINEXT_WMSAPI_USERNM", r.Name);
@@ -62,7 +65,8 @@ function Login() {
         localStorage.setItem("LOGINEXT_WMSAPI_USERID", r.Id);
 
         if (r.SendUrl != "") {
-            window.location.href = r.SendUrl;
+            //window.location.href = r.SendUrl;
+            window.location.href = "http://" + window.location.host + "/PXAS/PXAS0010/PXAS0010VW";
         } else {
             createDialog("dialog", "1,0,ログイン画面,ALM," + r.ErrorMsg + ",ＯＫ,ALM000-01,OK");
             $("#dialog").dialog("open");
@@ -75,14 +79,14 @@ function Login() {
         Ladda.stopAll();
     });
 
-    window.location.href = "https://" + window.location.host + "/PXAS/PXAS0010/PXAS0010VW";
+    //window.location.href = "https://" + window.location.host + "/PXAS/PXAS0010/PXAS0010VW";
 
-    var error = "2,0,アラーム,ALM,システム利用期限が間もなく終了します。,ＯＫ,ALM000-01_OK,OK,キャンセル,ALM000-01_NG,NG";
-    var dialog = $("#dialog");
-    if (dialog != null) {
-        createDialog("dialog", error);
-        dialog.dialog("open");
-    }
+    //var error = "2,0,アラーム,ALM,システム利用期限が間もなく終了します。,ＯＫ,ALM000-01_OK,OK,キャンセル,ALM000-01_NG,NG";
+    //var dialog = $("#dialog");
+    //if (dialog != null) {
+    //    createDialog("dialog", error);
+    //    dialog.dialog("open");
+    //}
 
     return false;
 }

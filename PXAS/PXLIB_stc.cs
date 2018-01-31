@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PXAS
+namespace PXLIB
 {
-    class PXCL_stc
+    class PXLIB_stc
     {
         /// <summary> 共通値管理 </summary>
-        public class PXCL_userVal
+        public class PXLIB_userVal
         {
             /// <summary>Sessionへの保存名</summary>
             public static string SessionName = "ShareData";
@@ -89,7 +89,7 @@ namespace PXAS
             /// <summary> ログイン遷移先 </summary>
             protected string CallTop { get; set; }
 
-            public PXCL_userVal()
+            public PXLIB_userVal()
             {
                 ServerURL = "";
                 LoginURL = "";
@@ -212,7 +212,7 @@ namespace PXAS
         }
 
         /// <summary> 権限マスタ </summary>
-        public class PXCL_prerogative
+        public class PXLIB_prerogative
         {
             /// <summary>制御区分：参照権限	</summary>
             protected string Access { get; set; }
@@ -231,7 +231,7 @@ namespace PXAS
             /// <summary>制御区分：予備２</summary>
             protected string Etc2 { get; set; }
 
-            public PXCL_prerogative()
+            public PXLIB_prerogative()
             {
                 Access = "";
                 Insert = "";

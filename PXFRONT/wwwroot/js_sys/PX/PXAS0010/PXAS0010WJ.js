@@ -91,7 +91,7 @@ function MenuLink(Link, Type, ID, parent) {
     TaskQue = 0;
     if (Type == "0") {
         //Link = "../../" + Link;
-        Link = "https://" + window.location.host + "/" + Link;
+        Link = "http://" + window.location.host + "/" + Link;
     }
     if (Link != "" && Type != "") {
         LoaderControl("open");
@@ -151,18 +151,18 @@ function ChgMon(ClickDate) {
 //  メニュー項目の再取得
 function CreateMenu() {
     //var url = localStorage.getItem("LOGINEXT_WMSAPI_URL") + "api/LNAS0000/CreateMenu";
-    var url = "https://kanda/KANDANET/API/api/LNAS0000/CreateMenu";
+    var url = "http://kanda/KANDANET/API/api/LNAS0000/CreateMenu";
     var data = {};
     //data.Id = localStorage.getItem("LOGINEXT_WMSAPI_USERID");
     data.Id = "pmt_admin";
     //data.DB = localStorage.getItem("LOGINEXT_WMSAPI_SYSTEMDB");
-    data.DB = "LN";
+    data.DB = "KN";
     //data.MENUID = localStorage.getItem("LOGINEXT_WMSAPI_MENUID");
     data.MENUID = "PGE_WEB_MENU_ADMIN";
 
     $.ajax(url, { type: "POST", data: data }).then(function (r) {
-    //    data = r;
-    //    if (data != "") {
+        data = r;
+        if (data != "") {
             $('#listMenu').empty();
             $('#mainMenu').empty();
             var newDivDataLeft = "";
@@ -178,76 +178,76 @@ function CreateMenu() {
             newLi.addClass("MenuLinkLi");
             $('#listMenu').append(newLi);
             // liに追加する内容
-            //for (var i = 0; i < data.length; i++) {
-            //    var rowData = data[i];
-            //    var childRow = "";
-            //    var parentClass = "";
-            //    // 子要素を格納するulタグを生成
-            //    var childRowUl = $('<ul>');
-            //    // 親要素の中身[<a>タグ等]
-            //    childRow = rowData.ChildRow;
-            //    if (rowData.ParentClass != "") {
-            //        parentClass = rowData.ParentClass;
-            //    }
+            for (var i = 0; i < data.length; i++) {
+                var rowData = data[i];
+                var childRow = "";
+                var parentClass = "";
+                // 子要素を格納するulタグを生成
+                var childRowUl = $('<ul>');
+                // 親要素の中身[<a>タグ等]
+                childRow = rowData.ChildRow;
+                if (rowData.ParentClass != "") {
+                    parentClass = rowData.ParentClass;
+                }
 
-            //    // 中央一覧メニュー部分
-            //    var childDivData = "";
-            //    var newDivData = "    <div class='jarviswidget jarviswidget-color-blueLight' id='' data-widget-editbutton='false'";
-            //    newDivData += " data-widget-colorbutton='false' data-widget-deletebutton='false' data-widget-fullscreenbutton='false'>" + "\r\n";
-            //    newDivData += "        <header>" + "\r\n";
-            //    newDivData += "            " + rowData.ChildRowMain + "\r\n";
-            //    newDivData += "        </header>" + "\r\n";
-            //    newDivData += "        <div>" + "\r\n";
-            //    newDivData += "            <div class='widget-body flex'>" + "\r\n";
+                // 中央一覧メニュー部分
+                var childDivData = "";
+                var newDivData = "    <div class='jarviswidget jarviswidget-color-blueLight' id='' data-widget-editbutton='false'";
+                newDivData += " data-widget-colorbutton='false' data-widget-deletebutton='false' data-widget-fullscreenbutton='false'>" + "\r\n";
+                newDivData += "        <header>" + "\r\n";
+                newDivData += "            " + rowData.ChildRowMain + "\r\n";
+                newDivData += "        </header>" + "\r\n";
+                newDivData += "        <div>" + "\r\n";
+                newDivData += "            <div class='widget-body flex'>" + "\r\n";
 
-            //    for (var j = 0; j < rowData.ChildData.length; j++) {
-            //        var childData = rowData.ChildData[j];
-            //        // 子要素の中身[<a>タグ等]
-            //        var childLi = $('<li>').html(childData[0]);
-            //        childLi.addClass("MenuLinkLi");
-            //        if (childData[1] == "active") {
-            //            childLi.addClass('active');
-            //        }
-            //        childRowUl.append(childLi);
+                for (var j = 0; j < rowData.ChildData.length; j++) {
+                    var childData = rowData.ChildData[j];
+                    // 子要素の中身[<a>タグ等]
+                    var childLi = $('<li>').html(childData[0]);
+                    childLi.addClass("MenuLinkLi");
+                    if (childData[1] == "active") {
+                        childLi.addClass('active');
+                    }
+                    childRowUl.append(childLi);
 
-            //        // 中央一覧メニュー部分
-            //        childDivData += "                <div class='box'>" + "\r\n";
-            //        childDivData += "                    " + childData[2] + "\r\n";
-            //        childDivData += "                </div>" + "\r\n";
-            //    }
-            //    // liタグを生成してテキスト追加
-            //    var newLi = $('<li>').append(childRow);
-            //    if (rowData.ChildRow.split("MenuLink")[1].split(",")[1].trim() == "\"\"") {
-            //        newLi.append(childRowUl);
-            //    }
-            //    newLi.addClass("MenuLinkLi");
-            //    if (parentClass != "") {
-            //        //newLi.addClass(parentClass);
-            //    }
+                    // 中央一覧メニュー部分
+                    childDivData += "                <div class='box'>" + "\r\n";
+                    childDivData += "                    " + childData[2] + "\r\n";
+                    childDivData += "                </div>" + "\r\n";
+                }
+                // liタグを生成してテキスト追加
+                var newLi = $('<li>').append(childRow);
+                if (rowData.ChildRow.split("MenuLink")[1].split(",")[1].trim() == "\"\"") {
+                    newLi.append(childRowUl);
+                }
+                newLi.addClass("MenuLinkLi");
+                if (parentClass != "") {
+                    //newLi.addClass(parentClass);
+                }
 
-            //    // insertに生成したliタグを追加
-            //    $('#listMenu').append(newLi);
+                // insertに生成したliタグを追加
+                $('#listMenu').append(newLi);
 
-            //    // 中央一覧メニュー部分
-            //    if (childDivData != "") {
-            //        newDivData += childDivData;
-            //        newDivData += "            </div>" + "\r\n";
-            //        newDivData += "        </div>" + "\r\n";
-            //        newDivData += "    </div>" + "\r\n";
-            //        if (rowData.ChildRowMainFlag == "left") {
-            //            newDivDataLeft += newDivData;
-            //        } else {
-            //            newDivDataRight += newDivData;
-            //        }
-            //    }
-            //}
+                // 中央一覧メニュー部分
+                if (childDivData != "") {
+                    newDivData += childDivData;
+                    newDivData += "            </div>" + "\r\n";
+                    newDivData += "        </div>" + "\r\n";
+                    newDivData += "    </div>" + "\r\n";
+                    if (rowData.ChildRowMainFlag == "left") {
+                        newDivDataLeft += newDivData;
+                    } else {
+                        newDivDataRight += newDivData;
+                    }
+                }
+            }
 
-            //var newMenuLeft = $('<article>').append(newDivDataLeft);
-            //newMenuLeft.addClass("col-xs-12 col-sm-6 col-md-6 col-lg-6");
-            //$('#mainMenu').append(newMenuLeft);
-            //var newMenuRight = $('<article>').append(newDivDataRight);
-            //newMenuRight.addClass("col-xs-12 col-sm-6 col-md-6 col-lg-6");
-            //$('#mainMenu').append(newMenuRight);
+            var newMenuLeft = $('<article>').append(newDivDataLeft);
+            newMenuLeft.addClass("col-xs-12 col-sm-6 col-md-6 col-lg-6");
+            $('#mainMenu').append(newMenuLeft);
+            var newMenuRight = $('<article>').append(newDivDataRight);
+            newMenuRight.addClass("col-xs-12 col-sm-6 col-md-6 col-lg-6");
+            $('#mainMenu').append(newMenuRight);
 
             $("nav ul").jarvismenu({
                 "accordion": menu_accordion || !0
@@ -255,41 +255,41 @@ function CreateMenu() {
                 , "closedSign": '<em class="fa fa-plus-square-o"></em>'
                 , "openedSign": '<em class="fa fa-minus-square-o"></em>'
             });
-        //}
-        //pageReSetUp();
+        }
+        pageReSetUp();
     }, function (e) {
         pageReSetUp();
         createDialog("asideDialog", "1,0,システム環境,ALM,通信エラーが発生しました,ＯＫ,ALM000-01,OK");
     });
 
-        $("#mainMenu").append(
-            '<article class="col-lg-6 article-sortable">' +
-            '    <div class="jarviswidget jarviswidget-color-blueLight jarviswidget-sortable" id="" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false" data-widget-fullscreenbutton="false" role="widget">' +
-            '        <header role="heading">' +
-            '            <span class="widget-icon"> <i id="head_icon01" class=""></i> </span><h2 class="font-md"><strong id="head_name01"></strong></h2>' +
-            '            <span class="jarviswidget-loader"><i class="fa fa-refresh fa-spin"></i></span>' +
-            '        </header>' +
-            '        <div role="content" class="drag_hide">' +
-            '            <div class="widget-body flex">' +
-            '                <ul id="MenuList01" class="jquery-ui-sortable">' +
-            '                </ul>' +
-            '            </div>' +
-            '        </div>' +
-            '    </div>' +
-            '</article>');
-        $("#head_icon01").attr("class", "fa ");
-        $("#head_name01").text("テスト");
+        //$("#mainMenu").append(
+        //    '<article class="col-lg-6 article-sortable">' +
+        //    '    <div class="jarviswidget jarviswidget-color-blueLight jarviswidget-sortable" id="" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false" data-widget-fullscreenbutton="false" role="widget">' +
+        //    '        <header role="heading">' +
+        //    '            <span class="widget-icon"> <i id="head_icon01" class=""></i> </span><h2 class="font-md"><strong id="head_name01"></strong></h2>' +
+        //    '            <span class="jarviswidget-loader"><i class="fa fa-refresh fa-spin"></i></span>' +
+        //    '        </header>' +
+        //    '        <div role="content" class="drag_hide">' +
+        //    '            <div class="widget-body flex">' +
+        //    '                <ul id="MenuList01" class="jquery-ui-sortable">' +
+        //    '                </ul>' +
+        //    '            </div>' +
+        //    '        </div>' +
+        //    '    </div>' +
+        //    '</article>');
+        //$("#head_icon01").attr("class", "fa ");
+        //$("#head_name01").text("テスト");
 
-        var MenuListElement = $("#MenuList01");
-        MenuListElement.append(
-            '<li class="drag box" title="テスト" style="width: 330px !important;">' +
-            '   <div style="width:40px;height:40px;"><img src="../../img/" style="position: absolute;"><h3 class="TitleNm">テスト</h3><p>001</p></div>' +
-            '   <input type="hidden" class="HidCallWeb" value="001" />' +
-            '</li>');
-        //グループのフロート設定
-        SetGroupFloat();
+        //var MenuListElement = $("#MenuList01");
+        //MenuListElement.append(
+        //    '<li class="drag box" title="テスト" style="width: 330px !important;">' +
+        //    '   <div style="width:40px;height:40px;"><img src="../../img/" style="position: absolute;"><h3 class="TitleNm">テスト</h3><p>001</p></div>' +
+        //    '   <input type="hidden" class="HidCallWeb" value="001" />' +
+        //    '</li>');
+        ////グループのフロート設定
+        //SetGroupFloat();
 
-        pageReSetUp();
+        //pageReSetUp();
     return false;
 }
 

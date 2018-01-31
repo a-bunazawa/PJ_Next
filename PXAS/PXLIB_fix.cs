@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PXAS
+namespace PXLIB
 {
-    class PXCL_fix
+    class PXLIB_fix
     {
         /// <summary>暗号化キー</summary>
         public static string EncryptKey = "WebsysProject-3141421356";

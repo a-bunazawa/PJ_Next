@@ -36,6 +36,7 @@
 <body>
     @{ await Html.RenderPartialAsync("_Header"); }
     @{ await Html.RenderPartialAsync("_Navigation"); }
+    @{ await Html.RenderPartialAsync("_Scripts"); }
     <!-- MAIN PANEL -->
     <div id="main" role="main">
         @RenderBody()
@@ -43,7 +44,6 @@
     <!-- END MAIN PANEL -->
     @{ await Html.RenderPartialAsync("_Footer"); }
     @{ await Html.RenderPartialAsync("_Shortcuts"); }
-    @{ await Html.RenderPartialAsync("_Scripts"); }
     <environment include="Development">
         <!-- PACE LOADER - turn this on if you want ajax loading to show (caution: uses lots of memory on iDevices)-->
         <script data-pace-options='{ "restartOnRequestAfter": true }' src="~/js/plugin/pace/pace.js"></script>
@@ -65,5 +65,26 @@
         });
     </script>
     @RenderSection("Scripts", required: false)
+
+    <div class="divMessageBox animated fadeIn fast" id="LogOutDisplay" style="display:none;">
+        <div class="MessageBoxContainer animated fadeIn fast" id="Msg1">
+            <div class="MessageBoxMiddle">
+                <span class="MsgTitle">
+                    <i class="fa fa-sign-out txt-color-orangeDark"></i> ユーザー名： <span class="txt-color-orangeDark">
+                        <strong id="LogOut_usernm">ユーザーネーム</strong>
+                    </span>
+                </span><p class="pText">ログアウトしてもよろしいですか？</p>
+                <div class="MessageBoxButtonSection">
+                    <button id="bot1-Msg1" class="btn btn-default btn-sm botTempo"> いいえ</button>
+                    <button id="bot2-Msg1" class="btn btn-default btn-sm botTempo"> はい</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="load-parent" style="display:none;">
+        <div class="loader-default"></div>
+        <div id="load-str">Now Loading...</div>
+    </div>
 </body>
 </html>

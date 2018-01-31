@@ -6,11 +6,11 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Web;
 using System.Diagnostics;
-using static PXAS.PXCL_stc;
+using static PXLIB.PXLIB_stc;
 
-namespace PXAS
+namespace PXLIB
 {
-    class PXCL_dba
+    class PXLIB_dba
     {
         #region PxASdbaCW_Declarations
 
@@ -25,7 +25,7 @@ namespace PXAS
         /// <summary>トランザクション</summary>
         private SqlTransaction SqlTran;
         /// <summary>共通データ</summary>
-        private PXCL_userVal PxASuserValData;
+        private PXLIB_userVal PXLIB_userValData;
         /// <summary>接続文</summary>
         private string ConnectString = "";
 
@@ -53,8 +53,8 @@ namespace PXAS
         /// コンストラクタ
         /// </summary>
         /// <param name="Connect">接続先DB</param>
-        /// <param name="PxASuserValData">PxASuserValのモデル</param>
-        public PXCL_dba(int Connect, PXCL_userVal PxASuserValData)
+        /// <param name="PXLIB_userValData">PXLIB_userValのモデル</param>
+        public PXLIB_dba(int Connect, PXLIB_userVal PXLIB_userValData)
         {
             if (SqlCon == null) { SqlCon = new SqlConnection(); }
             try
@@ -64,30 +64,30 @@ namespace PXAS
                 if (Connect == ConnectionUser)
                 {
                     DbConnection.Append("Data Source=");
-                    DbConnection.Append((!string.IsNullOrEmpty(PxASuserValData.USERDBSVRIP)) ? PxASuserValData.USERDBSVRIP : PxASuserValData.USERDBSVRNM);
+                    DbConnection.Append((!string.IsNullOrEmpty(PXLIB_userValData.USERDBSVRIP)) ? PXLIB_userValData.USERDBSVRIP : PXLIB_userValData.USERDBSVRNM);
                     DbConnection.Append(";Initial Catalog=");
-                    DbConnection.Append(PxASuserValData.USERDBNM);
+                    DbConnection.Append(PXLIB_userValData.USERDBNM);
                     DbConnection.Append(";User ID=");
-                    DbConnection.Append(PxASuserValData.USERDBSVRUR);
+                    DbConnection.Append(PXLIB_userValData.USERDBSVRUR);
                     DbConnection.Append(";Password=");
-                    DbConnection.Append(PXCL_com.Decrypt(PxASuserValData.USERDBSVRPW));
+                    DbConnection.Append(PXLIB_com.Decrypt(PXLIB_userValData.USERDBSVRPW));
                     DbConnection.Append("; Max Pool Size=100;");
                     ConnectString = DbConnection.ToString();
                 }
                 else
                 {
                     DbConnection.Append("Data Source=");
-                    DbConnection.Append((!string.IsNullOrEmpty(PxASuserValData.SYSDBSVRIP)) ? PxASuserValData.SYSDBSVRIP : PxASuserValData.SYSDBSVRNM);
+                    DbConnection.Append((!string.IsNullOrEmpty(PXLIB_userValData.SYSDBSVRIP)) ? PXLIB_userValData.SYSDBSVRIP : PXLIB_userValData.SYSDBSVRNM);
                     DbConnection.Append(";Initial Catalog=");
-                    DbConnection.Append(PxASuserValData.SYSDBNM);
+                    DbConnection.Append(PXLIB_userValData.SYSDBNM);
                     DbConnection.Append(";User ID=");
-                    DbConnection.Append(PxASuserValData.SYSDBSVRUR);
+                    DbConnection.Append(PXLIB_userValData.SYSDBSVRUR);
                     DbConnection.Append(";Password=");
-                    DbConnection.Append(PXCL_com.Decrypt(PxASuserValData.SYSDBSVRPW));
+                    DbConnection.Append(PXLIB_com.Decrypt(PXLIB_userValData.SYSDBSVRPW));
                     DbConnection.Append("; Max Pool Size=100;");
                     ConnectString = DbConnection.ToString();
                 }
-                this.PxASuserValData = PxASuserValData;
+                this.PXLIB_userValData = PXLIB_userValData;
             }
             catch (Exception Exc)
             {
@@ -117,7 +117,7 @@ namespace PXAS
             {
                 ErrMsg = "データベース接続「" + Exc.Message + "」";
                 StackFrame callerFrame = new StackFrame(1);
-                PXCL_log.writeLog(PXCL_log.ERR, "DB", "DBアクセスエラー", ErrMsg, ConnectString, callerFrame.GetMethod(), PxASuserValData);
+                PXLIB_log.writeLog(PXLIB_log.ERR, "DB", "DBアクセスエラー", ErrMsg, ConnectString, callerFrame.GetMethod(), PXLIB_userValData);
             }
 
             return ErrMsg;
@@ -151,7 +151,7 @@ namespace PXAS
             {
                 ErrMsg = "データベース切断「" + Exc.Message + "」";
                 StackFrame CallerFrame = new StackFrame(1);
-                PXCL_log.writeLog(PXCL_log.ERR, "DB", "DBアクセスエラー", ErrMsg, CallerFrame.GetMethod(), PxASuserValData);
+                PXLIB_log.writeLog(PXLIB_log.ERR, "DB", "DBアクセスエラー", ErrMsg, CallerFrame.GetMethod(), PXLIB_userValData);
             }
 
             return ErrMsg;
@@ -180,7 +180,7 @@ namespace PXAS
             {
                 string ErrMsg = "データ取得「" + Exc.Message + "」";
                 StackFrame CallerFrame = new StackFrame(1);
-                PXCL_log.writeLog(PXCL_log.ERR, PXCL_log.SELECT, "DBデータ取得エラー", ErrMsg, CmdTxt, CallerFrame.GetMethod(), PxASuserValData);
+                PXLIB_log.writeLog(PXLIB_log.ERR, PXLIB_log.SELECT, "DBデータ取得エラー", ErrMsg, CmdTxt, CallerFrame.GetMethod(), PXLIB_userValData);
                 return null;
             }
 
@@ -225,7 +225,7 @@ namespace PXAS
             {
                 string ErrMsg = "データ取得「" + Exc.Message + "」";
                 StackFrame CallerFrame = new StackFrame(1);
-                PXCL_log.writeLog(PXCL_log.ERR, PXCL_log.SELECT, "DBデータ取得エラー", ErrMsg, CmdTxt, CallerFrame.GetMethod(), PxASuserValData);
+                PXLIB_log.writeLog(PXLIB_log.ERR, PXLIB_log.SELECT, "DBデータ取得エラー", ErrMsg, CmdTxt, CallerFrame.GetMethod(), PXLIB_userValData);
 
                 return null;
             }
@@ -254,7 +254,7 @@ namespace PXAS
             {
                 string ErrMsg = "データ取得「" + Exc.Message + "」";
                 StackFrame CallerFrame = new StackFrame(1);
-                PXCL_log.writeLog(PXCL_log.ERR, PXCL_log.SELECT, "DBデータ取得エラー", ErrMsg, CmdTxt, CallerFrame.GetMethod(), PxASuserValData);
+                PXLIB_log.writeLog(PXLIB_log.ERR, PXLIB_log.SELECT, "DBデータ取得エラー", ErrMsg, CmdTxt, CallerFrame.GetMethod(), PXLIB_userValData);
 
                 return null;
             }
@@ -286,7 +286,7 @@ namespace PXAS
                 Res = -1;
                 string ErrMsg = "データ登録「" + Exc.Message + "」";
                 StackFrame CallerFrame = new StackFrame(1);
-                PXCL_log.writeLog(PXCL_log.ERR, PXCL_log.SELECT, "DBデータ登録エラー", ErrMsg, CmdTxt, CallerFrame.GetMethod(), PxASuserValData);
+                PXLIB_log.writeLog(PXLIB_log.ERR, PXLIB_log.SELECT, "DBデータ登録エラー", ErrMsg, CmdTxt, CallerFrame.GetMethod(), PXLIB_userValData);
             }
 
             return Res;
@@ -329,7 +329,7 @@ namespace PXAS
                 Res = -1;
                 string ErrMsg = "データ登録「" + Exc.Message + "」";
                 StackFrame CallerFrame = new StackFrame(1);
-                PXCL_log.writeLog(PXCL_log.ERR, PXCL_log.INSART, "DBデータ登録エラー", ErrMsg, CmdTxt, CallerFrame.GetMethod(), PxASuserValData);
+                PXLIB_log.writeLog(PXLIB_log.ERR, PXLIB_log.INSART, "DBデータ登録エラー", ErrMsg, CmdTxt, CallerFrame.GetMethod(), PXLIB_userValData);
             }
 
             return Res;
@@ -360,7 +360,7 @@ namespace PXAS
                 Res = -1;
                 string ErrMsg = "データ更新「" + Exc.Message + "」";
                 StackFrame CallerFrame = new StackFrame(1);
-                PXCL_log.writeLog(PXCL_log.ERR, PXCL_log.UPDATE, "DBデータ更新エラー", ErrMsg, CmdTxt, CallerFrame.GetMethod(), PxASuserValData);
+                PXLIB_log.writeLog(PXLIB_log.ERR, PXLIB_log.UPDATE, "DBデータ更新エラー", ErrMsg, CmdTxt, CallerFrame.GetMethod(), PXLIB_userValData);
             }
 
             return Res;
@@ -405,7 +405,7 @@ namespace PXAS
                 Res = -1;
                 string ErrMsg = "データ更新「" + Exc.Message + "」";
                 StackFrame CallerFrame = new StackFrame(1);
-                PXCL_log.writeLog(PXCL_log.ERR, PXCL_log.SELECT, "DBデータ更新エラー", ErrMsg, CmdTxt, CallerFrame.GetMethod(), PxASuserValData);
+                PXLIB_log.writeLog(PXLIB_log.ERR, PXLIB_log.SELECT, "DBデータ更新エラー", ErrMsg, CmdTxt, CallerFrame.GetMethod(), PXLIB_userValData);
             }
 
             return Res;
@@ -435,7 +435,7 @@ namespace PXAS
                 Res = -1;
                 string ErrMsg = "データ削除「" + Exc.Message + "」";
                 StackFrame CallerFrame = new StackFrame(1);
-                PXCL_log.writeLog(PXCL_log.ERR, PXCL_log.SELECT, "DBデータ削除エラー", ErrMsg, CmdTxt, CallerFrame.GetMethod(), PxASuserValData);
+                PXLIB_log.writeLog(PXLIB_log.ERR, PXLIB_log.SELECT, "DBデータ削除エラー", ErrMsg, CmdTxt, CallerFrame.GetMethod(), PXLIB_userValData);
             }
 
             return Res;
@@ -479,7 +479,7 @@ namespace PXAS
                 Res = -1;
                 string ErrMsg = "データ削除「" + Exc.Message + "」";
                 StackFrame CallerFrame = new StackFrame(1);
-                PXCL_log.writeLog(PXCL_log.ERR, PXCL_log.DELETE, "DBデータ削除エラー", ErrMsg, CmdTxt, CallerFrame.GetMethod(), PxASuserValData);
+                PXLIB_log.writeLog(PXLIB_log.ERR, PXLIB_log.DELETE, "DBデータ削除エラー", ErrMsg, CmdTxt, CallerFrame.GetMethod(), PXLIB_userValData);
             }
 
             return Res;
@@ -528,7 +528,7 @@ namespace PXAS
                         break;
                 }
                 StackFrame CallerFrame = new StackFrame(1);
-                PXCL_log.writeLog(PXCL_log.ERR, "DB", "DBデータトランザクションエラー", ErrMsg, CallerFrame.GetMethod(), PxASuserValData);
+                PXLIB_log.writeLog(PXLIB_log.ERR, "DB", "DBデータトランザクションエラー", ErrMsg, CallerFrame.GetMethod(), PXLIB_userValData);
             }
 
             return Res;
@@ -571,7 +571,7 @@ namespace PXAS
             {
                 string ErrMsg = "ストアド処理「" + Exc.Message + "」";
                 StackFrame CallerFrame = new StackFrame(1);
-                PXCL_log.writeLog(PXCL_log.ERR, "DB", "DBストアドエラー", ErrMsg, ErrMsg.ToString(), CallerFrame.GetMethod(), PxASuserValData);
+                PXLIB_log.writeLog(PXLIB_log.ERR, "DB", "DBストアドエラー", ErrMsg, ErrMsg.ToString(), CallerFrame.GetMethod(), PXLIB_userValData);
 
                 return null;
             }

@@ -1,0 +1,37 @@
+﻿
+@{
+    Layout = null;
+}
+<!-- MAIN CONTENT -->
+<link rel="stylesheet" href="~/css_sys/PX/PXAS/PXAS0020WS.css?@(DateTime.Now.ToString("yyyyMMddHHmmss"))" type="text/css" />
+<script src="~/js_sys/PX/PXAS0020/PXAS0020WJ.js?@DateTime.Now.ToString("yyyyMMddHHmmss")"></script>
+
+<div id="MenuDisplay" style="min-width: 700px;display:none;">
+    <section id="widget-grid" class="">
+        <div class="row">
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-1" data-widget-editbutton="false">
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                        <h2>メニュー一覧</h2>
+                    </header>
+                    <div id="MenuTable" class="no-padding">
+                        <table id="datatable_fixed_column" class="table table-bordered" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th style="width:6%;" class="table_header" data-hide="phone">No.</th>
+                                    <th style="width:30%;" class="table_header" data-hide="phone">メニュータイトル</th>
+                                    <th style="width:10%;" class="table_header" data-hide="phone">グループ数</th>
+                                    <th style="width:10%;" class="table_header" data-hide="phone">機能数</th>
+                                    <th style="width:34%;" class="table_header" data-hide="phone">…</th>
+                                    <th style="width:10%;" class="table_header" data-hide="phone"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="MenuTableList"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+</div>
