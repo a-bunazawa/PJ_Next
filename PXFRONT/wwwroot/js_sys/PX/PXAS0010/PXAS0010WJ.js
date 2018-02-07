@@ -9,7 +9,7 @@
 
         $("body").css("overflow-y", "scroll");
         //レイアウトオプションの日本語化
-        //LocalLayoutOption();
+        LocalLayoutOption();
 
         var nm = localStorage.getItem("LOGINEXT_WMSAPI_USERNM");
         $("#userNm").text(nm);
@@ -54,7 +54,7 @@
         $("#bot2-Msg1").click(function () {
             $("#LogOutDisplay").hide();
             RemoveLocalStorage();
-            window.location.href = "https://" + window.location.host + "/PXAS/PXAS0000/PXAS0000VW";
+            window.location.href = "http://" + window.location.host + "/PXAS/PXAS0000/PXAS0000VW";
         });
 
     //} else {
@@ -67,6 +67,54 @@
     //    });
     //}
 });
+
+var timer = false;
+$(window).resize(function () {
+    //リサイズ時、500ミリ秒何もしなかった時にmainMenu部分リサイズ
+    if (timer !== false) {
+        clearTimeout(timer);
+    }
+    timer = setTimeout(function () {
+        var other_size = $("#header").height() + $("#ribbon").height() + $("#ReturnBtn").height() + $("#breadcrumb").height() + $("#FloatGroup").height() + $(".page-footer").height() + 80;
+        $("#mainMenu").height(window.innerHeight - other_size);
+    }, 500);
+});
+
+function TestStepIn() {
+    TaskQue = 0;
+
+    createDialogOpen("dialog", "00000", "P3AS0000", "ALM000-01");
+    //StepIn();
+}
+
+function ReturnDialog(id, returnCd) {
+    switch (id) {
+        case "ALM000-01":
+            switch (returnCd) {
+                case "OK":
+                    return "btn btn-primary";
+                    break;
+                case "OK2":
+                    return "btn btn-primary";
+                    break;
+                case "DS":
+                    return "btn btn-danger";
+                    break;
+                default:
+                    return value;
+                    break;
+            }
+            break;
+        case "ALMKEYODR-02":
+            return "btn btn-primary";
+            break;
+        case "ALMKEYODR-03":
+            return value;
+            break;
+        default:
+            break;
+    }
+}
 
 var TaskQue = 0;
 function LoaderControl(status) {
@@ -98,6 +146,7 @@ function MenuLink(Link, Type, ID, parent) {
         $('.MenuLinkLi').each(function () {
             $(this).removeClass('active');
         });
+        
         var Obj = $("#" + ID);
         var liObj = Obj[0].parentElement;
         $(liObj).addClass("active");
@@ -262,34 +311,7 @@ function CreateMenu() {
         createDialog("asideDialog", "1,0,システム環境,ALM,通信エラーが発生しました,ＯＫ,ALM000-01,OK");
     });
 
-        //$("#mainMenu").append(
-        //    '<article class="col-lg-6 article-sortable">' +
-        //    '    <div class="jarviswidget jarviswidget-color-blueLight jarviswidget-sortable" id="" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false" data-widget-fullscreenbutton="false" role="widget">' +
-        //    '        <header role="heading">' +
-        //    '            <span class="widget-icon"> <i id="head_icon01" class=""></i> </span><h2 class="font-md"><strong id="head_name01"></strong></h2>' +
-        //    '            <span class="jarviswidget-loader"><i class="fa fa-refresh fa-spin"></i></span>' +
-        //    '        </header>' +
-        //    '        <div role="content" class="drag_hide">' +
-        //    '            <div class="widget-body flex">' +
-        //    '                <ul id="MenuList01" class="jquery-ui-sortable">' +
-        //    '                </ul>' +
-        //    '            </div>' +
-        //    '        </div>' +
-        //    '    </div>' +
-        //    '</article>');
-        //$("#head_icon01").attr("class", "fa ");
-        //$("#head_name01").text("テスト");
 
-        //var MenuListElement = $("#MenuList01");
-        //MenuListElement.append(
-        //    '<li class="drag box" title="テスト" style="width: 330px !important;">' +
-        //    '   <div style="width:40px;height:40px;"><img src="../../img/" style="position: absolute;"><h3 class="TitleNm">テスト</h3><p>001</p></div>' +
-        //    '   <input type="hidden" class="HidCallWeb" value="001" />' +
-        //    '</li>');
-        ////グループのフロート設定
-        //SetGroupFloat();
-
-        //pageReSetUp();
     return false;
 }
 

@@ -1,0 +1,61 @@
+﻿@{
+    Layout = null;
+}
+<!-- MAIN CONTENT -->
+<link rel="stylesheet" href="~/css_sys/PX/PXAS/PXAS0020WS.css?@(DateTime.Now.ToString("yyyyMMddHHmmss"))" type="text/css" />
+
+@**********************************************************@
+@***         ↓ダイアログ画面↓                         ***@
+@**********************************************************@
+
+@* ヘッダー情報編集画面 *@
+<div id="HeadEditDialog" style="display:none;">
+    <div class="widget-body no-padding">
+        <form action="" class="smart-form">
+            <fieldset style="padding: 20px;">
+                <div class="row">
+                    <section class="col col-8">
+                        <label class="label">ヘッダータイトル</label>
+                        <label class="input">
+                            <input id="HeadTitleTxt" type="text" class="form-control edit-form" />
+                        </label>
+                    </section>
+                </div>
+                <div class="row">
+                    <section class="col col-lg-12">
+                        <label class="label">アイコン選択</label>
+                        <div id="SelIconList" style="border:1px solid #bdbdbd;height: 150px;overflow-y:scroll;padding: 5px;">
+                            <div><i class="fa fa-list-alt"></i></div>
+                            <div><i class="fa fa-home"></i></div>
+                            <div><i class="fa fa-info-circle"></i></div>
+                            <div><i class="fa fa-barcode"></i></div>
+                            <div><i class="fa fa-cubes"></i></div>
+                            <div><i class="fa fa-cube"></i></div>
+                            <div><i class="fa fa-arrows-alt"></i></div>
+                            <div><i class="fa fa-arrow-down"></i></div>
+                            <div><i class="fa fa-arrow-up"></i></div>
+                            <div><i class="fa fa-arrow-right"></i></div>
+                            <div><i class="fa fa-arrow-left"></i></div>
+                            <div><i class="fa fa-file"></i></div>
+                            <div><i class="fa fa-bar-chart"></i></div>
+                            <div><i class="fa fa-bars"></i></div>
+                            <div><i class="fa fa-bank"></i></div>
+                            <div><i class="fa fa-bookmark"></i></div>
+                            <div><i class="fa fa-building"></i></div>
+                            <div><i class="fa fa-briefcase"></i></div>
+                            <div><i class="fa fa-book"></i></div>
+                            <div><i class="fa fa-calendar"></i></div>
+                            <div><i class="fa fa-database"></i></div>
+                            <div><i class="fa fa-cog"></i></div>
+                            <div><i class="fa fa-windows"></i></div>
+                        </div>
+                    </section>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+@**********************************************************@
+@***         ↑ダイアログ画面↑                         ***@
+@**********************************************************@

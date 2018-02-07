@@ -9,6 +9,15 @@ $(document).ready(function () {
 
 });
 
+function StepIn() {
+    $('html, body').animate({ scrollTop: 0 }, 500, 'swing');
+    SetRibbonList(["システム管理", "メニュー管理"]);
+
+    data = GetLoginData();
+    data.DB = "KN";
+
+    CreateMenuTable();
+}
 function CreateMenuTable() {
     //var url = localStorage.getItem("LOGINEXT_WMSAPI_URL") + "api/LNAS0210/GetMenuList";
     var url =  "http://kanda/KANDANET/API/" + "api/LNAS0210/GetMenuList";
@@ -29,6 +38,7 @@ function CreateMenuTable() {
 
             $("#MenuDisplay").fadeIn();
 
+
             //Datatablesの設定
             SetTableQuery();
         }
@@ -38,7 +48,7 @@ function CreateMenuTable() {
 }
 
 function EditBtn_Click(level, title) {
-    $("#content").load("../../LNAS/LNAS0210/LNAS0211VW?MENULV01=" + level + "&TITLENM=" + title);
+    $("#content").load("http://" + window.location.host + "/PXAS/PXAS0020/PXAS0021VW?MENULV01=" + level + "&TITLENM=" + title);
     return false;
 }
 
@@ -54,6 +64,7 @@ function OpenDialog(msg) {
 //DataTablesのQuery設定
 function SetTableQuery() {
     var responsiveHelper_datatable_fixed_column = undefined;
+
 
     var breakpointDefinition = {
         tablet: 1024,

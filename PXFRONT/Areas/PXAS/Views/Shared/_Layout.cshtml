@@ -32,6 +32,12 @@
     <link rel="apple-touch-startup-image" href="~/img/splash/iphone.png" media="screen and (max-device-width: 320px)" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+    <!-- デザイナー追加分 -->
+    <link rel="stylesheet" type="text/css" media="screen" href="~/css/buttons.dataTables.min.css?@(DateTime.Now.ToString("yyyyMMddHHmmss"))">
+    <link rel="stylesheet" type="text/css" media="screen" href="~/css_sys/PX/PXAS_common.css?@(DateTime.Now.ToString("yyyyMMddHHmmss"))">
+    <link rel="stylesheet" type="text/css" href="~/js/context-menu/chromeContext.min.css?@(DateTime.Now.ToString("yyyyMMddHHmmss"))" />
+
 </head>
 <body>
     @{ await Html.RenderPartialAsync("_Header"); }
