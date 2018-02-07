@@ -44,7 +44,7 @@ namespace PXAPI
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=PXAS0000}/{action=Test}/{id=2}");
             });
         }
     }

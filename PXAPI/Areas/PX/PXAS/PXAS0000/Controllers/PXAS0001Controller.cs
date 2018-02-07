@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace PXAPI.Areas.PXAS.Controllers
 {
-    [Route("api/[controller]")]
+    //[Route("api/[controller]")]
     public class PXAS0001Controller : Controller
     {
         // GET: api/values

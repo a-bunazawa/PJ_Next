@@ -5,9 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Properties\PublishProfiles\FolderProfile.pubxml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Areas\PX\PXAS\PXAS0000\Data\" />
     <Folder Include="Areas\PX\PXAS\PXAS0000\Models\" />
-    <Folder Include="Controllers\" />
     <Folder Include="Models\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>

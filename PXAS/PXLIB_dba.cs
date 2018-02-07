@@ -485,12 +485,19 @@ namespace PXLIB
             return Res;
         }
 
+        public enum TRNS_MODE
+        {
+            BEGIN_TRNS = 1,
+            COMMIT_TRNS = 2,
+            ROLLBACK_TRNS = 3
+        }
+
         /// <summary>
         /// トランザクション開始処理・コミット処理・ロールバック処理(Return bool型)
         /// </summary>
         /// <param name="TrsMode">処理モード(1:トランザクション開始  2: コミット 3: ロールバック)</param>
         /// <returns>TRUE:処理成功 FALSE:処理失敗</returns>
-        public bool Tran(int TrsMode)
+        public bool Tran(TRNS_MODE TrsMode)
         {
             bool Res = true;
 
@@ -498,14 +505,14 @@ namespace PXLIB
             {
                 switch (TrsMode)
                 {
-                    case 1:
+                    case TRNS_MODE.BEGIN_TRNS:
                         SqlTran = SqlCon.BeginTransaction();
                         break;
-                    case 2:
+                    case TRNS_MODE.COMMIT_TRNS:
                         SqlTran.Commit();
                         SqlTran = null;
                         break;
-                    case 3:
+                    case TRNS_MODE.ROLLBACK_TRNS:
                         SqlTran.Rollback();
                         SqlTran = null;
                         break;
@@ -517,13 +524,13 @@ namespace PXLIB
                 string ErrMsg = "";
                 switch (TrsMode)
                 {
-                    case 1:
+                    case TRNS_MODE.BEGIN_TRNS:
                         ErrMsg = "トランザクション「" + Exc.Message + "」";
                         break;
-                    case 2:
+                    case TRNS_MODE.COMMIT_TRNS:
                         ErrMsg = "コミット「" + Exc.Message + "」";
                         break;
-                    case 3:
+                    case TRNS_MODE.ROLLBACK_TRNS:
                         ErrMsg = "ロールバック「" + Exc.Message + "」";
                         break;
                 }

@@ -12,11 +12,12 @@ namespace PXAPI.Areas.PXAS.Controllers
     public class PXAS0000Controller : Controller
     {
         // GET: PXAS/Test
-        public JsonGetMenuData Test(String aaa, String id)
+        [HttpGet("{id}")]
+        public JsonGetMenuData Test(String id)
         {
             JsonGetMenuData test = new JsonGetMenuData();
             test.Id = id;
-            test.DB = aaa;
+            test.DB = "aaa";
 
             return test;
         }
