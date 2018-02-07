@@ -21,6 +21,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\PKAS\Controllers\" />
+    <Folder Include="Areas\PKAS\Data\" />
+    <Folder Include="Areas\PKAS\Models\" />
+    <Folder Include="Areas\PKAS\Views\" />
     <Folder Include="Areas\PXAS\Data\" />
     <Folder Include="wwwroot\css_sys\PK\" />
     <Folder Include="wwwroot\img_sys\PK\" />

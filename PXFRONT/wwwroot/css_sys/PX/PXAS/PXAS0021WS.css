@@ -1,0 +1,196 @@
+﻿body {
+    font-family: "メイリオ",Meiryo,"ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro" !important;
+}
+
+html {
+    min-width: 680px;
+}
+
+#mainMenu article {
+    height: auto !important;
+}
+
+.col-lg-6 {
+    width: 50% !important;
+}
+
+.ui-dialog .ui-dialog-content {
+    overflow-y: hidden;
+}
+
+.article-sortable {
+    min-height: 178px;
+}
+
+    .article-sortable .font-md {
+        text-overflow: ellipsis;
+        width: 80% !important;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+[id^=MenuList] {
+    min-height: 85px;
+}
+
+#MenuTableList tr:hover {
+    background-color: #ecf3f8 !important;
+}
+
+#MenuTableList [type=button] {
+    width: 80%;
+}
+
+.box:hover {
+    background-color: #ecf3f8;
+    padding: 3px;
+}
+
+#ReturnBtn {
+    float: left;
+    margin: 10px 0;
+    width: 100px;
+}
+
+#BtnArea {
+    float: right;
+    margin-top: 10px;
+}
+
+#AddGroupBtn {
+    height: 32px;
+    margin-right: 10px;
+}
+
+#SaveBtn {
+    width: 110px;
+    height: 30px;
+}
+
+.jarviswidget-ctrls {
+    cursor: pointer;
+}
+
+    .jarviswidget-ctrls i {
+        padding-left: 5px;
+        padding-top: 7px;
+        font-size: 16px;
+    }
+
+.drag img {
+    max-width: 36px;
+    height: 30px;
+}
+
+.jquery-ui-sortable {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+    .jquery-ui-sortable li {
+        float: left;
+        cursor: pointer;
+        width: 330px !important;
+        white-space: nowrap;
+    }
+
+#FloatGroup {
+    margin: 0 auto;
+    padding: 0 2px;
+    width: calc(100% - 222px);
+    height: 162px !important;
+    position: fixed;
+    bottom: 52px;
+    z-index: 1;
+}
+
+    #FloatGroup .box {
+        margin: 0 5px 0 0;
+    }
+
+    #FloatGroup .jquery-ui-sortable {
+        height: 90px;
+    }
+
+        #FloatGroup .jquery-ui-sortable li {
+            height: 60px;
+        }
+
+#SearchDiv {
+    margin-top: -2px;
+}
+
+    #SearchDiv i {
+        font-size: 14px;
+        line-height: 27px;
+        background-color: #efefef;
+        padding: 0 8px 2px 8px;
+        margin-left: 30px;
+    }
+
+#PartitionBorder {
+    background-color: #afafaf;
+    width: 2px;
+    height: 33px;
+    position: absolute;
+    top: 3px;
+    left: 140px;
+    z-index: 1;
+}
+
+#SearchTxt {
+    height: 30px;
+    width: 180px;
+    padding: 0 5px;
+}
+
+#SelIconList {
+    font-size: 30px;
+}
+
+    #SelIconList div {
+        width: 35px;
+        height: 28px;
+        line-height: 28px;
+        float: left;
+        padding: 10px;
+        margin: 0 2.5px;
+        text-align: center;
+    }
+
+        #SelIconList div:hover {
+            background-color: lightblue;
+        }
+
+.sel_icon {
+    outline: 3px solid #0094ff;
+}
+
+@media (max-width: 1650px) {
+    .jquery-ui-sortable li {
+        width: 300px !important;
+    }
+}
+
+@media (max-width: 979px) {
+    .col-lg-6 {
+        float: left;
+    }
+
+    #FloatGroup {
+        width: calc(100% - 2px) !important;
+        min-width: 680px;
+    }
+}
+
+@media (max-height: 550px) {
+    #mainMenu {
+        min-height: 160px;
+    }
+
+    #FloatGroup {
+        bottom: 0;
+    }
+}
