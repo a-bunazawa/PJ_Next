@@ -541,9 +541,9 @@ var calc_navbar_height = function () {
                 $("#" + selectedTheme).prepend("<i class='fa fa-check fa-fw' id='skin-checked'></i>");
             }
 
-            if (selectedLogo) {
-                $("#logo img").attr("src", selectedLogo);
-            }
+            //if (selectedLogo) {
+            //    $("#logo img").attr("src", selectedLogo);
+            //}
         };
 
         return app;

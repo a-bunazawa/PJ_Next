@@ -276,7 +276,6 @@ function CreateGroupList() {
             
             var other_size = $("#header").height() + $("#ribbon").height() + $("#ReturnBtn").height() + $("#FloatGroup").height() + $(".page-footer").height() + 80;
             $("#mainMenu").height(window.innerHeight - other_size);
-            alert(other_size);
         }
     }, function (e) {
         createDialog("asideDialog", "1,0,システム環境,ALM,通信エラーが発生しました,ＯＫ,ALM000-01,OK");
