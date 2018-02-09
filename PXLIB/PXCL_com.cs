@@ -3,25 +3,25 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data;
 using System.Data.SqlClient;
-using static PXLIB.PXLIB_stc;
+using static PXAS.PXCL_stc;
 using System.Security.Cryptography;
 using System.IO;
 
-namespace PXLIB
+namespace PXAS
 {
-    class PXLIB_com
+    class PXCL_com
     {
         /// <summary>
         ///  プログラムの利用権限情報取得
         /// </summary>
         /// <param name="ProgramId">プログラムID</param>
-        /// <param name="PXLIB_userValData">PXLIB_userVal</param>
+        /// <param name="PxASuserValData">PxASuserVal</param>
         /// <returns>P3PROGRAMAUT プログラムの利用権限情報</returns>
-        public static PXLIB_prerogative GetP3PROGRAMAUT(string ProgramId, PXLIB_userVal PXLIB_userValData)
+        public static PXCL_prerogative GetP3PROGRAMAUT(string ProgramId, PXCL_userVal PxASuserValData)
         {
             StringBuilder CmdTxt = new StringBuilder();
-            PXLIB_dba DbAccess = new PXLIB_dba(PXLIB_dba.ConnectionSystem, PXLIB_userValData);
-            PXLIB_prerogative P3PROGRAMAUTData = new PXLIB_prerogative();
+            PXCL_dba DbAccess = new PXCL_dba(PXCL_dba.ConnectionSystem, PxASuserValData);
+            PXCL_prerogative P3PROGRAMAUTData = new PXCL_prerogative();
 
             //  権限パラメータ区分が未設定の場合はすべてを許可
             P3PROGRAMAUTData.AUTCTLDSP = "YES";
@@ -33,7 +33,7 @@ namespace PXLIB
             P3PROGRAMAUTData.AUTCTLSUB1 = "YES";
             P3PROGRAMAUTData.AUTCTLSUB2 = "YES";
 
-            if (PXLIB_userValData.AUTKBN != "")
+            if (PxASuserValData.AUTKBN != "")
             {
                 try
                 {
@@ -47,9 +47,9 @@ namespace PXLIB
                     CmdTxt.AppendLine("   AND AUTKBN = @AUTKBN");
                     using (SqlCommand SqlCmd = new SqlCommand())
                     {
-                        SqlCmd.Parameters.Add("@COPCD", SqlDbType.Char).Value = PXLIB_userValData.COPCD;
+                        SqlCmd.Parameters.Add("@COPCD", SqlDbType.Char).Value = PxASuserValData.COPCD;
                         SqlCmd.Parameters.Add("@PRGID", SqlDbType.VarChar).Value = ProgramId;
-                        SqlCmd.Parameters.Add("@AUTKBN", SqlDbType.VarChar).Value = PXLIB_userValData.AUTKBN;
+                        SqlCmd.Parameters.Add("@AUTKBN", SqlDbType.VarChar).Value = PxASuserValData.AUTKBN;
                         //  ◆SELECT文実行
                         using (SqlDataReader Res = DbAccess.SQLSelectParameter(CmdTxt.ToString(), SqlCmd))
                         {
@@ -74,7 +74,7 @@ namespace PXLIB
                 {
                     string LogTitle = "プログラムの利用権限情報取得";
                     string LogMsg = "エラー「" + Exc.Message + "」";
-                    PXLIB_log.writeLog(PXLIB_log.ERR, PXLIB_log.SELECT, LogTitle, LogMsg, System.Reflection.MethodBase.GetCurrentMethod(), PXLIB_userValData);
+                    PXCL_log.writeLog(PXCL_log.ERR, PXCL_log.SELECT, LogTitle, LogMsg, System.Reflection.MethodBase.GetCurrentMethod(), PxASuserValData);
                 }
                 finally
                 {
@@ -100,8 +100,8 @@ namespace PXLIB
                 try
                 {
                     //  暗号用のキー情報を設定
-                    byte[] EcdUtf8ByteKey = Encoding.UTF8.GetBytes(PXLIB_fix.EncryptKey);
-                    byte[] EcdUtf8ByteIv = Encoding.UTF8.GetBytes(PXLIB_fix.EncryptIV);
+                    byte[] EcdUtf8ByteKey = Encoding.UTF8.GetBytes(PXCL_fix.EncryptKey);
+                    byte[] EcdUtf8ByteIv = Encoding.UTF8.GetBytes(PXCL_fix.EncryptIV);
                     byte[] EcdUtf8ByteValue = Encoding.UTF8.GetBytes(Value);
                     //  暗号化用の3DESクラス生成
                     TripleDESCryptoServiceProvider TripleDes = new TripleDESCryptoServiceProvider();
@@ -139,8 +139,8 @@ namespace PXLIB
             if (!string.IsNullOrEmpty(CipherValue))
             {
                 //  復号用のキー情報をセットする
-                byte[] EcdUtf8ByteKey = Encoding.UTF8.GetBytes(PXLIB_fix.EncryptKey);
-                byte[] EcdUtf8ByteIv = Encoding.UTF8.GetBytes(PXLIB_fix.EncryptIV);
+                byte[] EcdUtf8ByteKey = Encoding.UTF8.GetBytes(PXCL_fix.EncryptKey);
+                byte[] EcdUtf8ByteIv = Encoding.UTF8.GetBytes(PXCL_fix.EncryptIV);
                 //  暗号化用の3DESクラス生成
                 TripleDESCryptoServiceProvider TripleDes = new TripleDESCryptoServiceProvider();
 
