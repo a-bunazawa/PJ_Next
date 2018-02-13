@@ -4,9 +4,9 @@ using System.Reflection;
 using System.Text;
 using System.Data;
 using System.Data.SqlClient;
-using static PXAS.PXCL_stc;
+using static PXLIB.PXCL_stc;
 
-namespace PXAS
+namespace PXLIB
 {
     class PXCL_log
     {
@@ -66,10 +66,10 @@ namespace PXAS
         /// <param name="LogNm">ログタイトル</param>
         /// <param name="LogMemo">内容(コメント)</param>
         /// <param name="MethodInfo">クラス名、メソッド名情報</param>
-        /// <param name="PxASuserValData">共通データ(IP、URL取得)</param>
-        public static void writeLog(string LogTp, string ProcessId, string LogNm, string LogMemo, MethodBase MethodInfo, PxASuserVal PxASuserValData)
+        /// <param name="PX_COMMONData">共通データ(IP、URL取得)</param>
+        public static void writeLog(string LogTp, string ProcessId, string LogNm, string LogMemo, MethodBase MethodInfo, PX_COMMON PX_COMMONData)
         {
-            WrtLog4net(LogTp, ProcessId, LogNm, LogMemo, null, null, null, MethodInfo, PxASuserValData);
+            WrtLog4net(LogTp, ProcessId, LogNm, LogMemo, null, null, null, MethodInfo, PX_COMMONData);
         }
 
         /// <summary>
@@ -81,10 +81,10 @@ namespace PXAS
         /// <param name="LogMemo">内容(コメント)</param>
         /// <param name="LogQryMemo">内容(Query等)</param>
         /// <param name="MethodInfo">クラス名、メソッド名情報</param>
-        /// <param name="PxASuserValData">共通データ(IP、URL取得)</param>
-        public static void writeLog(string LogTp, string ProcessId, string LogNm, string LogMemo, string LogQryMemo, MethodBase MethodInfo, PxASuserVal PxASuserValData)
+        /// <param name="PX_COMMONData">共通データ(IP、URL取得)</param>
+        public static void writeLog(string LogTp, string ProcessId, string LogNm, string LogMemo, string LogQryMemo, MethodBase MethodInfo, PX_COMMON PX_COMMONData)
         {
-            WrtLog4net(LogTp, ProcessId, LogNm, LogMemo, LogQryMemo, null, null, MethodInfo, PxASuserValData);
+            WrtLog4net(LogTp, ProcessId, LogNm, LogMemo, LogQryMemo, null, null, MethodInfo, PX_COMMONData);
         }
 
         /// <summary>
@@ -97,10 +97,10 @@ namespace PXAS
         /// <param name="LogQryMemo">内容(Query等)</param>
         /// <param name="LogSubMemo">内容(予備)</param>
         /// <param name="MethodInfo">クラス名、メソッド名情報</param>
-        /// <param name="PxASuserValData">共通データ(IP、URL取得)</param>
-        private static void writeLog(string LogTp, string ProcessId, string LogNm, string LogMemo, string LogQryMemo, string LogSubMemo, MethodBase MethodInfo, PxASuserVal PxASuserValData)
+        /// <param name="PX_COMMONData">共通データ(IP、URL取得)</param>
+        private static void writeLog(string LogTp, string ProcessId, string LogNm, string LogMemo, string LogQryMemo, string LogSubMemo, MethodBase MethodInfo, PX_COMMON PX_COMMONData)
         {
-            WrtLog4net(LogTp, ProcessId, LogNm, LogMemo, LogQryMemo, LogSubMemo, null, MethodInfo, PxASuserValData);
+            WrtLog4net(LogTp, ProcessId, LogNm, LogMemo, LogQryMemo, LogSubMemo, null, MethodInfo, PX_COMMONData);
         }
 
         /// <summary>
@@ -114,8 +114,8 @@ namespace PXAS
         /// <param name="LogSubMemo">内容(予備)</param>
         /// <param name="LogCmm">内容(備考)</param>
         /// <param name="MethodInfo">クラス名、メソッド名情報</param>
-        /// <param name="PxASuserValData">共通データ(IP、URL取得)</param>
-        private static void WrtLog4net(string LogTp, string ProcessId, string LogNm, string LogMemo, string LogQryMemo, string LogSubMemo, string LogCmm, MethodBase MethodInfo, PxASuserVal PxASuserValData)
+        /// <param name="PX_COMMONData">共通データ(IP、URL取得)</param>
+        private static void WrtLog4net(string LogTp, string ProcessId, string LogNm, string LogMemo, string LogQryMemo, string LogSubMemo, string LogCmm, MethodBase MethodInfo, PX_COMMON PX_COMMONData)
         {
             try
             {
@@ -126,7 +126,7 @@ namespace PXAS
                 LogMsg.Append("\"" + ProcessId + "\"");
                 LogMsg.Append(separation);
                 LogMsg.Append("clientIp=");
-                LogMsg.Append("\"" + PxASuserValData.CLIENTIP + "\"");
+                LogMsg.Append("\"" + PX_COMMONData.CLIENTIP + "\"");
                 LogMsg.Append(separation);
                 LogMsg.Append("title=");
                 LogMsg.Append("\"" + LogNm + "\"");
@@ -141,19 +141,19 @@ namespace PXAS
                 LogMsg.Append("\"" + MethodInfo.Name + "\"");
                 LogMsg.Append(separation);
                 LogMsg.Append("accessUrl=");
-                LogMsg.Append("\"" + PxASuserValData.ACCESSURL + "\"");
+                LogMsg.Append("\"" + PX_COMMONData.ACCESSURL + "\"");
                 LogMsg.Append(separation);
                 LogMsg.Append("copCd=");
-                LogMsg.Append("\"" + PxASuserValData.COPCD + "\"");
+                LogMsg.Append("\"" + PX_COMMONData.COPCD + "\"");
                 LogMsg.Append(separation);
                 LogMsg.Append("userId=");
-                LogMsg.Append("\"" + PxASuserValData.USERID + "\"");
+                LogMsg.Append("\"" + PX_COMMONData.USERID + "\"");
                 LogMsg.Append(separation);
                 LogMsg.Append("sysId=");
-                LogMsg.Append("\"" + PxASuserValData.SYSID + "\"");
+                LogMsg.Append("\"" + PX_COMMONData.SYSID + "\"");
                 LogMsg.Append(separation);
                 LogMsg.Append("userHostName=");
-                LogMsg.Append("\"" + PxASuserValData.CLIENTHNM + "\"");
+                LogMsg.Append("\"" + PX_COMMONData.CLIENTHNM + "\"");
                 LogMsg.Append(separation);
                 LogMsg.Append("logInfo(sub)=");
                 LogMsg.Append((!string.IsNullOrEmpty(LogSubMemo)) ? "\"" + LogSubMemo + "\"" : "");
@@ -191,10 +191,10 @@ namespace PXAS
         /// <param name="LogNm">ログ名</param>
         /// <param name="LogMemo">内容(コメント)</param>
         /// <param name="MethodInfo">クラス名、メソッド名情報</param>
-        /// <param name="PxASuserValData">共通データ(IP、URL取得)</param>
-        public static void writeDBLog(string LogTp, string ProcessId, string LogNm, string LogMemo, MethodBase MethodInfo, PxASuserVal PxASuserValData)
+        /// <param name="PX_COMMONData">共通データ(IP、URL取得)</param>
+        public static void writeDBLog(string LogTp, string ProcessId, string LogNm, string LogMemo, MethodBase MethodInfo, PX_COMMON PX_COMMONData)
         {
-            InsDbLog(LogTp, ProcessId, LogNm, LogMemo, null, null, null, MethodInfo, PxASuserValData);
+            InsDbLog(LogTp, ProcessId, LogNm, LogMemo, null, null, null, MethodInfo, PX_COMMONData);
         }
 
         /// <summary>
@@ -206,10 +206,10 @@ namespace PXAS
         /// <param name="LogMemo">内容(コメント)</param>
         /// <param name="LogQryMemo">内容(Query等)</param>
         /// <param name="MethodInfo">クラス名、メソッド名情報</param>
-        /// <param name="PxASuserValData">共通データ(IP、URL取得)</param>
-        public static void writeDBLog(string LogTp, string ProcessId, string LogNm, string LogMemo, string LogQryMemo, MethodBase MethodInfo, PxASuserVal PxASuserValData)
+        /// <param name="PX_COMMONData">共通データ(IP、URL取得)</param>
+        public static void writeDBLog(string LogTp, string ProcessId, string LogNm, string LogMemo, string LogQryMemo, MethodBase MethodInfo, PX_COMMON PX_COMMONData)
         {
-            InsDbLog(LogTp, ProcessId, LogNm, LogMemo, LogQryMemo, null, null, MethodInfo, PxASuserValData);
+            InsDbLog(LogTp, ProcessId, LogNm, LogMemo, LogQryMemo, null, null, MethodInfo, PX_COMMONData);
         }
 
         /// <summary>
@@ -222,10 +222,10 @@ namespace PXAS
         /// <param name="LogQryMemo">内容(Query等)</param>
         /// <param name="LogSubMemo">内容(予備)</param>
         /// <param name="MethodInfo">クラス名、メソッド名情報</param>
-        /// <param name="PxASuserValData">共通データ(IP、URL取得)</param>
-        public static void writeDBLog(string LogTp, string ProcessId, string LogNm, string LogMemo, string LogQryMemo, string LogSubMemo, MethodBase MethodInfo, PxASuserVal PxASuserValData)
+        /// <param name="PX_COMMONData">共通データ(IP、URL取得)</param>
+        public static void writeDBLog(string LogTp, string ProcessId, string LogNm, string LogMemo, string LogQryMemo, string LogSubMemo, MethodBase MethodInfo, PX_COMMON PX_COMMONData)
         {
-            InsDbLog(LogTp, ProcessId, LogNm, LogMemo, LogQryMemo, LogSubMemo, null, MethodInfo, PxASuserValData);
+            InsDbLog(LogTp, ProcessId, LogNm, LogMemo, LogQryMemo, LogSubMemo, null, MethodInfo, PX_COMMONData);
         }
 
         /// <summary>
@@ -239,10 +239,10 @@ namespace PXAS
         /// <param name="LogSubMemo">内容(予備)</param>
         /// <param name="LogCmm">内容(備考)</param>
         /// <param name="MethodInfo">クラス名、メソッド名情報</param>
-        /// <param name="PxASuserValData">共通データ(IP、URL取得)</param>
-        public static void writeDBLog(string LogTp, string ProcessId, string LogNm, string LogMemo, string LogQryMemo, string LogSubMemo, string LogCmm, MethodBase MethodInfo, PxASuserVal PxASuserValData)
+        /// <param name="PX_COMMONData">共通データ(IP、URL取得)</param>
+        public static void writeDBLog(string LogTp, string ProcessId, string LogNm, string LogMemo, string LogQryMemo, string LogSubMemo, string LogCmm, MethodBase MethodInfo, PX_COMMON PX_COMMONData)
         {
-            InsDbLog(LogTp, ProcessId, LogNm, LogMemo, LogQryMemo, LogSubMemo, LogCmm, MethodInfo, PxASuserValData);
+            InsDbLog(LogTp, ProcessId, LogNm, LogMemo, LogQryMemo, LogSubMemo, LogCmm, MethodInfo, PX_COMMONData);
         }
 
         /// <summary>
@@ -256,8 +256,8 @@ namespace PXAS
         /// <param name="LogSubMemo">内容(予備)</param>
         /// <param name="LogCmm">内容(備考)</param>
         /// <param name="MethodInfo">クラス名、メソッド名情報</param>
-        /// <param name="PxASuserValData">共通データ(IP、URL取得)</param>
-        private static void InsDbLog(string LogTp, string ProcessId, string LogNm, string LogMemo, string LogQryMemo, string LogSubMemo, string LogCmm, MethodBase MethodInfo, PxASuserVal PxASuserValData)
+        /// <param name="PX_COMMONData">共通データ(IP、URL取得)</param>
+        private static void InsDbLog(string LogTp, string ProcessId, string LogNm, string LogMemo, string LogQryMemo, string LogSubMemo, string LogCmm, MethodBase MethodInfo, PX_COMMON PX_COMMONData)
         {
             int Res = 0;
             StringBuilder CmdTxt = new StringBuilder();
@@ -266,7 +266,7 @@ namespace PXAS
             string PrgId = SplMethodInfo[SplMethodInfo.Length - 1];
             // ◆ＤＢの接続
             // 接続文字列の設定
-            PXCL_dba DbAccess = new PXCL_dba(PXCL_dba.ConnectionSystem, PxASuserValData);
+            PXCL_dba DbAccess = new PXCL_dba(PXCL_dba.ConnectionSystem, PX_COMMONData);
             try
             {
                 //◆データベースを開く
@@ -285,9 +285,9 @@ namespace PXAS
                 CmdTxt.AppendLine(")");
                 using (SqlCommand SqlCmd = new SqlCommand())
                 {
-                    SqlCmd.Parameters.Add("@COPCD", SqlDbType.Char).Value = PxASuserValData.COPCD;
-                    SqlCmd.Parameters.Add("@USERID", SqlDbType.VarChar).Value = PxASuserValData.USERID;
-                    SqlCmd.Parameters.Add("@SYSID", SqlDbType.VarChar).Value = PxASuserValData.SYSID;
+                    SqlCmd.Parameters.Add("@COPCD", SqlDbType.Char).Value = PX_COMMONData.COPCD;
+                    SqlCmd.Parameters.Add("@USERID", SqlDbType.VarChar).Value = PX_COMMONData.USERID;
+                    SqlCmd.Parameters.Add("@SYSID", SqlDbType.VarChar).Value = PX_COMMONData.SYSID;
                     SqlCmd.Parameters.Add("@PRGID", SqlDbType.VarChar).Value = PrgId;
                     SqlCmd.Parameters.Add("@PROCESSID", SqlDbType.VarChar).Value = ProcessId;
                     SqlCmd.Parameters.Add("@LOGNM", SqlDbType.VarChar).Value = LogNm;
@@ -297,9 +297,9 @@ namespace PXAS
                     SqlCmd.Parameters.Add("@LOGCMM", SqlDbType.VarChar).Value = (!string.IsNullOrEmpty(LogCmm)) ? LogCmm : "";
                     SqlCmd.Parameters.Add("@LOGMET", SqlDbType.Char).Value = MethodInfo.Name;
                     SqlCmd.Parameters.Add("@LOGTP", SqlDbType.VarChar).Value = LogTp;
-                    SqlCmd.Parameters.Add("@ACCESSURL", SqlDbType.VarChar).Value = PxASuserValData.ACCESSURL;
-                    SqlCmd.Parameters.Add("@CLIENTCP", SqlDbType.VarChar).Value = PxASuserValData.CLIENTHNM;
-                    SqlCmd.Parameters.Add("@CLIENTIP", SqlDbType.VarChar).Value = PxASuserValData.CLIENTIP;
+                    SqlCmd.Parameters.Add("@ACCESSURL", SqlDbType.VarChar).Value = PX_COMMONData.ACCESSURL;
+                    SqlCmd.Parameters.Add("@CLIENTCP", SqlDbType.VarChar).Value = PX_COMMONData.CLIENTHNM;
+                    SqlCmd.Parameters.Add("@CLIENTIP", SqlDbType.VarChar).Value = PX_COMMONData.CLIENTIP;
                     SqlCmd.Parameters.Add("@DATE", SqlDbType.DateTime).Value = DateTime.Now;
                     //◆SQL実行
                     Res = DbAccess.SQLInsertReturnParameter(CmdTxt.ToString(), SqlCmd);
@@ -309,7 +309,7 @@ namespace PXAS
             {
                 string LogTitle = "ログ登録";
                 string LogMsg = "エラー「" + Exc.Message + "」";
-                writeLog(PXCL_log.ERR, "null", LogTitle, LogMsg, System.Reflection.MethodBase.GetCurrentMethod(), PxASuserValData);
+                writeLog(PXCL_log.ERR, "null", LogTitle, LogMsg, System.Reflection.MethodBase.GetCurrentMethod(), PX_COMMONData);
             }
             finally
             {

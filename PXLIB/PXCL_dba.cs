@@ -6,9 +6,9 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Web;
 using System.Diagnostics;
-using static PXAS.PXCL_stc;
+using static PXLIB.PXCL_stc;
 
-namespace PXAS
+namespace PXLIB
 {
     class PXCL_dba
     {
@@ -25,7 +25,7 @@ namespace PXAS
         /// <summary>トランザクション</summary>
         private SqlTransaction SqlTran;
         /// <summary>共通データ</summary>
-        private PXCL_userVal PxASuserValData;
+        private PX_COMMON PxASuserValData;
         /// <summary>接続文</summary>
         private string ConnectString = "";
 
@@ -54,7 +54,7 @@ namespace PXAS
         /// </summary>
         /// <param name="Connect">接続先DB</param>
         /// <param name="PxASuserValData">PxASuserValのモデル</param>
-        public PXCL_dba(int Connect, PXCL_userVal PxASuserValData)
+        public PXCL_dba(int Connect, PX_COMMON PxASuserValData)
         {
             if (SqlCon == null) { SqlCon = new SqlConnection(); }
             try
