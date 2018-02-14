@@ -3,25 +3,168 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data;
 using System.Data.SqlClient;
-using static PXAS.PXCL_stc;
+using static PXLIB.PXCL_stc;
 using System.Security.Cryptography;
 using System.IO;
 
-namespace PXAS
+namespace PXLIB
 {
-    class PXCL_com
+    public class PXCL_com
     {
+        /// <summary>
+        /// ダイアログ表示情報設定
+        /// </summary>
+        /// <param name="CopCd">会社コード</param>
+        /// <param name="SndMsgKbn">メッセージ区分</param>
+        /// <param name="SndMsgNo">メッセージ番号</param>
+        /// <param name="P3VALUECWData">P3VALUECWのモデルデータ</param>
+        /// <returns>ダイアログ情報</returns>
+        public static string GetDialogIndication(string CopCd, string SndMsgKbn, string SndMsgNo, PX_COMMON PxASuserValData)
+        {
+            string SplitString = ",";
+            string DialogIndication = "";
+            string Title = "";
+            string ShowMsg = "";
+            int DefaultButton = -1;
+            StringBuilder Button = new StringBuilder();
+            PXCL_dba DbAccess = new PXCL_dba(PXCL_dba.ConnectionSystem, PxASuserValData);
+            if (string.IsNullOrEmpty(CopCd)) { CopCd = "00000"; }
+            int Cnt = 0;
+            StringBuilder CmdTxt = new StringBuilder();
+            try
+            {
+                //  データベースを開く
+                DbAccess.DBConect();
+
+                //  SELECT文作成
+                CmdTxt.AppendLine("SELECT * FROM P3AS_PROGRAM_MSG");
+                CmdTxt.AppendLine("WHERE COPCD = @COPCD");
+                CmdTxt.AppendLine("  AND SNDMSGKBN = @SNDMSGKBN");
+                CmdTxt.AppendLine("  AND SNDMSGNO = @SNDMSGNO");
+                using (SqlCommand SqlCmd = new SqlCommand())
+                {
+                    //◆条件の設定
+                    SqlCmd.Parameters.Add("@COPCD", SqlDbType.VarChar).Value = CopCd;
+                    SqlCmd.Parameters.Add("@SNDMSGKBN", SqlDbType.VarChar).Value = SndMsgKbn;
+                    SqlCmd.Parameters.Add("@SNDMSGNO", SqlDbType.VarChar).Value = SndMsgNo;
+                    //◆SQL実行
+                    using (SqlDataReader Res = DbAccess.SQLSelectParameter(CmdTxt.ToString(), SqlCmd))
+                    {
+                        if (Res.HasRows)
+                        {
+                            while (Res.Read())
+                            {
+                                Title = Res["SNDMSG1"].ToString();
+                                ShowMsg = Res["SNDMSG2"].ToString();
+                                if (Res["SNDMSG3"].ToString() != "")
+                                {
+                                    ShowMsg += "\n" + Res["SNDMSG3"].ToString();
+                                }
+                                DefaultButton = int.Parse(Res["ANSNMDEF"].ToString()) - 1;
+
+                                if (Res["ANSNM1"].ToString() != "" && Res["ANSVALUE1"].ToString() != "")
+                                {
+                                    Cnt++;
+                                    Button.Append(Res["ANSNM1"].ToString());
+                                    Button.Append(SplitString);
+                                    Button.Append(SndMsgNo);
+                                    Button.Append("_");
+                                    Button.Append(Res["ANSVALUE1"].ToString());
+                                }
+                                if (Res["ANSNM2"].ToString() != "" && Res["ANSVALUE2"].ToString() != "")
+                                {
+                                    Cnt++;
+                                    if (Button.ToString() != "") { Button.Append(SplitString); }
+                                    Button.Append(Res["ANSNM2"].ToString());
+                                    Button.Append(SplitString);
+                                    Button.Append(SndMsgNo);
+                                    Button.Append("_");
+                                    Button.Append(Res["ANSVALUE2"].ToString());
+                                }
+                                if (Res["ANSNM3"].ToString() != "" && Res["ANSVALUE3"].ToString() != "")
+                                {
+                                    Cnt++;
+                                    if (Button.ToString() != "") { Button.Append(SplitString); }
+                                    Button.Append(Res["ANSNM3"].ToString());
+                                    Button.Append(SplitString);
+                                    Button.Append(SndMsgNo);
+                                    Button.Append("_");
+                                    Button.Append(Res["ANSVALUE3"].ToString());
+                                }
+                                if (Res["ANSNM4"].ToString() != "" && Res["ANSVALUE4"].ToString() != "")
+                                {
+                                    Cnt++;
+                                    if (Button.ToString() != "") { Button.Append(SplitString); }
+                                    Button.Append(Res["ANSNM4"].ToString());
+                                    Button.Append(SplitString);
+                                    Button.Append(SndMsgNo);
+                                    Button.Append("_");
+                                    Button.Append(Res["ANSVALUE4"].ToString());
+                                }
+                                if (Res["ANSNM5"].ToString() != "" && Res["ANSVALUE5"].ToString() != "")
+                                {
+                                    Cnt++;
+                                    if (Button.ToString() != "") { Button.Append(SplitString); }
+                                    Button.Append(Res["ANSNM5"].ToString());
+                                    Button.Append(SplitString);
+                                    Button.Append(SndMsgNo);
+                                    Button.Append("_");
+                                    Button.Append(Res["ANSVALUE5"].ToString());
+                                }
+                            }
+                            if (DefaultButton == -1) { DefaultButton = 0; }
+                            DialogIndication = Cnt + SplitString + DefaultButton + SplitString + Title + SplitString + ShowMsg + SplitString + Button.ToString();
+                        }
+                        else
+                        {
+                            Title = "エラー";
+                            ShowMsg = "環境設定に誤りがあります:" + CopCd + "、" + SndMsgKbn + "、" + SndMsgNo;
+                            Button.Append("OK");
+                            Button.Append(SplitString);
+                            Button.Append(SndMsgNo);
+                            Button.Append("_");
+                            Button.Append("00");
+                            DialogIndication = "1" + SplitString + "0" + SplitString + Title + SplitString + ShowMsg + SplitString + Button.ToString();
+                        }
+                    }
+                }
+            }
+            catch (Exception Exc)
+            {
+                string LogTitle = "ダイアログ表示情報取得";
+                string LogMsg = "エラー「" + Exc.Message + "」";
+                System.Diagnostics.StackFrame callerFrame = new System.Diagnostics.StackFrame(1);
+                PXCL_log.writeLog(PXCL_log.ERR, PXCL_log.SELECT, LogTitle, LogMsg, System.Reflection.MethodBase.GetCurrentMethod(), PxASuserValData);
+
+                Title = "エラー";
+                ShowMsg = "環境設定に誤りがあります:" + CopCd + "、" + SndMsgKbn + "、" + SndMsgNo;
+                Button.Append("OK");
+                Button.Append(SplitString);
+                Button.Append(SndMsgNo);
+                Button.Append("_");
+                Button.Append("00");
+                DialogIndication = "1" + SplitString + "0" + SplitString + Title + SplitString + ShowMsg + SplitString + Button.ToString();
+            }
+            finally
+            {
+                //データベースの接続解除
+                DbAccess.DBClose();
+            }
+
+            return DialogIndication;
+        }
+
         /// <summary>
         ///  プログラムの利用権限情報取得
         /// </summary>
         /// <param name="ProgramId">プログラムID</param>
         /// <param name="PxASuserValData">PxASuserVal</param>
         /// <returns>P3PROGRAMAUT プログラムの利用権限情報</returns>
-        public static PXCL_prerogative GetP3PROGRAMAUT(string ProgramId, PXCL_userVal PxASuserValData)
+        public static PX_PROGRAM_AUT GetP3PROGRAMAUT(string ProgramId, PX_COMMON PxASuserValData)
         {
             StringBuilder CmdTxt = new StringBuilder();
             PXCL_dba DbAccess = new PXCL_dba(PXCL_dba.ConnectionSystem, PxASuserValData);
-            PXCL_prerogative P3PROGRAMAUTData = new PXCL_prerogative();
+            PX_PROGRAM_AUT P3PROGRAMAUTData = new PX_PROGRAM_AUT();
 
             //  権限パラメータ区分が未設定の場合はすべてを許可
             P3PROGRAMAUTData.AUTCTLDSP = "YES";

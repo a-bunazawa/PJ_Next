@@ -36,6 +36,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
 
     <!-- デザイナー追加分 -->
+    <link rel="stylesheet" type="text/css" media="screen" href="~/css_sys/PX/PXAS/PXAS0000WS.css?@DateTime.Now.ToString("yyyyMMddHHmmss")">
     @*<link rel="stylesheet" type="text/css" media="screen" href="~/Content/add.css">
         <link rel="stylesheet" type="text/css" media="screen" href="~/Content/ladda.min.css">
         <link rel="stylesheet" type="text/css" media="screen" href="~/Content_Area/LNAS/LNAS0001CS.css?@DateTime.Now.ToString("yyyyMMddHHmmss")">*@
@@ -48,49 +49,68 @@
 <body class="animated fadeInDown" id="mainWindow">
     @Html.TextBoxFor(m => m.SysURL, new { id = "SysURL", style = "display: none" })
     @Html.TextBoxFor(m => m.SysDB, new { id = "SysDB", style = "display: none" })
+
     <header id="header">
         <div id="logo-group">
-            <span id="logo"> <img src="~/img_sys/PX/logo.png" alt="SmartAdmin" style="width: 230px;height:19px;margin-top: 4px;"> </span>
+            <span id="logo"> <img src="~/img_sys/PX/logo.png" alt="SmartAdmin"> </span>
         </div>
-        <span id="extr-page-header-space"> <span class="hidden-mobile hiddex-xs">アカウントを作りますか？</span> <a href="#" class="btn btn-danger" onclick="alert('開発中');">新規登録</a> </span>
+        <span id="extr-page-header-space">
+            <span class="hidden-mobile hiddex-xs">アカウントを作りますか？</span>
+            <a href="register.html" class="btn btn-danger">新規登録</a>
+        </span>
+        <!-- multiple lang dropdown : find all flags in the flags page -->
+        <ul class="header-dropdown-list hidden-xs pull-right">
+            <li>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <img src="~/img/blank.gif" class="flag flag-us" alt="United States"> <span> English (US) </span> <i class="fa fa-angle-down"></i> </a>
+                <ul class="dropdown-menu pull-right">
+                    <li class="active">
+                        <a href="javascript:void(0);"><img src="~/img/blank.gif" class="flag flag-us" alt="United States"> English (US)</a>
+                    </li>
+                    <li><a href="javascript:void(0);"><img src="~/img/blank.gif" class="flag flag-fr" alt="France"> Francais</a></li>
+                    <li><a href="javascript:void(0);"><img src="~/img/blank.gif" class="flag flag-es" alt="Spanish"> Espanol</a></li>
+                    <li><a href="javascript:void(0);"><img src="~/img/blank.gif" class="flag flag-de" alt="German"> Deutsch</a></li>
+                    <li><a href="javascript:void(0);"><img src="~/img/blank.gif" class="flag flag-jp" alt="Japan"> 日本語</a></li>
+                    <li><a href="javascript:void(0);"><img src="~/img/blank.gif" class="flag flag-cn" alt="China"> 中文</a></li>
+                    <li><a href="javascript:void(0);"><img src="~/img/blank.gif" class="flag flag-it" alt="Italy"> Italiano</a></li>
+                    <li><a href="javascript:void(0);"><img src="~/img/blank.gif" class="flag flag-pt" alt="Portugal"> Portugal</a></li>
+                    <li><a href="javascript:void(0);"><img src="~/img/blank.gif" class="flag flag-ru" alt="Russia"> Русский язык</a></li>
+                    <li><a href="javascript:void(0);"><img src="~/img/blank.gif" class="flag flag-kr" alt="Korea"> ???</a></li>
+                </ul>
+            </li>
+        </ul>
+        <!-- end multiple lang -->
     </header>
     <div id="main" role="main">
         <!-- MAIN CONTENT -->
         <div id="content" class="container">
             <div class="row">
-                <div class="col-xs-12 col-sm-12 col-md-7 col-lg-8 hidden-xs hidden-sm">
-                    <img src="~/img_sys/PX/bg_login.png">
-                </div>
+                <div class="col-xs-12 col-sm-12 col-md-7 col-lg-8 hidden-xs hidden-sm"></div>
                 <div class="col-xs-12 col-sm-12 col-md-5 col-lg-4">
                     <div class="well no-padding">
-                        <div id="login-form" class="smart-form client-form login">
+                        <div id="login-form" class="smart-form client-form">
                             <header>
                                 ログイン
                             </header>
-
                             <fieldset>
-
                                 <section>
                                     <label class="label">メールアドレス</label>
                                     <label class="input">
                                         <i class="icon-append fa fa-user"></i>
-                                        <input type="text" name="email" id="email">
-                                        <b class="tooltip tooltip-top-right"><i class="fa fa-user txt-color-teal"></i> Please enter email address/username</b>
+                                        <input type="email" name="email" id="email">
+                                        <b class="tooltip tooltip-top-right"><i class="fa fa-user txt-color-teal"></i> メールアドレスを入力してください</b>
                                     </label>
                                 </section>
-
                                 <section>
                                     <label class="label">パスワード</label>
                                     <label class="input">
                                         <i class="icon-append fa fa-lock"></i>
                                         <input type="password" name="password" id="password">
-                                        <b class="tooltip tooltip-top-right"><i class="fa fa-lock txt-color-teal"></i> Enter your password</b>
+                                        <b class="tooltip tooltip-top-right"><i class="fa fa-lock txt-color-teal"></i> パスワードを入力してください</b>
                                     </label>
                                     <div class="note">
                                         <a href="forgotpassword.html">パスワードを忘れてしまった場合</a>
                                     </div>
                                 </section>
-
                                 <section>
                                     <label class="checkbox">
                                         <input type="checkbox" name="remember" checked="">
@@ -99,14 +119,45 @@
                                 </section>
                             </fieldset>
                             <footer>
-                                <section class="button-demo">
-                                    <button id="LoginBtn" class="btn btn-primary ladda-button" data-color="blue" data-style="slide-right" onclick="Login();">ログイン</button>
-                                </section>
+                                <button id="LoginBtn" class="btn btn-primary" data-color="blue" data-style="slide-right" onclick="Login();">ログイン</button>
                             </footer>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 info">
+        <!-- Widget ID (each widget will need unique ID)-->
+        <div class="jarviswidget" id="wid-id-13"
+                data-widget-load="ajax/demowidget.php"
+                data-widget-colorbutton="false"
+                data-widget-editbutton="false"
+                data-widget-togglebutton="false"
+                data-widget-deletebutton="false"
+                data-widget-fullscreenbutton="false"
+                data-widget-custombutton="false">
+            <header>
+                <h2><img src="~/img_sys/PX/login_infotitle.png"></h2>
+
+            </header>
+            <!-- widget div-->
+            <div>
+
+                <!-- widget edit box -->
+                <div class="jarviswidget-editbox">
+                    <!-- This area used as dropdown edit box -->
+                </div>
+                <!-- end widget edit box -->
+                <!-- widget content -->
+                <div class="widget-body">
+                    <!-- widget body text-->
+                    <p>WEBシステムへようこそ！</p>
+                    <!-- end widget body text-->
+                </div>
+                <!-- end widget content -->
+            </div>
+            <!-- end widget div -->
         </div>
     </div>
     <div id="dialog"></div>
@@ -120,13 +171,13 @@
     @*<script data-pace-options='{ "restartOnRequestAfter": true }' src="~/scripts/plugin/pace/pace.min.js"></script>*@
     @*<script src="~/scripts/excel/xlsx.js?@DateTime.Now.ToString("yyyyMMddHHmmss")"></script>*@
     @*<script src="~/Areas/LNCOMMON/Scripts/LNASCOMMONST.js?@DateTime.Now.ToString("yyyyMMddHHmmss")"></script>*@
-    <script src="~/js_sys/PX/PXAS0000/PXAS0000WJ.js?@DateTime.Now.ToString("yyyyMMddHHmmss")"></script>
-
-    <!-- Demo purpose only! -->
-    <script src="~/js/demo.js"></script>
-    <script>$(".fa-spin").removeClass("fa-spin");</script>
 
     <!-- SmartChat UI : plugin -->
     @{ await Html.RenderPartialAsync("_Scripts"); }
+    <!-- Demo purpose only! -->
+    <script src="~/js/demo.js"></script>
+    <script>$(".fa-spin").removeClass("fa-spin");</script>
+    <script src="~/js_sys/PX/PXAS0000/PXAS0000WJ.js?@DateTime.Now.ToString("yyyyMMddHHmmss")"></script>
+
 </body>
 </html>

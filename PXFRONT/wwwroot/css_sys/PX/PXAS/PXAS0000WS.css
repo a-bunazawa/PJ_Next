@@ -1,0 +1,57 @@
+body{
+	height:100vh;
+}
+
+
+/*ヘッダー追加CSS*/
+#extr-page #header{
+	overflow:visible;
+}
+
+.header-dropdown-list{
+    margin-top: 12px;
+    margin-right: 10px;
+}
+
+
+
+/*真ん中メイン追加CSS*/
+#main{
+    height: 100vh;
+    display: block;
+    position: absolute;
+    width: 100%;
+    top: 0;
+	background-image:url(../../../img_sys/PX/bg_login.png) !important;
+	background-size:cover !important;
+	background-repeat:no-repeat !important;
+	background-position:center bottom !important;
+}
+
+#main .container{
+    top: 50%;
+    transform: translate(0,-50%);
+}
+.info{
+	position:fixed;
+	bottom:4%;
+	left:0;
+	right:0;
+	float:none;
+	max-width:1100px;
+	margin:30px auto 0;
+}
+
+.info header {
+    height: 50px;
+    padding: 6px 13px;
+    margin: 0;
+}
+.info .jarviswidget .widget-body{
+	min-height:40px;
+}
+#extr-page #header #logo img {
+    max-height: 30px;
+    height: auto;
+    width: auto
+}
