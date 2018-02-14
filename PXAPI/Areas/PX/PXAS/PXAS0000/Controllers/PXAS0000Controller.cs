@@ -19,6 +19,8 @@ namespace PXAPI.Areas.PXAS.Controllers
             test.Id = id;
             test.DB = "aaa";
 
+            var model=PXAS0000Controller()
+
             return test;
         }
         // GET: PXAS/Test2

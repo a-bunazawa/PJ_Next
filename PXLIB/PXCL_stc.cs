@@ -22,6 +22,14 @@ namespace PXAS
             protected string ClientIP { get; set; }
             /// <summary>クライアントホスト名</summary>
             protected string ClientHostName { get; set; }
+            /// <summary>ユーザ種別</summary>
+            /// 
+            public enum USER_TYPE
+            {
+                ONEIME,
+                NORMAL
+            }
+            protected USER_TYPE UserTP { get; set; }
             /// <summary>ユーザＩＤ</summary>
             protected string UserID { get; set; }
             /// <summary>ユーザ名</summary>
