@@ -29,6 +29,15 @@ namespace PXLIB
             [JsonProperty(PropertyName = "CLIENTIP")]
             public string CLIENTIP { get; set; }
             /// <summary>クライアントホスト名</summary>
+            protected string ClientHostName { get; set; }
+            /// <summary>ユーザ種別</summary>
+            /// 
+            public enum USER_TYPE
+            {
+                ONEIME,
+                NORMAL
+            }
+            protected USER_TYPE UserTP { get; set; }
             [JsonProperty(PropertyName = "CLIENTHNM")]
             public string CLIENTHNM { get; set; }
             /// <summary>ユーザＩＤ</summary>
