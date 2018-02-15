@@ -19,7 +19,7 @@ namespace PXLIB
         /// <param name="SndMsgNo">メッセージ番号</param>
         /// <param name="P3VALUECWData">P3VALUECWのモデルデータ</param>
         /// <returns>ダイアログ情報</returns>
-        public static string GetDialogIndication(string CopCd, string SndMsgKbn, string SndMsgNo, PX_COMMON PxASuserValData)
+        public static string GetDialogIndication(string CopCd, string SndMsgKbn, string SndMsgNo, PX_COMMON PX_COMMONData)
         {
             string SplitString = ",";
             string DialogIndication = "";
@@ -27,7 +27,7 @@ namespace PXLIB
             string ShowMsg = "";
             int DefaultButton = -1;
             StringBuilder Button = new StringBuilder();
-            PXCL_dba DbAccess = new PXCL_dba(PXCL_dba.ConnectionSystem, PxASuserValData);
+            PXCL_dba DbAccess = new PXCL_dba(PXCL_dba.ConnectionSystem, PX_COMMONData);
             if (string.IsNullOrEmpty(CopCd)) { CopCd = "00000"; }
             int Cnt = 0;
             StringBuilder CmdTxt = new StringBuilder();
@@ -134,7 +134,7 @@ namespace PXLIB
                 string LogTitle = "ダイアログ表示情報取得";
                 string LogMsg = "エラー「" + Exc.Message + "」";
                 System.Diagnostics.StackFrame callerFrame = new System.Diagnostics.StackFrame(1);
-                PXCL_log.writeLog(PXCL_log.ERR, PXCL_log.SELECT, LogTitle, LogMsg, System.Reflection.MethodBase.GetCurrentMethod(), PxASuserValData);
+                PXCL_log.writeLog(PXCL_log.ERR, PXCL_log.SELECT, LogTitle, LogMsg, System.Reflection.MethodBase.GetCurrentMethod(), PX_COMMONData);
 
                 Title = "エラー";
                 ShowMsg = "環境設定に誤りがあります:" + CopCd + "、" + SndMsgKbn + "、" + SndMsgNo;
@@ -158,12 +158,12 @@ namespace PXLIB
         ///  プログラムの利用権限情報取得
         /// </summary>
         /// <param name="ProgramId">プログラムID</param>
-        /// <param name="PxASuserValData">PxASuserVal</param>
+        /// <param name="PX_COMMONData">PX_COMMON</param>
         /// <returns>P3PROGRAMAUT プログラムの利用権限情報</returns>
-        public static PX_PROGRAM_AUT GetP3PROGRAMAUT(string ProgramId, PX_COMMON PxASuserValData)
+        public static PX_PROGRAM_AUT GetP3PROGRAMAUT(string ProgramId, PX_COMMON PX_COMMONData)
         {
             StringBuilder CmdTxt = new StringBuilder();
-            PXCL_dba DbAccess = new PXCL_dba(PXCL_dba.ConnectionSystem, PxASuserValData);
+            PXCL_dba DbAccess = new PXCL_dba(PXCL_dba.ConnectionSystem, PX_COMMONData);
             PX_PROGRAM_AUT P3PROGRAMAUTData = new PX_PROGRAM_AUT();
 
             //  権限パラメータ区分が未設定の場合はすべてを許可
@@ -176,7 +176,7 @@ namespace PXLIB
             P3PROGRAMAUTData.AUTCTLSUB1 = "YES";
             P3PROGRAMAUTData.AUTCTLSUB2 = "YES";
 
-            if (PxASuserValData.AUTKBN != "")
+            if (PX_COMMONData.AUTKBN != "")
             {
                 try
                 {
@@ -190,9 +190,9 @@ namespace PXLIB
                     CmdTxt.AppendLine("   AND AUTKBN = @AUTKBN");
                     using (SqlCommand SqlCmd = new SqlCommand())
                     {
-                        SqlCmd.Parameters.Add("@COPCD", SqlDbType.Char).Value = PxASuserValData.COPCD;
+                        SqlCmd.Parameters.Add("@COPCD", SqlDbType.Char).Value = PX_COMMONData.COPCD;
                         SqlCmd.Parameters.Add("@PRGID", SqlDbType.VarChar).Value = ProgramId;
-                        SqlCmd.Parameters.Add("@AUTKBN", SqlDbType.VarChar).Value = PxASuserValData.AUTKBN;
+                        SqlCmd.Parameters.Add("@AUTKBN", SqlDbType.VarChar).Value = PX_COMMONData.AUTKBN;
                         //  ◆SELECT文実行
                         using (SqlDataReader Res = DbAccess.SQLSelectParameter(CmdTxt.ToString(), SqlCmd))
                         {
@@ -217,7 +217,7 @@ namespace PXLIB
                 {
                     string LogTitle = "プログラムの利用権限情報取得";
                     string LogMsg = "エラー「" + Exc.Message + "」";
-                    PXCL_log.writeLog(PXCL_log.ERR, PXCL_log.SELECT, LogTitle, LogMsg, System.Reflection.MethodBase.GetCurrentMethod(), PxASuserValData);
+                    PXCL_log.writeLog(PXCL_log.ERR, PXCL_log.SELECT, LogTitle, LogMsg, System.Reflection.MethodBase.GetCurrentMethod(), PX_COMMONData);
                 }
                 finally
                 {

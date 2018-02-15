@@ -11,6 +11,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Http;
+using static PXLIB.PXCL_stc;
 
 namespace PXAPI
 {
@@ -26,6 +27,7 @@ namespace PXAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<PXAS_AppSetCL>(Configuration.GetSection("PXAS_AppSetCL"));
             services.AddMvc();
         }
 

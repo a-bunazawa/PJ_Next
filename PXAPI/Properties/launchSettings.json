@@ -7,7 +7,7 @@
       "sslPort": 0
     },
     "iisExpress": {
-      "applicationUrl": "http://localhost:53514/",
+      "applicationUrl": "http://localhost:48602/",
       "sslPort": 0
     }
   },
@@ -15,7 +15,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "http://localhost:53514/",
+      "launchUrl": "http://localhost:48602/",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -23,7 +23,7 @@
     "PXAPI": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/values",
+      "launchUrl": "PXAS0000/Test",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
