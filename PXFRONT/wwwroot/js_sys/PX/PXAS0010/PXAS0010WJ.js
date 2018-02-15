@@ -1,4 +1,7 @@
-﻿$(document).ready(function () {
+﻿
+var domainType = "";
+$(document).ready(function () {
+    domainType = localStorage.getItem("Local_PXAPI_DomainType");
     //var link = $("#LinkURL").val();
     //if (link == '') {
         $(".page-footer").show();
@@ -83,7 +86,7 @@ $(window).resize(function () {
 function TestStepIn() {
     TaskQue = 0;
 
-    createDialogOpen("dialog", "00000", "P3AS0000", "ALM000-01");
+    GetDialogIndicationProgram("dialog", "00000", "P3AS0000", "ALM000-01");
     //StepIn();
 }
 

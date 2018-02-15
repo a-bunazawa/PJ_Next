@@ -7,12 +7,6 @@ namespace PXFRONT
 {
     public class appsettingsCL
     {
-        public class PXAS_AppSetCL
-        {
-            public string SysURL { get; set; }
-            public string HogeHoge { get; set; }
-            
-        }
         public class Logging
         {
             public string IncludeScopes { get; set; }

@@ -9,5 +9,6 @@ namespace PXFRONT.Areas.PXAS
     {
         public string SysURL { get; set; }
         public string SysDB { get; set; }
+        public string DomainType { get; set; }
     }
 }

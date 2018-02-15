@@ -2,23 +2,23 @@
 //ログイン情報をローカルストレージから取得
 function GetLoginData() {
     var data = {};
-    data.Id = localStorage.getItem("LOGINEXT_WMSAPI_USERID");
-    data.USERNM = localStorage.getItem("LOGINEXT_WMSAPI_USERNM");
-    data.COPCD = localStorage.getItem("LOGINEXT_WMSAPI_COPCD");
-    data.INIGRPCD = localStorage.getItem("LOGINEXT_WMSAPI_INIGRPCD");
-    data.INIDPTCD = localStorage.getItem("LOGINEXT_WMSAPI_INIDPTCD");
-    data.INIWHSCD = localStorage.getItem("LOGINEXT_WMSAPI_INIWHSCD");
-    data.INICMPCD = localStorage.getItem("LOGINEXT_WMSAPI_INICMPCD");
-    data.INICSTCD = localStorage.getItem("LOGINEXT_WMSAPI_INICSTCD");
-    data.INISHPCD = localStorage.getItem("LOGINEXT_WMSAPI_INISHPCD");
-    data.SYSID = localStorage.getItem("LOGINEXT_WMSAPI_SYSID");
-    data.MENUID = localStorage.getItem("LOGINEXT_WMSAPI_MENUID");
-    data.DB = localStorage.getItem("LOGINEXT_WMSAPI_SYSTEMDB");
-    data.USERDBNM = localStorage.getItem("LOGINEXT_WMSAPI_USERDBNM");
-    data.USERDBSVRNM = localStorage.getItem("LOGINEXT_WMSAPI_USERDBSVRNM");
-    data.USERDBSVRIP = localStorage.getItem("LOGINEXT_WMSAPI_USERDBSVRIP");
-    data.USERDBSVRUR = localStorage.getItem("LOGINEXT_WMSAPI_USERDBSVRUR");
-    data.USERDBSVRPW = localStorage.getItem("LOGINEXT_WMSAPI_USERDBSVRPW");
+    data.Id = localStorage.getItem(domainType + "USERID");
+    data.USERNM = localStorage.getItem(domainType + "USERNM");
+    data.COPCD = localStorage.getItem(domainType + "COPCD");
+    data.INIGRPCD = localStorage.getItem(domainType + "INIGRPCD");
+    data.INIDPTCD = localStorage.getItem(domainType + "INIDPTCD");
+    data.INIWHSCD = localStorage.getItem(domainType + "INIWHSCD");
+    data.INICMPCD = localStorage.getItem(domainType + "INICMPCD");
+    data.INICSTCD = localStorage.getItem(domainType + "INICSTCD");
+    data.INISHPCD = localStorage.getItem(domainType + "INISHPCD");
+    data.SYSID = localStorage.getItem(domainType + "SYSID");
+    data.MENUID = localStorage.getItem(domainType + "MENUID");
+    data.DBINF = localStorage.getItem(domainType + "SYSTEMDB");
+    data.USERDBNM = localStorage.getItem(domainType + "USERDBNM");
+    data.USERDBSVRNM = localStorage.getItem(domainType + "USERDBSVRNM");
+    data.USERDBSVRIP = localStorage.getItem(domainType + "USERDBSVRIP");
+    data.USERDBSVRUR = localStorage.getItem(domainType + "USERDBSVRUR");
+    data.USERDBSVRPW = localStorage.getItem(domainType + "USERDBSVRPW");
 
 
     data.DB = "KN";
@@ -28,25 +28,24 @@ function GetLoginData() {
 
 //ローカルストレージの消去(ログアウト時etc...)
 function RemoveLocalStorage() {
-    localStorage.removeItem("LOGINEXT_WMSAPI_URL");
-    localStorage.removeItem("LOGINEXT_WMSAPI_SYSTEMDB");
-    localStorage.removeItem("LOGINEXT_WMSAPI_USERID");
-    localStorage.removeItem("LOGINEXT_WMSAPI_USERNM");
-    localStorage.removeItem("LOGINEXT_WMSAPI_COPCD");
-    localStorage.removeItem("LOGINEXT_WMSAPI_INIGRPCD");
-    localStorage.removeItem("LOGINEXT_WMSAPI_INIDPTCD");
-    localStorage.removeItem("LOGINEXT_WMSAPI_INIWHSCD");
-    localStorage.removeItem("LOGINEXT_WMSAPI_INICMPCD");
-    localStorage.removeItem("LOGINEXT_WMSAPI_INICSTCD");
-    localStorage.removeItem("LOGINEXT_WMSAPI_INISHPCD");
-    localStorage.removeItem("LOGINEXT_WMSAPI_SYSID");
-    localStorage.removeItem("LOGINEXT_WMSAPI_MENUID");
-    localStorage.removeItem("LOGINEXT_WMSAPI_SYSTEMDB");
-    localStorage.removeItem("LOGINEXT_WMSAPI_USERDBNM");
-    localStorage.removeItem("LOGINEXT_WMSAPI_USERDBSVRNM");
-    localStorage.removeItem("LOGINEXT_WMSAPI_USERDBSVRIP");
-    localStorage.removeItem("LOGINEXT_WMSAPI_USERDBSVRUR");
-    localStorage.removeItem("LOGINEXT_WMSAPI_USERDBSVRPW");
+    localStorage.removeItem(domainType + "URL");
+    localStorage.removeItem(domainType + "USERID");
+    localStorage.removeItem(domainType + "USERNM");
+    localStorage.removeItem(domainType + "COPCD");
+    localStorage.removeItem(domainType + "INIGRPCD");
+    localStorage.removeItem(domainType + "INIDPTCD");
+    localStorage.removeItem(domainType + "INIWHSCD");
+    localStorage.removeItem(domainType + "INICMPCD");
+    localStorage.removeItem(domainType + "INICSTCD");
+    localStorage.removeItem(domainType + "INISHPCD");
+    localStorage.removeItem(domainType + "SYSID");
+    localStorage.removeItem(domainType + "MENUID");
+    localStorage.removeItem(domainType + "SYSTEMDB");
+    localStorage.removeItem(domainType + "USERDBNM");
+    localStorage.removeItem(domainType + "USERDBSVRNM");
+    localStorage.removeItem(domainType + "USERDBSVRIP");
+    localStorage.removeItem(domainType + "USERDBSVRUR");
+    localStorage.removeItem(domainType + "USERDBSVRPW");
 }
 
 //レイアウトオプションの日本語化
@@ -581,336 +580,352 @@ function closeEvent() { }
 
 //ダイアログ作成処理
 //  dialogId:ダイアログ化を行う領域のID
-//  dialogMsg:ダイアログ化を行う情報
-function OpenDialog(dialogId, dialogMsgId) {
-}
-
-function createDialogOpen(dialogId, copcd, pgId, dialogMsgId) {
+//  copcd:会社コード
+//  pgId:プログラムID
+//  dialogMsgId:ダイアログID
+function GetDialogIndicationProgram(dialogId, copcd, pgId, dialogMsgId) {
     var j$ = jQuery;
     dialogId = "#" + dialogId;
-    //LoaderControl("open");
-    //j$(dialogId).load("http://" + window.location.host + "/PXAS/PXAS0000/_PXAS0000VW", function () {
-    //    LoaderControl("close");
-    //    createDialogOpen(dialogId, dialogMsgId);
-    //});
-    var dialogMsg  = "1,0,グループ登録ダイアログ,ALM,test,登 録,Ins_OK,OK";
-    var dialogInfo = dialogMsg.split(",");
 
-    if (dialogInfo.length > 4) {
-        var defaultButton = 'button:eq(' + dialogInfo[1] + ')';
+    //var url = localStorage.getItem("LOGINEXT_WMSAPI_URL") + "api/LNAS0001/Login";
+    var url = "http://kanda/KANDANET/API/api/LNAS0001/Login";
 
-        var dialog = j$(dialogId);
-        if (dialog != null) {
-            var title = "";
-            var titleType = dialogInfo[3];
-            switch (titleType) {
-                case "000":
-                    title = "<div class='widget-header'><h4><i class='fa fa-info-circle'></i>&nbsp;" + dialogInfo[2] + "</h4></div>";
-                    break;
-                case "0002":
-                    title = "<div class='widget-header'><h4><i class='fa fa-info'></i>&nbsp;" + dialogInfo[2] + "</h4></div>";
-                    break;
-                case "0003":
-                    title = "<div class='widget-header'><h4><i class='fa fa-comment'></i>&nbsp;" + dialogInfo[2] + "</h4></div>";
-                    break;
-                case "ALM":
-                    title = "<div class='widget-header'><h4><i class='fa fa-bell'></i>&nbsp;" + dialogInfo[2] + "</h4></div>";
-                    break;
-                case "ERR":
-                    title = "<div class='widget-header'><h4><i class='fa fa-ban'></i>&nbsp;" + dialogInfo[2] + "</h4></div>";
-                    break;
-                case "ERR2":
-                    title = "<div class='widget-header'><h4><i class='fa fa-exclamation-triangle'></i>&nbsp;" + dialogInfo[2] + "</h4></div>";
-                    break;
-                case "ERR3":
-                    title = "<div class='widget-header'><h4><i class='fa fa-flash'></i>&nbsp;" + dialogInfo[2] + "</h4></div>";
-                    break;
-                case "CHK":
-                    title = "<div class='widget-header'><h4><i class='fa fa-question-circle'></i>&nbsp;" + dialogInfo[2] + "</h4></div>";
-                    break;
-                default:
-                    title = dialogInfo[2];
-                    break;
+    var sendData = {};
+    sendData = GetLoginData();
+    sendData.COPCD = copcd;
+    sendData.SNDMSGKBN = pgId;
+    sendData.SNDMSGNO = dialogMsgId;
+
+    $.ajax(url, { type: "POST", data: sendData }).then(function (r) {
+        if (r) {
+            var dialogMsg = r;
+            dialogMsg = "1,0,グループ登録ダイアログ,ALM,test,登 録,Ins_OK,OK";
+            var dialogInfo = dialogMsg.split(",");
+
+            if (dialogInfo.length > 4) {
+                var defaultButton = 'button:eq(' + dialogInfo[1] + ')';
+
+                var dialog = j$(dialogId);
+                if (dialog != null) {
+                    var title = "";
+                    var titleType = dialogInfo[3];
+                    switch (titleType) {
+                        case "000":
+                            title = "<div class='widget-header'><h4><i class='fa fa-info-circle'></i>&nbsp;" + dialogInfo[2] + "</h4></div>";
+                            break;
+                        case "0002":
+                            title = "<div class='widget-header'><h4><i class='fa fa-info'></i>&nbsp;" + dialogInfo[2] + "</h4></div>";
+                            break;
+                        case "0003":
+                            title = "<div class='widget-header'><h4><i class='fa fa-comment'></i>&nbsp;" + dialogInfo[2] + "</h4></div>";
+                            break;
+                        case "ALM":
+                            title = "<div class='widget-header'><h4><i class='fa fa-bell'></i>&nbsp;" + dialogInfo[2] + "</h4></div>";
+                            break;
+                        case "ERR":
+                            title = "<div class='widget-header'><h4><i class='fa fa-ban'></i>&nbsp;" + dialogInfo[2] + "</h4></div>";
+                            break;
+                        case "ERR2":
+                            title = "<div class='widget-header'><h4><i class='fa fa-exclamation-triangle'></i>&nbsp;" + dialogInfo[2] + "</h4></div>";
+                            break;
+                        case "ERR3":
+                            title = "<div class='widget-header'><h4><i class='fa fa-flash'></i>&nbsp;" + dialogInfo[2] + "</h4></div>";
+                            break;
+                        case "CHK":
+                            title = "<div class='widget-header'><h4><i class='fa fa-question-circle'></i>&nbsp;" + dialogInfo[2] + "</h4></div>";
+                            break;
+                        default:
+                            title = dialogInfo[2];
+                            break;
+                    }
+                    var mainText = dialogInfo[4].replace(/\n/g, "<br/>");
+
+                    switch (dialogInfo[0]) {
+                        case "1":
+                            if (dialogInfo.length > 7) {
+                                var btnNm = DialogButtonSelect(dialogInfo[5], dialogInfo[7], 0);
+                                var btnId = dialogInfo[6];
+                                var btnCs = DialogButtonSelect("btn btn-default", dialogInfo[7], 1);
+
+                                //  ◆メッセージ設定
+                                dialog.html(mainText);
+                                //  ◆ダイアログ設定
+                                dialog.dialog({
+                                    width: 500,
+                                    autoOpen: false,
+                                    modal: true,
+                                    buttons: [{
+                                        html: btnNm,
+                                        "class": btnCs,
+                                        click: function () {
+                                            ReturnDialog(dialogMsgId, btnId);
+                                            j$(this).dialog("close");
+                                        }
+                                    }],
+                                    open: function () {
+                                        j$(this).siblings('.ui-dialog-buttonpane').find(defaultButton).focus();
+                                    },
+                                    close: function () {
+                                        closeEvent();
+                                    }
+                                });
+                            } else {
+                                dialog.css("display", "none");
+                            }
+                            break;
+                        case "2":
+                            if (dialogInfo.length > 10) {
+                                dialog.html(mainText);
+                                var btnName1 = DialogButtonSelect(dialogInfo[5], dialogInfo[7], 0);
+                                var btnAnser1 = dialogInfo[6];
+                                var btnType1 = DialogButtonSelect("btn btn-default", dialogInfo[7], 1);
+                                var btnName2 = DialogButtonSelect(dialogInfo[8], dialogInfo[10], 0);
+                                var btnAnser2 = dialogInfo[9];
+                                var btnType2 = DialogButtonSelect("btn btn-default", dialogInfo[10], 1);
+
+                                dialog.dialog({
+                                    title: title,
+                                    width: 500,
+                                    autoOpen: false,
+                                    modal: true,
+                                    buttons: [{
+                                        html: btnName1,
+                                        "class": btnType1,
+                                        click: function () {
+                                            j$(btnAnser1).click();
+                                            ReturnDialog(dialogMsgId, btnAnser1);
+                                            j$(this).dialog("close");
+                                        }
+                                    },
+                                    {
+                                        html: btnName2,
+                                        "class": btnType2,
+                                        click: function () {
+                                            ReturnDialog(dialogMsgId, btnAnser2);
+                                            j$(this).dialog("close");
+                                        }
+                                    }],
+                                    open: function () {
+                                        j$(this).siblings('.ui-dialog-buttonpane').find(defaultButton).focus();
+                                    },
+                                    close: function () {
+                                        closeEvent();
+                                    }
+                                });
+                            } else {
+                                dialog.css("display", "none");
+                            }
+                            break;
+                        case "3":
+                            if (dialogInfo.length > 13) {
+                                dialog.html(mainText);
+                                var btnName1 = DialogButtonSelect(dialogInfo[5], dialogInfo[7], 0);
+                                var btnAnser1 = dialogInfo[6];
+                                var btnType1 = DialogButtonSelect("btn btn-default", dialogInfo[7], 1);
+                                var btnName2 = DialogButtonSelect(dialogInfo[8], dialogInfo[10], 0);
+                                var btnAnser2 = dialogInfo[9];
+                                var btnType2 = DialogButtonSelect("btn btn-default", dialogInfo[10], 1);
+                                var btnName3 = DialogButtonSelect(dialogInfo[11], dialogInfo[13], 0);
+                                var btnAnser3 = dialogInfo[12];
+                                var btnType3 = DialogButtonSelect("btn btn-default", dialogInfo[13], 1);
+
+                                dialog.dialog({
+                                    title: title,
+                                    width: 500,
+                                    autoOpen: false,
+                                    modal: true,
+                                    buttons: [{
+                                        html: btnName1,
+                                        "class": btnType1,
+                                        click: function () {
+                                            ReturnDialog(dialogMsgId, btnAnser1);
+                                            j$(this).dialog("close");
+                                        }
+                                    },
+                                    {
+                                        html: btnName2,
+                                        "class": btnType2,
+                                        click: function () {
+                                            ReturnDialog(dialogMsgId, btnAnser2);
+                                            j$(this).dialog("close");
+                                        }
+                                    },
+                                    {
+                                        html: btnName3,
+                                        "class": btnType3,
+                                        click: function () {
+                                            ReturnDialog(dialogMsgId, btnAnser3);
+                                            j$(this).dialog("close");
+                                        }
+                                    }],
+                                    open: function () {
+                                        j$(this).siblings('.ui-dialog-buttonpane').find(defaultButton).focus();
+                                    },
+                                    close: function () {
+                                        closeEvent();
+                                    }
+                                });
+                            } else {
+                                dialog.css("display", "none");
+                            }
+                            break;
+                        case "4":
+                            if (dialogInfo.length > 16) {
+                                dialog.html(mainText);
+                                var btnName1 = DialogButtonSelect(dialogInfo[5], dialogInfo[7], 0);
+                                var btnAnser1 = dialogInfo[6];
+                                var btnType1 = DialogButtonSelect("btn btn-default", dialogInfo[7], 1);
+                                var btnName2 = DialogButtonSelect(dialogInfo[8], dialogInfo[10], 0);
+                                var btnAnser2 = dialogInfo[9];
+                                var btnType2 = DialogButtonSelect("btn btn-default", dialogInfo[10], 1);
+                                var btnName3 = DialogButtonSelect(dialogInfo[11], dialogInfo[13], 0);
+                                var btnAnser3 = dialogInfo[12];
+                                var btnType3 = DialogButtonSelect("btn btn-default", dialogInfo[13], 1);
+                                var btnName4 = DialogButtonSelect(dialogInfo[14], dialogInfo[16], 0);
+                                var btnAnser4 = dialogInfo[15];
+                                var btnType4 = DialogButtonSelect("btn btn-default", dialogInfo[16], 1);
+
+                                dialog.dialog({
+                                    title: title,
+                                    width: 500,
+                                    autoOpen: false,
+                                    modal: true,
+                                    buttons: [{
+                                        html: btnName1,
+                                        "class": btnType1,
+                                        click: function () {
+                                            ReturnDialog(dialogMsgId, btnAnser1);
+                                            j$(this).dialog("close");
+                                        }
+                                    },
+                                    {
+                                        html: btnName2,
+                                        "class": btnType2,
+                                        click: function () {
+                                            ReturnDialog(dialogMsgId, btnAnser2);
+                                            j$(this).dialog("close");
+                                        }
+                                    },
+                                    {
+                                        html: btnName3,
+                                        "class": btnType3,
+                                        click: function () {
+                                            ReturnDialog(dialogMsgId, btnAnser3);
+                                            j$(this).dialog("close");
+                                        }
+                                    },
+                                    {
+                                        html: btnName4,
+                                        "class": btnType4,
+                                        click: function () {
+                                            ReturnDialog(dialogMsgId, btnAnser4);
+                                            j$(this).dialog("close");
+                                        }
+                                    }],
+                                    open: function () {
+                                        j$(this).siblings('.ui-dialog-buttonpane').find(defaultButton).focus();
+                                    },
+                                    close: function () {
+                                        closeEvent();
+                                    }
+                                });
+                            } else {
+                                dialog.css("display", "none");
+                            }
+                            break;
+                        case "5":
+                            if (dialogInfo.length > 19) {
+                                dialog.html(mainText);
+                                var btnName1 = DialogButtonSelect(dialogInfo[5], dialogInfo[7], 0);
+                                var btnAnser1 = dialogInfo[6];
+                                var btnType1 = DialogButtonSelect("btn btn-default", dialogInfo[7], 1);
+                                var btnName2 = DialogButtonSelect(dialogInfo[8], dialogInfo[10], 0);
+                                var btnAnser2 = dialogInfo[9];
+                                var btnType2 = DialogButtonSelect("btn btn-default", dialogInfo[10], 1);
+                                var btnName3 = DialogButtonSelect(dialogInfo[11], dialogInfo[13], 0);
+                                var btnAnser3 = dialogInfo[12];
+                                var btnType3 = DialogButtonSelect("btn btn-default", dialogInfo[13], 1);
+                                var btnName4 = DialogButtonSelect(dialogInfo[14], dialogInfo[16], 0);
+                                var btnAnser4 = dialogInfo[15];
+                                var btnType4 = DialogButtonSelect("btn btn-default", dialogInfo[16], 1);
+                                var btnName5 = DialogButtonSelect(dialogInfo[17], dialogInfo[19], 0);
+                                var btnAnser5 = dialogInfo[18];
+                                var btnType5 = DialogButtonSelect("btn btn-default", dialogInfo[19], 1);
+
+                                dialog.dialog({
+                                    title: title,
+                                    width: 500,
+                                    autoOpen: false,
+                                    modal: true,
+                                    buttons: [{
+                                        html: btnName1,
+                                        "class": btnType1,
+                                        click: function () {
+                                            ReturnDialog(dialogMsgId, btnAnser1);
+                                            j$(this).dialog("close");
+                                        }
+                                    },
+                                    {
+                                        html: btnName2,
+                                        "class": btnType2,
+                                        click: function () {
+                                            ReturnDialog(dialogMsgId, btnAnser2);
+                                            j$(this).dialog("close");
+                                        }
+                                    },
+                                    {
+                                        html: btnName3,
+                                        "class": btnType3,
+                                        click: function () {
+                                            ReturnDialog(dialogMsgId, btnAnser3);
+                                            j$(this).dialog("close");
+                                        }
+                                    },
+                                    {
+                                        html: btnName4,
+                                        "class": btnType4,
+                                        click: function () {
+                                            ReturnDialog(dialogMsgId, btnAnser4);
+                                            j$(this).dialog("close");
+                                        }
+                                    },
+                                    {
+                                        html: btnName5,
+                                        "class": btnType5,
+                                        click: function () {
+                                            ReturnDialog(dialogMsgId, btnAnser5);
+                                            j$(this).dialog("close");
+                                        }
+                                    }],
+                                    open: function () {
+                                        j$(this).siblings('.ui-dialog-buttonpane').find(defaultButton).focus();
+                                    },
+                                    close: function () {
+                                        closeEvent();
+                                    }
+                                });
+                            } else {
+                                dialog.css("display", "none");
+                            }
+                            break;
+                        default: dialog.css("display", "none"); break;
+                    }
+                    // TODO タイトルへのタグ入力は現状、力業で実行中。　適宜上記の「◆ダイアログ設定」内に収まるよう調整
+                    j$(".ui-dialog-title").html(title);
+                    dialog.dialog({ width: "600", height: "auto" });
+                    dialog.dialog("open");
+                    dialog.focus();
+                }
+            } else {
+                j$(dialogId).css("display", "none");
             }
-            var mainText = dialogInfo[4].replace(/\n/g, "<br/>");
-
-            switch (dialogInfo[0]) {
-                case "1":
-                    if (dialogInfo.length > 7) {
-                        var btnNm = DialogButtonSelect(dialogInfo[5], dialogInfo[7], 0);
-                        var btnId = dialogInfo[6];
-                        var btnCs = DialogButtonSelect("btn btn-default", dialogInfo[7], 1);
-
-                        //  ◆メッセージ設定
-                        dialog.html(mainText);
-                        //  ◆ダイアログ設定
-                        dialog.dialog({
-                            width: 500,
-                            autoOpen: false,
-                            modal: true,
-                            buttons: [{
-                                html: btnNm,
-                                "class": btnCs,
-                                click: function () {
-                                    ReturnDialog(dialogMsgId, btnId);
-                                    j$(this).dialog("close");
-                                }
-                            }],
-                            open: function () {
-                                j$(this).siblings('.ui-dialog-buttonpane').find(defaultButton).focus();
-                            },
-                            close: function () {
-                                closeEvent();
-                            }
-                        });
-                    } else {
-                        dialog.css("display", "none");
-                    }
-                    break;
-                case "2":
-                    if (dialogInfo.length > 10) {
-                        dialog.html(mainText);
-                        var btnName1 = DialogButtonSelect(dialogInfo[5], dialogInfo[7], 0);
-                        var btnAnser1 = dialogInfo[6];
-                        var btnType1 = DialogButtonSelect("btn btn-default", dialogInfo[7], 1);
-                        var btnName2 = DialogButtonSelect(dialogInfo[8], dialogInfo[10], 0);
-                        var btnAnser2 = dialogInfo[9];
-                        var btnType2 = DialogButtonSelect("btn btn-default", dialogInfo[10], 1);
-
-                        dialog.dialog({
-                            title: title,
-                            width: 500,
-                            autoOpen: false,
-                            modal: true,
-                            buttons: [{
-                                html: btnName1,
-                                "class": btnType1,
-                                click: function () {
-                                    j$(btnAnser1).click();
-                                    ReturnDialog(dialogMsgId, btnAnser1);
-                                    j$(this).dialog("close");
-                                }
-                            },
-                            {
-                                html: btnName2,
-                                "class": btnType2,
-                                click: function () {
-                                    ReturnDialog(dialogMsgId, btnAnser2);
-                                    j$(this).dialog("close");
-                                }
-                            }],
-                            open: function () {
-                                j$(this).siblings('.ui-dialog-buttonpane').find(defaultButton).focus();
-                            },
-                            close: function () {
-                                closeEvent();
-                            }
-                        });
-                    } else {
-                        dialog.css("display", "none");
-                    }
-                    break;
-                case "3":
-                    if (dialogInfo.length > 13) {
-                        dialog.html(mainText);
-                        var btnName1 = DialogButtonSelect(dialogInfo[5], dialogInfo[7], 0);
-                        var btnAnser1 = dialogInfo[6];
-                        var btnType1 = DialogButtonSelect("btn btn-default", dialogInfo[7], 1);
-                        var btnName2 = DialogButtonSelect(dialogInfo[8], dialogInfo[10], 0);
-                        var btnAnser2 = dialogInfo[9];
-                        var btnType2 = DialogButtonSelect("btn btn-default", dialogInfo[10], 1);
-                        var btnName3 = DialogButtonSelect(dialogInfo[11], dialogInfo[13], 0);
-                        var btnAnser3 = dialogInfo[12];
-                        var btnType3 = DialogButtonSelect("btn btn-default", dialogInfo[13], 1);
-
-                        dialog.dialog({
-                            title: title,
-                            width: 500,
-                            autoOpen: false,
-                            modal: true,
-                            buttons: [{
-                                html: btnName1,
-                                "class": btnType1,
-                                click: function () {
-                                    ReturnDialog(dialogMsgId, btnAnser1);
-                                    j$(this).dialog("close");
-                                }
-                            },
-                            {
-                                html: btnName2,
-                                "class": btnType2,
-                                click: function () {
-                                    ReturnDialog(dialogMsgId, btnAnser2);
-                                    j$(this).dialog("close");
-                                }
-                            },
-                            {
-                                html: btnName3,
-                                "class": btnType3,
-                                click: function () {
-                                    ReturnDialog(dialogMsgId, btnAnser3);
-                                    j$(this).dialog("close");
-                                }
-                            }],
-                            open: function () {
-                                j$(this).siblings('.ui-dialog-buttonpane').find(defaultButton).focus();
-                            },
-                            close: function () {
-                                closeEvent();
-                            }
-                        });
-                    } else {
-                        dialog.css("display", "none");
-                    }
-                    break;
-                case "4":
-                    if (dialogInfo.length > 16) {
-                        dialog.html(mainText);
-                        var btnName1 = DialogButtonSelect(dialogInfo[5], dialogInfo[7], 0);
-                        var btnAnser1 = dialogInfo[6];
-                        var btnType1 = DialogButtonSelect("btn btn-default", dialogInfo[7], 1);
-                        var btnName2 = DialogButtonSelect(dialogInfo[8], dialogInfo[10], 0);
-                        var btnAnser2 = dialogInfo[9];
-                        var btnType2 = DialogButtonSelect("btn btn-default", dialogInfo[10], 1);
-                        var btnName3 = DialogButtonSelect(dialogInfo[11], dialogInfo[13], 0);
-                        var btnAnser3 = dialogInfo[12];
-                        var btnType3 = DialogButtonSelect("btn btn-default", dialogInfo[13], 1);
-                        var btnName4 = DialogButtonSelect(dialogInfo[14], dialogInfo[16], 0);
-                        var btnAnser4 = dialogInfo[15];
-                        var btnType4 = DialogButtonSelect("btn btn-default", dialogInfo[16], 1);
-
-                        dialog.dialog({
-                            title: title,
-                            width: 500,
-                            autoOpen: false,
-                            modal: true,
-                            buttons: [{
-                                html: btnName1,
-                                "class": btnType1,
-                                click: function () {
-                                    ReturnDialog(dialogMsgId, btnAnser1);
-                                    j$(this).dialog("close");
-                                }
-                            },
-                            {
-                                html: btnName2,
-                                "class": btnType2,
-                                click: function () {
-                                    ReturnDialog(dialogMsgId, btnAnser2);
-                                    j$(this).dialog("close");
-                                }
-                            },
-                            {
-                                html: btnName3,
-                                "class": btnType3,
-                                click: function () {
-                                    ReturnDialog(dialogMsgId, btnAnser3);
-                                    j$(this).dialog("close");
-                                }
-                            },
-                            {
-                                html: btnName4,
-                                "class": btnType4,
-                                click: function () {
-                                    ReturnDialog(dialogMsgId, btnAnser4);
-                                    j$(this).dialog("close");
-                                }
-                            }],
-                            open: function () {
-                                j$(this).siblings('.ui-dialog-buttonpane').find(defaultButton).focus();
-                            },
-                            close: function () {
-                                closeEvent();
-                            }
-                        });
-                    } else {
-                        dialog.css("display", "none");
-                    }
-                    break;
-                case "5":
-                    if (dialogInfo.length > 19) {
-                        dialog.html(mainText);
-                        var btnName1 = DialogButtonSelect(dialogInfo[5], dialogInfo[7], 0);
-                        var btnAnser1 = dialogInfo[6];
-                        var btnType1 = DialogButtonSelect("btn btn-default", dialogInfo[7], 1);
-                        var btnName2 = DialogButtonSelect(dialogInfo[8], dialogInfo[10], 0);
-                        var btnAnser2 = dialogInfo[9];
-                        var btnType2 = DialogButtonSelect("btn btn-default", dialogInfo[10], 1);
-                        var btnName3 = DialogButtonSelect(dialogInfo[11], dialogInfo[13], 0);
-                        var btnAnser3 = dialogInfo[12];
-                        var btnType3 = DialogButtonSelect("btn btn-default", dialogInfo[13], 1);
-                        var btnName4 = DialogButtonSelect(dialogInfo[14], dialogInfo[16], 0);
-                        var btnAnser4 = dialogInfo[15];
-                        var btnType4 = DialogButtonSelect("btn btn-default", dialogInfo[16], 1);
-                        var btnName5 = DialogButtonSelect(dialogInfo[17], dialogInfo[19], 0);
-                        var btnAnser5 = dialogInfo[18];
-                        var btnType5 = DialogButtonSelect("btn btn-default", dialogInfo[19], 1);
-
-                        dialog.dialog({
-                            title: title,
-                            width: 500,
-                            autoOpen: false,
-                            modal: true,
-                            buttons: [{
-                                html: btnName1,
-                                "class": btnType1,
-                                click: function () {
-                                    ReturnDialog(dialogMsgId, btnAnser1);
-                                    j$(this).dialog("close");
-                                }
-                            },
-                            {
-                                html: btnName2,
-                                "class": btnType2,
-                                click: function () {
-                                    ReturnDialog(dialogMsgId, btnAnser2);
-                                    j$(this).dialog("close");
-                                }
-                            },
-                            {
-                                html: btnName3,
-                                "class": btnType3,
-                                click: function () {
-                                    ReturnDialog(dialogMsgId, btnAnser3);
-                                    j$(this).dialog("close");
-                                }
-                            },
-                            {
-                                html: btnName4,
-                                "class": btnType4,
-                                click: function () {
-                                    ReturnDialog(dialogMsgId, btnAnser4);
-                                    j$(this).dialog("close");
-                                }
-                            },
-                            {
-                                html: btnName5,
-                                "class": btnType5,
-                                click: function () {
-                                    ReturnDialog(dialogMsgId, btnAnser5);
-                                    j$(this).dialog("close");
-                                }
-                            }],
-                            open: function () {
-                                j$(this).siblings('.ui-dialog-buttonpane').find(defaultButton).focus();
-                            },
-                            close: function () {
-                                closeEvent();
-                            }
-                        });
-                    } else {
-                        dialog.css("display", "none");
-                    }
-                    break;
-                default: dialog.css("display", "none"); break;
-            }
-            // TODO タイトルへのタグ入力は現状、力業で実行中。　適宜上記の「◆ダイアログ設定」内に収まるよう調整
-            j$(".ui-dialog-title").html(title);
-            dialog.dialog({ width: "600", height: "auto" });
-            dialog.dialog("open");
-            dialog.focus();
+        } else {
+            createDialog("dialog", "1,0,ログイン画面,ALM,error: " + e + ",ＯＫ,ALM000-01,OK");
+            $("#dialog").dialog("open");
         }
-    } else {
-        j$(dialogId).css("display", "none");
-    }
+    }, function (e) {
+        createDialog("dialog", "1,0,ログイン画面,ALM,error: " + e + ",ＯＫ,ALM000-01,OK");
+        $("#dialog").dialog("open");
+    });
+    
 }

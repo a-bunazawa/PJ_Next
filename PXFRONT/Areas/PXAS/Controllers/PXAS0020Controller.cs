@@ -4,8 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using static PXFRONT.appsettingsCL;
 using Microsoft.Extensions.Options;
+using static PXLIB.PXCL_stc;
 
 namespace PXFRONT.Areas.PXAS.Controllers
 {

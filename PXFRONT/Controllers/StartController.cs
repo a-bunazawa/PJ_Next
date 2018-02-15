@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using PXFRONT.Models;
 using System.Diagnostics;
 using Microsoft.Extensions.Options;
-using static PXFRONT.appsettingsCL;
+using static PXLIB.PXCL_stc;
 
 namespace PXFRONT.Controllers
 {
@@ -25,12 +25,27 @@ namespace PXFRONT.Controllers
 
         public IActionResult Assortment()
         {
-            //return View();
+            //  ◆遷移元URL情報
+            string host = Request.Host.ToString();
+            string domain = host.Split(".")[0];
+            
+            string parameter = "?";
+            switch (domain)
+            {
+                case "Knet":
+                    parameter += "SysURL=" + this.appSettings.Value.Knet.SysURL;
+                    parameter += "&SysDB=" + this.appSettings.Value.Knet.SysDB;
+                    parameter += "&DomainType=" + "testt3";
 
+                    return Redirect("PXAS/PXAS0000/PXAS0000VW" + parameter);
+                default: break;
+            }
 
+            parameter += "SysURL=" + "test1";
+            parameter += "&SysDB=" + "KN";
+            parameter += "&DomainType=" + "PJ3_Next_PXAPI_";
 
-
-            return Redirect("PXAS/PXAS0000/PXAS0000VW");
+            return Redirect("PXAS/PXAS0000/PXAS0000VW" + parameter);
         }
 
         public IActionResult Error()

@@ -1,5 +1,6 @@
 ﻿window.onresize = resizeWindow;
 
+var domainType = "";
 $(document).ready(function () {
     SetSysDB();
     resizeWindow();
@@ -35,7 +36,7 @@ function resizeWindow() {
 };
 
 function Login() {
-    //var url = localStorage.getItem("LOGINEXT_WMSAPI_URL") + "api/LNAS0001/Login";
+    //var url = localStorage.getItem(domainType + "URL") + "api/LNAS0001/Login";
     var url = "http://kanda/KANDANET/API/api/LNAS0001/Login";
 
     var data = {};
@@ -43,28 +44,30 @@ function Login() {
     data.Id = "pmt_admin";
     //data.Pass = $("#password").val();
     data.Pass = "kcom";
-    //data.DB = localStorage.getItem("LOGINEXT_WMSAPI_SYSTEMDB");
-    data.DB = "KN";
+    //data.DBINF = localStorage.getItem(domainType + "SYSTEMDB");
+    data.DB = localStorage.getItem(domainType + "SYSTEMDB");
 
     $.ajax(url, { type: "POST", data: data }).then(function (r) {
-        localStorage.setItem("LOGINEXT_WMSAPI_USERNM", r.Name);
-        localStorage.setItem("LOGINEXT_WMSAPI_COPCD", r.COPCD);
-        localStorage.setItem("LOGINEXT_WMSAPI_SYSID", r.SYSID);
-        localStorage.setItem("LOGINEXT_WMSAPI_MENUID", r.MENUID);
-        localStorage.setItem("LOGINEXT_WMSAPI_USERDBNM", r.USERDBNM);
-        localStorage.setItem("LOGINEXT_WMSAPI_USERDBSVRNM", r.USERDBSVRNM);
-        localStorage.setItem("LOGINEXT_WMSAPI_USERDBSVRIP", r.USERDBSVRIP);
-        localStorage.setItem("LOGINEXT_WMSAPI_USERDBSVRUR", r.USERDBSVRUR);
-        localStorage.setItem("LOGINEXT_WMSAPI_USERDBSVRPW", r.USERDBSVRPW);
-        localStorage.setItem("LOGINEXT_WMSAPI_INIGRPCD", r.INIGRPCD);
-        localStorage.setItem("LOGINEXT_WMSAPI_INIDPTCD", r.INIDPTCD);
-        localStorage.setItem("LOGINEXT_WMSAPI_INIWHSCD", r.INIWHSCD);
-        localStorage.setItem("LOGINEXT_WMSAPI_INICMPCD", r.INICMPCD);
-        localStorage.setItem("LOGINEXT_WMSAPI_INICSTCD", r.INICSTCD);
-        localStorage.setItem("LOGINEXT_WMSAPI_INISHPCD", r.INISHPCD);
-        localStorage.setItem("LOGINEXT_WMSAPI_USERID", r.Id);
 
-        if (r.SendUrl != "") {
+        if (r.SendUrl != "" && r.DomainType != "") {
+            localStorage.setItem(domainType + "USERNM", r.Name);
+            localStorage.setItem(domainType + "COPCD", r.COPCD);
+            localStorage.setItem(domainType + "SYSID", r.SYSID);
+            localStorage.setItem(domainType + "MENUID", r.MENUID);
+            localStorage.setItem(domainType + "USERDBNM", r.USERDBNM);
+            localStorage.setItem(domainType + "USERDBSVRNM", r.USERDBSVRNM);
+            localStorage.setItem(domainType + "USERDBSVRIP", r.USERDBSVRIP);
+            localStorage.setItem(domainType + "USERDBSVRUR", r.USERDBSVRUR);
+            localStorage.setItem(domainType + "USERDBSVRPW", r.USERDBSVRPW);
+            localStorage.setItem(domainType + "INIGRPCD", r.INIGRPCD);
+            localStorage.setItem(domainType + "INIDPTCD", r.INIDPTCD);
+            localStorage.setItem(domainType + "INIWHSCD", r.INIWHSCD);
+            localStorage.setItem(domainType + "INICMPCD", r.INICMPCD);
+            localStorage.setItem(domainType + "INICSTCD", r.INICSTCD);
+            localStorage.setItem(domainType + "INISHPCD", r.INISHPCD);
+            localStorage.setItem(domainType + "USERID", r.Id);
+
+            localStorage.setItem("Local_PXAPI_DomainType", domainType);
             //window.location.href = r.SendUrl;
             window.location.href = "http://" + window.location.host + "/PXAS/PXAS0010/PXAS0010VW";
         } else {
@@ -91,7 +94,10 @@ function Login() {
     return false;
 }
 function SetSysDB() {
-    localStorage.setItem("LOGINEXT_WMSAPI_URL", $("#SysURL").val());
-    localStorage.setItem("LOGINEXT_WMSAPI_SYSTEMDB", $("#SysDB").val());
+    domainType = $("#DomainType").val();
+    localStorage.setItem(domainType + "URL", $("#SysURL").val());
+    localStorage.setItem(domainType + "SYSTEMDB", $("#SysDB").val());
+
+    $("#DomainType").val("")
     return false;
 }

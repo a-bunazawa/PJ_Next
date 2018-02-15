@@ -30,4 +30,8 @@
     <Folder Include="wwwroot\img_sys\PK\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PXLIB\PXLIB.csproj" />
+  </ItemGroup>
+
 </Project>
