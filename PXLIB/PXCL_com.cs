@@ -341,5 +341,56 @@ namespace PXLIB
             return BitConverter.ToString(Value).Replace("-", "");
         }
 
+        /// <summary>
+        /// Xmlファイル読み込みメソッド
+        /// </summary>
+        /// <typeparam name="M">xmlファイルの型</typeparam>
+        /// <param name="filePath">ファイルパス</param>
+        /// <returns>M型の読み込みデータ</returns>
+        public static M LoadXmlData<M>(String filePath)
+        {
+            M resolut;
+            try
+            {
+                System.IO.FileStream fs = new System.IO.FileStream(filePath, System.IO.FileMode.Open);
+                System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(M));
+                resolut = (M)serializer.Deserialize(fs);
+                fs.Flush();
+                fs.Close();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return resolut;
+        }
+        /// <summary>
+        /// Xmlファイル書き込みメソッド
+        /// </summary>
+        /// <typeparam name="M">xmlファイルの型</typeparam>
+        /// <param name="filePath">ファイルパス</param>
+        /// <param name="data">ファイル書き込み内容</param>
+        /// <returns>書き込み成否</returns>
+        public static bool WriteXmlData<M>(String filePath, M data)
+        {
+            bool resolut = false;
+            try
+            {
+                System.IO.FileStream stream = new System.IO.FileStream(filePath, System.IO.FileMode.Create);
+                System.IO.StreamWriter writer = new System.IO.StreamWriter(stream, System.Text.Encoding.UTF8);
+                System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(M));
+                serializer.Serialize(writer, data);
+
+                writer.Flush();
+                writer.Close();
+                resolut = true;
+            }
+            catch (Exception ex)
+            {
+                resolut = false;
+                throw ex;
+            }
+            return resolut;
+        }
     }
 }

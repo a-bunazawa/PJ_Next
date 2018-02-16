@@ -23,7 +23,7 @@
     "PXAPI": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "PXAS0000/Test",
+      "launchUrl": "Common/GetDialogData",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

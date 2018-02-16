@@ -4,52 +4,39 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using PXLIB;
 using static PXLIB.PXCL_stc;
 using static PXAPI.StructureCW;
+using Microsoft.AspNetCore.Hosting;
 
 namespace PXAPI.Controllers
 {
     public class CommonController : Controller
     {
+        readonly IOptions<PXAS_AppSetCL> _appSettings;
+        private IHostingEnvironment _hostingEnvironment = null;
+        /// <summary>
+        /// コンストラクターを定義し、引数に構成情報を取得するクラスを定義する。
+        /// </summary>
+        /// <param name="userSettings"></param>
+        public CommonController(IOptions<PXAS_AppSetCL> appSettings, IHostingEnvironment hostingEnvironment)
+        {
+            this._appSettings = appSettings;
+            //ユーザー設定情報インスタンスをフィールドに保持
+            this._hostingEnvironment = hostingEnvironment;
+        }
+
         public String GetDialogData(JsonGetDialogData data)
         {
             string result = "";
 
-            PX_COMMON PX_COMMONData = new PX_COMMON();
-            PX_COMMONData.DBINF = data.DBINF;
-            PX_COMMONData.COPCD = data.COPCD;
-            PX_COMMONData.USERID = data.USERID;
-            PX_COMMONData.MENUID = data.MENUID;
-            PX_COMMONData.USERDBSVRNM = data.USERDBSVRNM;
-            PX_COMMONData.COPCD = data.COPCD;
-            PX_COMMONData.COPCD = data.COPCD;
-            PX_COMMONData.COPCD = data.COPCD;
-            PX_COMMONData.COPCD = data.COPCD;
+            string path = _hostingEnvironment.ContentRootPath + "/DBConnect.xml";
+            XmlRoot xmlData = PXCL_com.LoadXmlData<XmlRoot>(path);
 
 
-            //LNVALUEMDData.SERVERDB = data.DB;
-            //LNVALUEMDData.USERID = data.Id;
-            //LNVALUEMDData.MENUID = data.MENUID;
-            //data.Name = LNAS0001Data.LNVALUEMDData.USERNM;
-            //data.COPCD = LNAS0001Data.LNVALUEMDData.COPCD;
-            //data.SYSID = LNAS0001Data.LNVALUEMDData.SYSID;
-            //data. = LNAS0001Data.LNVALUEMDData.MENUID;
-            //data. = LNAS0001Data.LNVALUEMDData.USERDBNM;
-            //data. = LNAS0001Data.LNVALUEMDData.USERDBSVRNM;
-            //data.USERDBSVRIP = LNAS0001Data.LNVALUEMDData.USERDBSVRIP;
-            //data.USERDBSVRUR = LNAS0001Data.LNVALUEMDData.USERDBSVRUR;
-            //data.USERDBSVRPW = LNAS0001Data.LNVALUEMDData.USERDBSVRPW;
-            //data.INIGRPCD = LNAS0001Data.LNVALUEMDData.INIGRPCD;
-            //data.INIDPTCD = LNAS0001Data.LNVALUEMDData.INIDPTCD;
-            //data.INIWHSCD = LNAS0001Data.LNVALUEMDData.INIWHSCD;
-            //data.INICMPCD = LNAS0001Data.LNVALUEMDData.INICMPCD;
-            //data.INICSTCD = LNAS0001Data.LNVALUEMDData.INICSTCD;
-            //data.INISHPCD = LNAS0001Data.LNVALUEMDData.INISHPCD;
-
-
-
-
+            PX_COMMON PX_COMMONData = SetSysDB(_appSettings.Value, Request, data);
+            
             result = PXCL_com.GetDialogIndication(data.COPCD, data.SNDMSGKBN, data.SNDMSGNO, PX_COMMONData);
             
             return result;

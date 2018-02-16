@@ -17,12 +17,12 @@ namespace PXAPI
 {
     public class Startup
     {
+        public static IConfigurationRoot Configuration { get; private set; }
+
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            Configuration = (IConfigurationRoot)configuration;
         }
-
-        public static IConfigurationRoot Configuration { get; private set; }
 
         public Startup(IHostingEnvironment env)
         {

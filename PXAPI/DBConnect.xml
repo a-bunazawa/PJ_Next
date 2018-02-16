@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Root>
+  <Domain>
+    <DomainName>Knet</DomainName>
+    <SVRName>kanda</SVRName>
+    <SVRIP></SVRIP>
+    <DBName>KN_SYSTEM</DBName>
+    <DBUser>sa</DBUser>
+    <DBPass>bigdream</DBPass>
+    <COPCD></COPCD>
+    <SYSPARAID1></SYSPARAID1>
+    <SYSPARAID2></SYSPARAID2>
+    <SYSPARAID3></SYSPARAID3>
+  </Domain>
+  <Domain>
+    <DomainName>AAA</DomainName>
+    <SVRName>kanda</SVRName>
+    <SVRIP></SVRIP>
+    <DBName>LN_SYSTEM</DBName>
+    <DBUser>sa</DBUser>
+    <DBPass>bigdream</DBPass>
+    <COPCD></COPCD>
+    <SYSPARAID1></SYSPARAID1>
+    <SYSPARAID2></SYSPARAID2>
+    <SYSPARAID3></SYSPARAID3>
+  </Domain>
+</Root>

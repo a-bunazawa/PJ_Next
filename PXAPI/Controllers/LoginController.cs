@@ -13,7 +13,6 @@ namespace PXAPI.Controllers
     {
         public LoginController()
         {
-            var request = 
 
 
         }
