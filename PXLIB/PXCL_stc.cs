@@ -1,7 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace PXLIB
 {
@@ -139,8 +136,30 @@ namespace PXLIB
             /// <summary> ログイン遷移先 </summary>
             [JsonProperty(PropertyName = "CALLTOP")]
             public string CALLTOP { get; set; }
+            /// <summary>エラーステータス(空の場合正常)およびエラーコード</summary>
+            public string ERRORCODE { get; set; }
 
             public PX_COMMON()
+            {
+                Init_AllData();
+            }
+            public PX_COMMON(string typename, PX_COMMON data)
+            {
+                Init_AllData();
+
+                switch (typename)
+                {
+                    case "JsonGetDialogData":
+                        DBINF = data.DBINF;
+                        COPCD = data.COPCD;
+                        USERID = data.USERID;
+                        MENUID = data.MENUID;
+                        USERDBSVRNM = data.USERDBSVRNM;
+                        break;
+                }
+            }
+
+            private void Init_AllData()
             {
                 SERVERURL = "";
                 LOGINURL = "";
@@ -180,8 +199,8 @@ namespace PXLIB
                 DBINF = "";
                 BYTECHECKFLG = "";
                 CALLTOP = "";
+                ERRORCODE = "";
             }
-
         }
 
         /// <summary> 権限マスタ </summary>

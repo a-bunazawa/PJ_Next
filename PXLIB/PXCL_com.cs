@@ -153,6 +153,18 @@ namespace PXLIB
 
             return DialogIndication;
         }
+        public static string GetDialogIndication(string CopCd, PX_COMMON PX_COMMONData, string title, string mag, string SplitString)
+        {
+            string errmsg = GetDialogIndication(CopCd, "SYSTEM", "RUNERR-99", PX_COMMONData);
+            string[] tmp = errmsg.Split(new string[] { SplitString }, StringSplitOptions.None);
+            if (tmp.Length >= 5)
+            {
+                tmp[2] = title;
+                tmp[3] = mag;
+                errmsg = string.Join(SplitString, tmp);
+            }
+            return errmsg;
+        }
 
         /// <summary>
         ///  プログラムの利用権限情報取得
