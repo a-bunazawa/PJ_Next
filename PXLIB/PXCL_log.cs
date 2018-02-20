@@ -8,7 +8,7 @@ using static PXLIB.PXCL_stc;
 
 namespace PXLIB
 {
-    class PXCL_log
+    public class PXCL_log
     {
         #region PxASlogCW_Declarations
 

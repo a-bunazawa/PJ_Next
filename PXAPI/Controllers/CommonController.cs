@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -28,7 +27,7 @@ namespace PXAPI.Controllers
             this._hostingEnvironment = hostingEnvironment;
         }
 
-        public  String GetDialogData(JsonGetDialogData data)
+        public String GetDialogData(JsonGetDialogData data)
         {
             string result = "";
 
@@ -62,7 +61,7 @@ namespace PXAPI.Controllers
                     break;
                 default: break;
             }
-            
+
             // 以下テストコード
             PX_COMMONData.SYSDBSVRNM = appSettings.Knet.SVRName;
             PX_COMMONData.SYSDBSVRIP = appSettings.Knet.SVRIP;
@@ -72,5 +71,6 @@ namespace PXAPI.Controllers
 
             return PX_COMMONData;
         }
+
     }
 }
