@@ -10,7 +10,7 @@ using static PXLIB.PXCL_stc;
 
 namespace PXLIB
 {
-    class PXCL_dba
+    public class PXCL_dba
     {
         #region PxASdbaCW_Declarations
 
