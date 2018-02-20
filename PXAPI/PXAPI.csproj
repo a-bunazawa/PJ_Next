@@ -30,4 +30,6 @@
     <ProjectReference Include="..\PXLIB\PXLIB.csproj" />
   </ItemGroup>
 
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JSONSchema="http://json.schemastore.org/babelrc" /></VisualStudio></ProjectExtensions>
+
 </Project>

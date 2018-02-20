@@ -153,18 +153,18 @@ namespace PXLIB
 
             return DialogIndication;
         }
-        public static string GetDialogIndication(string CopCd, PX_COMMON PX_COMMONData, string title, string mag, string SplitString)
-        {
-            string errmsg = GetDialogIndication(CopCd, "SYSTEM", "RUNERR-99", PX_COMMONData);
-            string[] tmp = errmsg.Split(new string[] { SplitString }, StringSplitOptions.None);
-            if (tmp.Length >= 5)
-            {
-                tmp[2] = title;
-                tmp[3] = mag;
-                errmsg = string.Join(SplitString, tmp);
-            }
-            return errmsg;
-        }
+        //public static string GetDialogIndication(string CopCd, PX_COMMON PX_COMMONData, string title, string mag, string SplitString)
+        //{
+        //    string errmsg = GetDialogIndication(CopCd, "SYSTEM", "RUNERR-99", PX_COMMONData);
+        //    string[] tmp = errmsg.Split(new string[] { SplitString }, StringSplitOptions.None);
+        //    if (tmp.Length >= 5)
+        //    {
+        //        tmp[2] = title;
+        //        tmp[3] = mag;
+        //        errmsg = string.Join(SplitString, tmp);
+        //    }
+        //    return errmsg;
+        //}
 
         /// <summary>
         ///  プログラムの利用権限情報取得
@@ -353,5 +353,610 @@ namespace PXLIB
             return BitConverter.ToString(Value).Replace("-", "");
         }
 
+        /// <summary>
+        /// Xmlファイル読み込みメソッド
+        /// </summary>
+        /// <typeparam name="M">xmlファイルの型</typeparam>
+        /// <param name="filePath">ファイルパス</param>
+        /// <returns>M型の読み込みデータ</returns>
+        public static M LoadXmlData<M>(String filePath)
+        {
+            M resolut;
+            try
+            {
+                System.IO.FileStream fs = new System.IO.FileStream(filePath, System.IO.FileMode.Open);
+                System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(M));
+                resolut = (M)serializer.Deserialize(fs);
+                fs.Flush();
+                fs.Close();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return resolut;
+        }
+        /// <summary>
+        /// Xmlファイル書き込みメソッド
+        /// </summary>
+        /// <typeparam name="M">xmlファイルの型</typeparam>
+        /// <param name="filePath">ファイルパス</param>
+        /// <param name="data">ファイル書き込み内容</param>
+        /// <returns>書き込み成否</returns>
+        public static bool WriteXmlData<M>(String filePath, M data)
+        {
+            bool resolut = false;
+            try
+            {
+                System.IO.FileStream stream = new System.IO.FileStream(filePath, System.IO.FileMode.Create);
+                System.IO.StreamWriter writer = new System.IO.StreamWriter(stream, System.Text.Encoding.UTF8);
+                System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(M));
+                serializer.Serialize(writer, data);
+
+                writer.Flush();
+                writer.Close();
+                resolut = true;
+            }
+            catch (Exception ex)
+            {
+                resolut = false;
+                throw ex;
+            }
+            return resolut;
+        }
+
+        public static List<PX_SYSPARA> GetPGParameter(string SysPrId1, string SysPrId2, string SysPrId3, PX_COMMON PX_COMMONData)
+        {
+            return GetPGParameter(SysPrId1, SysPrId2, SysPrId3, null, new List<string>(), PX_COMMONData);
+        }
+
+        /// <summary>
+        /// プログラムパラメータの取得
+        /// </summary>
+        /// <param name="SysPrId1">パラメータID1</param>
+        /// <param name="SysPrId2">パラメータID2</param>
+        /// <param name="SysPrId3">パラメータID3</param>
+        /// <param name="SYSPARASEQ">SeqNo</param>
+        /// <param name="OtherParam">その他のパラメータを指定したい場合使用：列名,値→をListにAdd</param>
+        /// <param name="PX_COMMONData">PX_COMMON</param>
+        /// <returns>パラメータ</returns>
+        public static List<PX_SYSPARA> GetPGParameter(string SysPrId1, string SysPrId2, string SysPrId3, int? SYSPARASEQ, List<string> OtherParam, PX_COMMON PX_COMMONData)
+        {
+            StringBuilder CmdTxt = new StringBuilder();
+            PXCL_dba DbAccess = new PXCL_dba(PXCL_dba.ConnectionSystem, PX_COMMONData);
+            List<PX_SYSPARA> DrList = new List<PX_SYSPARA>();
+            try
+            {
+                // データベースを開く
+                DbAccess.DBConect();
+
+                // システムパラメータの取得SQL
+                CmdTxt.AppendLine("SELECT * FROM P3AS_SYSPARA ");
+                CmdTxt.AppendLine(" WHERE COPCD = @COPCD ");
+                CmdTxt.AppendLine("   AND SYSPARAID1 = @SYSPARAID1");
+                if (SysPrId2.Trim().Length > 0)
+                {
+                    CmdTxt.AppendLine("   AND SYSPARAID2 = @SYSPARAID2");
+                }
+                if (SysPrId3.Trim().Length > 0)
+                {
+                    CmdTxt.AppendLine("   AND SYSPARAID3 = @SYSPARAID3");
+                }
+                if (SYSPARASEQ != null)
+                {
+                    CmdTxt.AppendLine("   AND SYSPARASEQ = @SYSPARASEQ");
+                }
+                if (OtherParam.Count > 0)
+                {
+                    foreach (var item in OtherParam)
+                    {
+                        string[] tmp = item.Split(new string[] { "," }, StringSplitOptions.None);
+                        CmdTxt.AppendFormat("   AND {0} = @{0} {1}", tmp[0], Environment.NewLine);
+                    }
+                }
+                CmdTxt.AppendLine(" ORDER BY DSPSORT");
+
+                //◆条件の設定
+                using (SqlCommand SqlCmd = new SqlCommand())
+                {
+                    SqlCmd.Parameters.Add("@COPCD", SqlDbType.Char).Value = PX_COMMONData.COPCD;
+                    SqlCmd.Parameters.Add("@SYSPARAID1", SqlDbType.VarChar).Value = SysPrId1;
+                    if (SysPrId2.Trim().Length > 0)
+                    {
+                        SqlCmd.Parameters.Add("@SYSPARAID2", SqlDbType.VarChar).Value = SysPrId2;
+                    }
+                    if (SysPrId3.Trim().Length > 0)
+                    {
+                        SqlCmd.Parameters.Add("@SYSPARAID3", SqlDbType.VarChar).Value = SysPrId3;
+                    }
+                    if (SYSPARASEQ != null)
+                    {
+                        SqlCmd.Parameters.Add("@SYSPARASEQ", SqlDbType.SmallInt).Value = SYSPARASEQ;
+                    }
+
+                    if (OtherParam.Count > 0)
+                    {
+                        foreach (var item in OtherParam)
+                        {
+                            string[] tmp = item.Split(new string[] { "," }, StringSplitOptions.None);
+                            switch (tmp[0])
+                            {
+                                case "CTLFLG1":
+                                case "CTLFLG2":
+                                case "CTLFLG3":
+                                case "CTLFLG4":
+                                case "CTLFLG5":
+                                    SqlCmd.Parameters.Add("@" + tmp[0], SqlDbType.Char).Value = tmp[1];
+                                    break;
+                                case "CTLCD1":
+                                case "CTLCD2":
+                                case "CTLCD3":
+                                case "CTLCD4":
+                                case "CTLCD5":
+                                    SqlCmd.Parameters.Add("@" + tmp[0], SqlDbType.VarChar).Value = tmp[1];
+                                    break;
+                                case "SYSPARANM":
+                                case "CTLPARA1":
+                                case "CTLPARA2":
+                                case "CTLPARA3":
+                                case "CTLPARA4":
+                                case "CTLPARA5":
+                                case "GUIDENM":
+                                case "SUBCMM":
+                                    SqlCmd.Parameters.Add("@" + tmp[0], SqlDbType.NVarChar).Value = tmp[1];
+                                    break;
+                                case "DSPSORT":
+                                    SqlCmd.Parameters.Add("@" + tmp[0], SqlDbType.SmallInt).Value = tmp[1];
+                                    break;
+                                case "CTLSEQ1":
+                                case "CTLSEQ2":
+                                case "CTLSEQ3":
+                                case "CTLSEQ4":
+                                case "CTLSEQ5":
+                                case "CTLQNT1":
+                                case "CTLQNT2":
+                                case "CTLQNT3":
+                                case "CTLQNT4":
+                                case "CTLQNT5":
+                                    SqlCmd.Parameters.Add("@" + tmp[0], SqlDbType.Decimal).Value = tmp[1];
+                                    break;
+                                case "CTLDATE1":
+                                case "CTLDATE2":
+                                case "CTLDATE3":
+                                case "CTLDATE4":
+                                case "CTLDATE5":
+                                    SqlCmd.Parameters.Add("@" + tmp[0], SqlDbType.DateTime).Value = tmp[1];
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+
+                    //◆SQL実行
+                    using (SqlDataReader Res = DbAccess.SQLSelectParameter(CmdTxt.ToString(), SqlCmd))
+                    {
+                        if (Res != null && Res.HasRows)
+                        {
+                            while (Res.Read())
+                            {
+                                PX_SYSPARA data = new PX_SYSPARA
+                                {
+                                    COPCD = Res["COPCD"].ToString(),
+                                    SYSPARAID1 = Res["SYSPARAID1"].ToString(),
+                                    SYSPARAID2 = Res["SYSPARAID2"].ToString(),
+                                    SYSPARAID3 = Res["SYSPARAID3"].ToString(),
+                                    SYSPARASEQ = int.Parse(Res["SYSPARASEQ"].ToString()),
+                                    SYSPARANM = Res["SYSPARANM"] == DBNull.Value ? "" : Res["SYSPARANM"].ToString(),
+                                    DSPSORT = int.Parse(Res["DSPSORT"].ToString()),
+                                    CTLCD1 = Res["CTLCD1"] == DBNull.Value ? "" : Res["CTLCD1"].ToString(),
+                                    CTLCD2 = Res["CTLCD2"] == DBNull.Value ? "" : Res["CTLCD2"].ToString(),
+                                    CTLCD3 = Res["CTLCD3"] == DBNull.Value ? "" : Res["CTLCD3"].ToString(),
+                                    CTLCD4 = Res["CTLCD4"] == DBNull.Value ? "" : Res["CTLCD4"].ToString(),
+                                    CTLCD5 = Res["CTLCD5"] == DBNull.Value ? "" : Res["CTLCD5"].ToString(),
+                                    CTLPARA1 = Res["CTLPARA1"] == DBNull.Value ? "" : Res["CTLPARA1"].ToString(),
+                                    CTLPARA2 = Res["CTLPARA2"] == DBNull.Value ? "" : Res["CTLPARA2"].ToString(),
+                                    CTLPARA3 = Res["CTLPARA3"] == DBNull.Value ? "" : Res["CTLPARA3"].ToString(),
+                                    CTLPARA4 = Res["CTLPARA4"] == DBNull.Value ? "" : Res["CTLPARA4"].ToString(),
+                                    CTLPARA5 = Res["CTLPARA5"] == DBNull.Value ? "" : Res["CTLPARA5"].ToString(),
+                                    CTLSEQ1 = int.Parse(Res["CTLSEQ1"].ToString()),
+                                    CTLSEQ2 = int.Parse(Res["CTLSEQ2"].ToString()),
+                                    CTLSEQ3 = int.Parse(Res["CTLSEQ3"].ToString()),
+                                    CTLSEQ4 = int.Parse(Res["CTLSEQ4"].ToString()),
+                                    CTLSEQ5 = int.Parse(Res["CTLSEQ5"].ToString()),
+                                    CTLQNT1 = decimal.Parse(Res["CTLQNT1"].ToString()),
+                                    CTLQNT2 = decimal.Parse(Res["CTLQNT2"].ToString()),
+                                    CTLQNT3 = decimal.Parse(Res["CTLQNT3"].ToString()),
+                                    CTLQNT4 = decimal.Parse(Res["CTLQNT4"].ToString()),
+                                    CTLQNT5 = decimal.Parse(Res["CTLQNT5"].ToString()),
+                                    CTLFLG1 = Res["CTLFLG1"].ToString(),
+                                    CTLFLG2 = Res["CTLFLG2"].ToString(),
+                                    CTLFLG3 = Res["CTLFLG3"].ToString(),
+                                    CTLFLG4 = Res["CTLFLG4"].ToString(),
+                                    CTLFLG5 = Res["CTLFLG5"].ToString(),
+                                    CTLDATE1 = Convert.ToDateTime(Res["CTLDATE1"]),
+                                    CTLDATE2 = Convert.ToDateTime(Res["CTLDATE2"]),
+                                    CTLDATE3 = Convert.ToDateTime(Res["CTLDATE3"]),
+                                    CTLDATE4 = Convert.ToDateTime(Res["CTLDATE4"]),
+                                    CTLDATE5 = Convert.ToDateTime(Res["CTLDATE5"]),
+                                    GUIDENM = Res["GUIDENM"] == DBNull.Value ? "" : Res["GUIDENM"].ToString(),
+                                    SUBCMM = Res["SUBCMM"] == DBNull.Value ? "" : Res["SUBCMM"].ToString()
+                                };
+                                DrList.Add(data);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception Exc)
+            {
+                string LogTitle = "システムパラメータ取得";
+                string LogMsg = "エラー「" + Exc.Message + "」";
+                PXCL_log.writeLog(PXCL_log.ERR, PXCL_log.SELECT, LogTitle, LogMsg, System.Reflection.MethodBase.GetCurrentMethod(), PX_COMMONData);
+            }
+            finally
+            {
+                //データベースの接続解除
+                DbAccess.DBClose();
+            }
+            return DrList;
+        }
+
+        public static PX_PJ3CONFIG GetPJ3Config(string SysPrId1, string SysPrId2, string SysPrId3, ref PX_COMMON PX_COMMONData)
+        {
+            StringBuilder CmdTxt = new StringBuilder();
+            List<PX_SYSPARA> DrList = new List<PX_SYSPARA>();
+            PX_PJ3CONFIG cfg = new PX_PJ3CONFIG();
+            try
+            {
+                DrList = GetPGParameter(SysPrId1, SysPrId2, SysPrId3, PX_COMMONData);
+                if (DrList.Count > 0)
+                {
+                    foreach (var item in DrList)
+                    {
+                        switch (item.SYSPARASEQ)
+                        {
+                            case 1:
+                                cfg.TITLEPIC = item.CTLPARA1; // ファイル名のみ
+                                cfg.BGPIC = item.CTLPARA2; // ファイル名のみ
+                                cfg.ADDACCOUNT = item.CTLFLG1;
+                                cfg.KEEPLOGIN = item.CTLFLG2;
+                                cfg.VIEWINFO = item.CTLPARA5;
+                                cfg.DEFLANG = item.CTLCD1;
+                                cfg.FLAMECOLOR = item.CTLCD2;
+                                break;
+                            case 2:
+                                cfg.IDCHAR = item.CTLFLG1;
+                                cfg.IDLENMIN = (int)item.CTLSEQ1;
+                                cfg.IDLENMAX = (int)item.CTLSEQ2;
+                                cfg.PACHAR = item.CTLFLG2;
+                                cfg.PALENMIN = (int)item.CTLSEQ3;
+                                cfg.PALENMAX = (int)item.CTLSEQ4;
+                                cfg.PALOCACT = item.CTLFLG3;
+                                cfg.PALOCCNT = (int)item.CTLSEQ5;
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+                else
+                {
+                    PX_COMMONData.ERRORCODE = "PXERR402";
+                }
+            }
+            catch (Exception Exc)
+            {
+                string LogTitle = "システムパラメータ取得";
+                string LogMsg = "エラー「" + Exc.Message + "」";
+                PXCL_log.writeLog(PXCL_log.ERR, PXCL_log.SELECT, LogTitle, LogMsg, System.Reflection.MethodBase.GetCurrentMethod(), PX_COMMONData);
+                PX_COMMONData.ERRORCODE = "PXERR402-2";
+            }
+            return cfg;
+        }
+
+        /// <summary>
+        /// ユーザーIDのチェック
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <param name="PX_COMMONData"></param>
+        /// <returns>ワンタイムキーユーザのキー（空の場合は通常ユーザー）</returns>
+        public static List<string> GetUserKeyInfo(string userid, ref PX_COMMON PX_COMMONData)
+        {
+            StringBuilder CmdTxt = new StringBuilder();
+            PXCL_dba DbAccess = new PXCL_dba(PXCL_dba.ConnectionSystem, PX_COMMONData);
+            List<string> retList = new List<string>();
+            try
+            {
+                // データベースを開く
+                DbAccess.DBConect();
+
+                // システムパラメータの取得SQL
+                CmdTxt.AppendLine("SELECT USERATTID, SYSID, USERPASS, PASSCTL, ONETPASS ");
+                CmdTxt.AppendLine(" ,PASSLMTYMD, PASSLMTYMD ");
+                CmdTxt.AppendLine(" ,DEFCOPTP, DEFCOPCD, ENDCOPCD");
+                CmdTxt.AppendLine(" , CONVERT(NVARCHAR, ONETLMTDATE, 111)  + ' ' + CONVERT(NVARCHAR, ONETLMTDATE, 108) AS ONETLMTDATE  ");
+                CmdTxt.AppendLine(" , CONVERT(NVARCHAR, ONETALMDATE, 111)  + ' ' + CONVERT(NVARCHAR, ONETALMDATE, 108) AS ONETALMDATE ");
+                CmdTxt.AppendLine(" , PASSCTL");
+                CmdTxt.AppendLine("FROM P3AS_USER");
+                CmdTxt.AppendLine(" WHERE USERID = @USERID ");
+                CmdTxt.AppendLine("     AND  DELFLG = '000' ");
+                //CmdTxt.AppendLine("");
+
+                using (SqlCommand SqlCmd = new SqlCommand())
+                {
+                    SqlCmd.Parameters.Add("@USERID", SqlDbType.VarChar).Value = userid;
+
+                    using (SqlDataReader Res = DbAccess.SQLSelectParameter(CmdTxt.ToString(), SqlCmd))
+                    {
+                        if (Res != null && Res.HasRows)
+                        {
+                            while (Res.Read())
+                            {
+                                string tmp = Res["ONETPASS"] == DBNull.Value ? "" : PXCL_com.Decrypt(Res["ONETPASS"].ToString());
+                                retList.Add(tmp);
+                                retList.Add(Res["ONETPASS"] == DBNull.Value ? "" : Res["ONETPASS"].ToString());
+                                retList.Add(Res["ONETLMTDATE"] == DBNull.Value ? "" : Res["ONETLMTDATE"].ToString());
+                                retList.Add(Res["ONETALMDATE"] == DBNull.Value ? "" : Res["ONETALMDATE"].ToString());
+                                retList.Add(Res["PASSCTL"] == DBNull.Value ? "" : Res["PASSCTL"].ToString());
+                                tmp = Res["USERPASS"] == DBNull.Value ? "" : PXCL_com.Decrypt(Res["USERPASS"].ToString());
+                                retList.Add(tmp);
+                                retList.Add(Res["PASSLMTYMD"] == DBNull.Value ? "" : Res["PASSLMTYMD"].ToString());
+                                retList.Add(Res["PASSALMYMD"] == DBNull.Value ? "" : Res["PASSALMYMD"].ToString());
+                                retList.Add(Res["DEFCOPTP"] == DBNull.Value ? "" : Res["DEFCOPTP"].ToString());
+                                retList.Add(Res["DEFCOPCD"] == DBNull.Value ? "" : Res["DEFCOPCD"].ToString());
+                                retList.Add(Res["ENDCOPCD"] == DBNull.Value ? "" : Res["ENDCOPCD"].ToString());
+                                retList.Add(Res["SYSID"] == DBNull.Value ? "" : Res["SYSID"].ToString());
+                            }
+                        }
+                        else
+                        {
+                            //UserID登録なし
+                            PX_COMMONData.ERRORCODE = "USERERR-01";
+                        }
+                    }
+                }
+            }
+            catch (Exception Exc)
+            {
+                string LogTitle = "システムパラメータ取得";
+                string LogMsg = "エラー「" + Exc.Message + "」";
+                PXCL_log.writeLog(PXCL_log.ERR, PXCL_log.SELECT, LogTitle, LogMsg, System.Reflection.MethodBase.GetCurrentMethod(), PX_COMMONData);
+            }
+            finally
+            {
+                //データベースの接続解除
+                DbAccess.DBClose();
+            }
+            return retList;
+        }
+
+        public static PX_USERCTL GetUserCTL(PX_COMMON PX_COMMONData)
+        {
+            StringBuilder CmdTxt = new StringBuilder();
+            PXCL_dba DbAccess = new PXCL_dba(PXCL_dba.ConnectionSystem, PX_COMMONData);
+            PX_USERCTL retList = new PX_USERCTL();
+            try
+            {
+                // データベースを開く
+                DbAccess.DBConect();
+
+                // システムパラメータの取得SQL
+                CmdTxt.AppendLine("SELECT * ");
+                CmdTxt.AppendLine("FROM P3AS_USER_CTL");
+                CmdTxt.AppendLine(" WHERE USERID = @USERID ");
+                CmdTxt.AppendLine("     AND  COPCD = @COPCD ");
+                CmdTxt.AppendLine("     AND  SYSID = @SYSID ");
+                CmdTxt.AppendLine("     AND (USERLMTYMD = '00000000' OR USERLMTYMD >= @USERLMTYMD");
+                //CmdTxt.AppendLine("");
+
+                using (SqlCommand SqlCmd = new SqlCommand())
+                {
+                    SqlCmd.Parameters.Add("@USERID", SqlDbType.VarChar).Value = PX_COMMONData.USERID;
+                    SqlCmd.Parameters.Add("@COPCD", SqlDbType.VarChar).Value = PX_COMMONData.COPCD;
+                    SqlCmd.Parameters.Add("@SYSID", SqlDbType.VarChar).Value = PX_COMMONData.SYSID;
+                    SqlCmd.Parameters.Add("@USERLMTYMD", SqlDbType.Char).Value = DateTime.Today.ToString("yyyyMMdd");
+
+                    using (SqlDataReader Res = DbAccess.SQLSelectParameter(CmdTxt.ToString(), SqlCmd))
+                    {
+                        if (Res != null && Res.HasRows)
+                        {
+                            while (Res.Read())
+                            {
+                                retList = new PX_USERCTL
+                                {
+                                    COPCD = Res["COPCD"].ToString(),
+                                    SYSID = Res["SYSID"].ToString(),
+                                    USERID = Res["USERID"].ToString(),
+                                    MENUID = Res["MENUID"] == DBNull.Value ? "" : Res["MENUID"].ToString(),
+                                    MENUPATH = Res["MENUPATH"] == DBNull.Value ? "" : Res["MENUPATH"].ToString(),
+                                    AUTKBN = Res["AUTKBN"] == DBNull.Value ? "" : Res["AUTKBN"].ToString(),
+                                    GRPSELTP = Res["GRPSELTP"].ToString(),
+                                    INIGRPCD = Res["INIGRPCD"] == DBNull.Value ? "" : Res["INIGRPCD"].ToString(),
+                                    INIDPTCD = Res["MENUPATH"] == DBNull.Value ? "" : Res["MENUPATH"].ToString(),
+                                    INIWHSCD = Res["MENUPATH"] == DBNull.Value ? "" : Res["MENUPATH"].ToString(),
+                                    INICMPCD = Res["MENUPATH"] == DBNull.Value ? "" : Res["MENUPATH"].ToString(),
+                                    INICSTCD = Res["MENUPATH"] == DBNull.Value ? "" : Res["MENUPATH"].ToString(),
+                                    INISHPCD = Res["MENUPATH"] == DBNull.Value ? "" : Res["MENUPATH"].ToString(),
+                                    ADRCD1 = Res["ADRCD1"].ToString(),
+                                    ADRCD2 = Res["ADRCD2"].ToString(),
+                                    ODRDDMAXWGT = decimal.Parse(Res["ODRDDMAXWGT"].ToString()),
+                                    ODRDDMAXAMT = decimal.Parse(Res["ODRDDMAXAMT"].ToString()),
+                                    ODRDDMAXSUB = decimal.Parse(Res["ODRDDMAXSUB"].ToString()),
+                                    ODRWKMAXWGT = decimal.Parse(Res["ODRWKMAXWGT"].ToString()),
+                                    ODRWKMAXAMT = decimal.Parse(Res["ODRWKMAXAMT"].ToString()),
+                                    ODRWKMAXSUB = decimal.Parse(Res["ODRWKMAXSUB"].ToString()),
+                                    ODRMMMAXWGT = decimal.Parse(Res["ODRMMMAXWGT"].ToString()),
+                                    ODRMMMAXAMT = decimal.Parse(Res["ODRMMMAXAMT"].ToString()),
+                                    ODRMMMAXCNT = decimal.Parse(Res["ODRMMMAXCNT"].ToString()),
+                                    ODRMMMAXSUB = decimal.Parse(Res["ODRMMMAXSUB"].ToString()),
+                                    ODRMMMAXMON = Res["COPCD"].ToString(),
+                                    ODRYYMAXWGT = decimal.Parse(Res["ODRYYMAXWGT"].ToString()),
+                                    ODRYYMAXAMT = decimal.Parse(Res["ODRYYMAXAMT"].ToString()),
+                                    ODRYYMAXCNT = decimal.Parse(Res["ODRYYMAXCNT"].ToString()),
+                                    ODRYYMAXSUB = decimal.Parse(Res["ODRYYMAXSUB"].ToString()),
+                                    ODRYYMAXSMD = Res["COPCD"].ToString(),
+                                    ODRSZMAXWGT = decimal.Parse(Res["ODRSZMAXWGT"].ToString()),
+                                    ODRSZMAXAMT = decimal.Parse(Res["ODRSZMAXAMT"].ToString()),
+                                    ODRSZMAXSUB = decimal.Parse(Res["ODRSZMAXSUB"].ToString()),
+                                    USERLMTYMD = Res["USERLMTYMD"].ToString(),
+                                    ACPTTP = Res["ADRCD2"].ToString(),
+                                    LOGDUPKBN = Res["LOGDUPKBN"].ToString(),
+                                    LOGINSTS = Res["LOGINSTS"].ToString(),
+                                    LOGINDATE = Convert.ToDateTime(Res["LOGINSTS"]),
+                                    LOGOUTDATE = Convert.ToDateTime(Res["LOGOUTDATE"]),
+                                    LOGINNGCNT = Res["LOGINNGCNT"] == DBNull.Value ? 0 : int.Parse(Res["LOGINNGCNT"].ToString()),
+                                    LOGINTRYDATE = Convert.ToDateTime(Res["LOGOUTDATE"]),
+                                    USERSTS = Res["USERSTS"].ToString(),
+                                    SUBCMM = Res["SUBCMM"] == DBNull.Value ? "" : Res["SUBCMM"].ToString(),
+                                };
+                            }
+                        }
+                        else
+                        {
+                            //UserID登録なし
+                            PX_COMMONData.ERRORCODE = "USERERR-02";
+                        }
+                    }
+                }
+            }
+            catch (Exception Exc)
+            {
+                string LogTitle = "システムパラメータ取得";
+                string LogMsg = "エラー「" + Exc.Message + "」";
+                PXCL_log.writeLog(PXCL_log.ERR, PXCL_log.SELECT, LogTitle, LogMsg, System.Reflection.MethodBase.GetCurrentMethod(), PX_COMMONData);
+            }
+            finally
+            {
+                //データベースの接続解除
+                DbAccess.DBClose();
+            }
+            return retList;
+        }
+
+        public static PX_USEROPT GetUserOPT(PX_COMMON PX_COMMONData)
+        {
+            StringBuilder CmdTxt = new StringBuilder();
+            PXCL_dba DbAccess = new PXCL_dba(PXCL_dba.ConnectionSystem, PX_COMMONData);
+            PX_USEROPT retList = new PX_USEROPT();
+            try
+            {
+                // データベースを開く
+                DbAccess.DBConect();
+
+                // システムパラメータの取得SQL
+                CmdTxt.AppendLine("SELECT * ");
+                CmdTxt.AppendLine("FROM P3AS_USER_OPT");
+                CmdTxt.AppendLine(" WHERE USERID = @USERID ");
+                CmdTxt.AppendLine("     AND  COPCD = @COPCD ");
+                CmdTxt.AppendLine("     AND  SYSID = @SYSID ");
+                //CmdTxt.AppendLine("");
+
+                using (SqlCommand SqlCmd = new SqlCommand())
+                {
+                    SqlCmd.Parameters.Add("@USERID", SqlDbType.VarChar).Value = PX_COMMONData.USERID;
+                    SqlCmd.Parameters.Add("@COPCD", SqlDbType.VarChar).Value = PX_COMMONData.COPCD;
+                    SqlCmd.Parameters.Add("@SYSID", SqlDbType.VarChar).Value = PX_COMMONData.SYSID;
+
+                    using (SqlDataReader Res = DbAccess.SQLSelectParameter(CmdTxt.ToString(), SqlCmd))
+                    {
+                        if (Res != null && Res.HasRows)
+                        {
+                            while (Res.Read())
+                            {
+                                retList = new PX_USEROPT
+                                {
+                                    COPCD = Res["COPCD"].ToString(),
+                                    SYSID = Res["SYSID"].ToString(),
+                                    USERID = Res["USERID"].ToString(),
+                                    USERSEX = Res["USERSEX"].ToString(),
+                                    BRTDYMD = Res["BRTDYMD"].ToString(),
+                                    RECPYMD = Res["RECPYMD"].ToString(),
+                                    JOINYMD = Res["JOINYMD"].ToString(),
+                                    JOINACPTID = Res["JOINACPTID"] == DBNull.Value ? "" : Res["JOINACPTID"].ToString(),
+                                    APPYM = Res["APPYM"].ToString(),
+                                   CONTNAMENM1 = Res["CONTNAMENM1"] == DBNull.Value ? "" : Res["CONTNAMENM1"].ToString(),
+                                   CONTNAMENM1C = Res["CONTNAMENM1C"] == DBNull.Value ? "" : Res["CONTNAMENM1C"].ToString(),
+                                   CONTTEL11 = Res["CONTTEL11"] == DBNull.Value ? "" : Res["CONTTEL11"].ToString(),
+                                   CONTTEL12 = Res["CONTTEL12"] == DBNull.Value ? "" : Res["CONTTEL12"].ToString(),
+                                   CONTRLTN1 = Res["CONTRLTN1"] == DBNull.Value ? "" : Res["CONTRLTN1"].ToString(),
+                                   CONTNAMENM2 = Res["CONTNAMENM2"] == DBNull.Value ? "" : Res["CONTNAMENM2"].ToString(),
+                                   CONTNAMENM2C = Res["CONTNAMENM2C"] == DBNull.Value ? "" : Res["CONTNAMENM2C"].ToString(),
+                                   CONTTEL21 = Res["CONTTEL21"] == DBNull.Value ? "" : Res["CONTTEL21"].ToString(),
+                                   CONTTEL22 = Res["CONTTEL22"] == DBNull.Value ? "" : Res["CONTTEL22"].ToString(),
+                                   CONTRLTN2 = Res["CONTRLTN2"] == DBNull.Value ? "" : Res["CONTRLTN2"].ToString(),
+                                    FAMPRTNKBN = Res["FAMPRTNKBN"].ToString(),
+                                   FAMPRTNYMFR = Res["FAMPRTNYMFR"] == DBNull.Value ? "" : Res["FAMPRTNYMFR"].ToString(),
+                                   FAMPRTNYMTO = Res["FAMPRTNYMTO"] == DBNull.Value ? "" : Res["FAMPRTNYMTO"].ToString(),
+                                    FAMCHLDKBN = Res["FAMCHLDKBN"].ToString(),
+                                   FAMCHLDYMFR1 = Res["FAMCHLDYMFR1"] == DBNull.Value ? "" : Res["FAMCHLDYMFR1"].ToString(),
+                                   FAMCHLDYMTO1 = Res["FAMCHLDYMTO1"] == DBNull.Value ? "" : Res["FAMCHLDYMTO1"].ToString(),
+                                   FAMCHLDYMFR2 = Res["FAMCHLDYMFR2"] == DBNull.Value ? "" : Res["FAMCHLDYMFR2"].ToString(),
+                                   FAMCHLDYMTO2 = Res["FAMCHLDYMTO2"] == DBNull.Value ? "" : Res["FAMCHLDYMTO2"].ToString(),
+                                   FAMCHLDYMFR3 = Res["FAMCHLDYMFR3"] == DBNull.Value ? "" : Res["FAMCHLDYMFR3"].ToString(),
+                                   FAMCHLDYMTO3 = Res["FAMCHLDYMTO3"] == DBNull.Value ? "" : Res["FAMCHLDYMTO3"].ToString(),
+                                   FAMCHLDYMFR4 = Res["FAMCHLDYMFR4"] == DBNull.Value ? "" : Res["FAMCHLDYMFR4"].ToString(),
+                                   FAMCHLDYMTO4 = Res["FAMCHLDYMTO4"] == DBNull.Value ? "" : Res["FAMCHLDYMTO4"].ToString(),
+                                   FAMCHLDYMD1 = Res["FAMCHLDYMD1"] == DBNull.Value ? "" : Res["FAMCHLDYMD1"].ToString(),
+                                    FAMCHLDQNT = Res["FAMCHLDQNT"] == DBNull.Value ? 0 : int.Parse(Res["FAMCHLDQNT"].ToString()),
+                                    FAMGSONQNT = Res["FAMGSONQNT"] == DBNull.Value ? 0 : int.Parse(Res["FAMGSONQNT"].ToString()),
+                                    FAMHMATQNT = Res["FAMHMATQNT"] == DBNull.Value ? 0 : int.Parse(Res["FAMHMATQNT"].ToString()),
+                                    MEMBERCD1 = Res["MEMBERCD1"] == DBNull.Value ? "" : Res["MEMBERCD1"].ToString(),
+                                   MEMBERCD2 = Res["MEMBERCD2"] == DBNull.Value ? "" : Res["MEMBERCD2"].ToString(),
+                                   MEMBERCD3 = Res["MEMBERCD3"] == DBNull.Value ? "" : Res["MEMBERCD3"].ToString(),
+                                    MEMBERCD4 = Res["MEMBERCD4"].ToString(),
+                                    MEMBERCD5 = Res["MEMBERCD5"].ToString(),
+                                    MEMBERFLG1 = Res["MEMBERFLG1"].ToString(),
+                                    MEMBERFLG2 = Res["MEMBERFLG2"].ToString(),
+                                    MEMBERFLG3 = Res["MEMBERFLG3"].ToString(),
+                                    MEMBERFLG4 = Res["MEMBERFLG4"].ToString(),
+                                    MEMBERFLG5 = Res["MEMBERFLG5"].ToString(),
+                                    MEMPROCFLG1 = Res["MEMPROCFLG1"].ToString(),
+                                    MEMPROCFLG2 = Res["MEMPROCFLG2"].ToString(),
+                                    MEMPROCFLG3 = Res["MEMPROCFLG3"].ToString(),
+                                    MEMPROCFLG4 = Res["MEMPROCFLG4"].ToString(),
+                                    MEMPROCFLG5 = Res["MEMPROCFLG5"].ToString(),
+                                    LOGPROCFLG1 = Res["LOGPROCFLG1"].ToString(),
+                                    LOGPROCFLG2 = Res["LOGPROCFLG2"].ToString(),
+                                    LOGPROCFLG3 = Res["LOGPROCFLG3"].ToString(),
+                                    LOGPROCFLG4 = Res["LOGPROCFLG4"].ToString(),
+                                    LOGPROCFLG5 = Res["LOGPROCFLG5"].ToString(),
+                                    QUESTANSFLG01 = Res["QUESTANSFLG01"].ToString(),
+                                    QUESTANSFLG02 = Res["QUESTANSFLG02"].ToString(),
+                                    QUESTANSFLG03 = Res["QUESTANSFLG03"].ToString(),
+                                    QUESTANSFLG04 = Res["QUESTANSFLG04"].ToString(),
+                                    QUESTANSFLG05 = Res["QUESTANSFLG05"].ToString(),
+                                    QUESTANSFLG06 = Res["QUESTANSFLG06"].ToString(),
+                                    QUESTANSFLG07 = Res["QUESTANSFLG07"].ToString(),
+                                    QUESTANSFLG08 = Res["QUESTANSFLG08"].ToString(),
+                                    QUESTANSFLG09 = Res["QUESTANSFLG09"].ToString(),
+                                    QUESTANSFLG10 = Res["QUESTANSFLG10"].ToString(),
+                                    QUESTANSCMM1 = Res["QUESTANSCMM1"].ToString(),
+                                    QUESTANSCMM2 = Res["QUESTANSCMM2"].ToString(),
+                                    QUESTANSCMM3 = Res["QUESTANSCMM3"].ToString(),
+                                };
+                            }
+                        }
+                        else
+                        {
+                            //UserID登録なし
+                            PX_COMMONData.ERRORCODE = "USERERR-02";
+                        }
+                    }
+                }
+            }
+            catch (Exception Exc)
+            {
+                string LogTitle = "システムパラメータ取得";
+                string LogMsg = "エラー「" + Exc.Message + "」";
+                PXCL_log.writeLog(PXCL_log.ERR, PXCL_log.SELECT, LogTitle, LogMsg, System.Reflection.MethodBase.GetCurrentMethod(), PX_COMMONData);
+            }
+            finally
+            {
+                //データベースの接続解除
+                DbAccess.DBClose();
+            }
+            return retList;
+        }
     }
 }

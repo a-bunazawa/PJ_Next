@@ -17,12 +17,12 @@ namespace PXAPI
 {
     public class Startup
     {
-        //public Startup(IConfiguration configuration)
-        //{
-        //    Configuration = configuration;
-        //}
-
         public static IConfigurationRoot Configuration { get; private set; }
+
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = (IConfigurationRoot)configuration;
+        }
 
         public Startup(IHostingEnvironment env)
         {
@@ -42,6 +42,9 @@ namespace PXAPI
             // AppSettings取得時エラーの場合は「ErrCode:PXERR201」発生（ここか？）
             services.Configure<PXAS_AppSetCL>(Configuration.GetSection("PXAS_AppSetCL"));
             services.AddMvc();
+
+            // appsettings.jsonで設定したKeyValueをエンティティにバインド            
+            //services.Configure<AppSettingsConfig>(Configuration.GetSection("AppSettings"));
 
         }
 
