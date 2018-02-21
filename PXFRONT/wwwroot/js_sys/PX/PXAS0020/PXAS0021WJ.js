@@ -147,7 +147,7 @@ $(document).ready(function () {
 
     //戻るボタン押下時
     $("#ReturnBtn").click(function () {
-        $("#content").load("http://" + window.location.host + "/PXAS/PXAS0020/PXAS0020VW");
+        $("#content").load("http://" + window.location.host + "/PXFRONT/PXAS/PXAS0020/PXAS0020VW");
     });
 
     //保存ボタン押下時
@@ -379,7 +379,7 @@ function SetContextMenu() {
 
 function LoadDialogHtml(id, callback) {
     LoaderControl("open");
-    $("#dialog").load("http://" + window.location.host + "/PXAS/PXAS0020/_PXAS0021VW", function () {
+    $("#dialog").load("http://" + window.location.host + "/PXFRONT/PXAS/PXAS0020/_PXAS0021VW", function () {
         LoaderControl("close");
         var html = $("#" + id).html().replace(/\n/g, "");
         callback(html);

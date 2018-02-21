@@ -43,6 +43,8 @@
     @{ await Html.RenderPartialAsync("_Header"); }
     @{ await Html.RenderPartialAsync("_Navigation"); }
     @{ await Html.RenderPartialAsync("_Scripts"); }
+    @RenderSection("Scripts", required: false)
+
     <!-- MAIN PANEL -->
     <div id="main" role="main">
         @RenderBody()
@@ -50,6 +52,7 @@
     <!-- END MAIN PANEL -->
     @{ await Html.RenderPartialAsync("_Footer"); }
     @{ await Html.RenderPartialAsync("_Shortcuts"); }
+
     <environment include="Development">
         <!-- PACE LOADER - turn this on if you want ajax loading to show (caution: uses lots of memory on iDevices)-->
         <script data-pace-options='{ "restartOnRequestAfter": true }' src="~/js/plugin/pace/pace.js"></script>
@@ -70,8 +73,6 @@
             pageSetUp();
         });
     </script>
-    @RenderSection("Scripts", required: false)
-
     <div class="divMessageBox animated fadeIn fast" id="LogOutDisplay" style="display:none;">
         <div class="MessageBoxContainer animated fadeIn fast" id="Msg1">
             <div class="MessageBoxMiddle">

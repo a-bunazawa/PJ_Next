@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Root>
+  <Domain>
+    <DomainName>Knet</DomainName>
+    <DomainType>PJ3_Next_PXAPI_</DomainType>
+    <SysURL>http://kanda/KANDANET/API/</SysURL>
+  </Domain>
+  <Domain>
+    <DomainName>AAA</DomainName>
+    <DomainType></DomainType>
+    <SysURL>http://kanda/KANDANET/API/</SysURL>
+  </Domain>
+</Root>

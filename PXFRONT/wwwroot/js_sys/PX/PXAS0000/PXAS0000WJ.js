@@ -21,8 +21,46 @@ $(document).ready(function () {
     $('form').submit(function () {
         return false;
     });
+    //SetLanguage();
 });
 
+function SetLanguage() {
+    $('#LanguageList').empty();
+
+    var mainA = "";
+    mainA += "<a href='#' class='dropdown- toggle' data-toggle='dropdown'>";
+    mainA += "    <img src='../../img/blank.gif' class='flag flag- us alt='United States'>";
+    mainA += "    <span> English (US) </span>";
+    mainA += "    <i class='a fa- angle - down'></i>";
+    mainA += "</a>";
+    $('#LanguageList').append(mainA);
+    //var newLi = $('<li class="active">');
+    //newLi.append('<a href="#"><img src="../../img/blank.gif" class="flag flag-us" alt="United States"> English (US)</a>');
+    //var newUl = $('<ul class="dropdown-menu pull-right">').append(newLi);
+
+    //newLi = $('<li>').append('<a href="#"><img src="../../img/blank.gif" class="flag flag-fr" alt="France"> Francais</a>');
+    //newUl.append(newLi);
+    //newLi = $('<li>').append('<a href="#"><img src="../../img/blank.gif" class="flag flag-es" alt="Spanish"> Espanol</a>');
+    //newUl.append(newLi);
+    //newLi = $('<li>').append('<a href="#"><img src="../../img/blank.gif" class="flag flag-de" alt="German"> Deutsch</a>');
+    //newUl.append(newLi);
+    //newLi = $('<li>').append('<a href="#"><img src="../../img/blank.gif" class="flag flag-jp" alt="Japan"> 日本語</a>');
+    //newUl.append(newLi);
+    //newLi = $('<li>').append('<a href="#"><img src="~/img/blank.gif" class="flag flag-cn" alt="China"> 中文</a>');
+    //newUl.append(newLi);
+    //newLi = $('<li>').append('<a href="#"><img src="~/img/blank.gif" class="flag flag-it" alt="Italy"> Italiano</a>');
+    //newUl.append(newLi);
+    //newLi = $('<li>').append('<a href="#"><img src="~/img/blank.gif" class="flag flag-pt" alt="Portugal"> Portugal</a>');
+    //newUl.append(newLi);
+    //newLi = $('<li>').append('<a href="#"><img src="~/img/blank.gif" class="flag flag-ru" alt="Russia"> Русский язык</a>');
+    //newUl.append(newLi);
+
+    //$('#LanguageList').append(newUl);
+
+    pageSetUp();
+
+    return false;
+}
 // ブラウザサイズ変更処理
 function resizeWindow() {
     // メイン窓サイズ変更
@@ -45,7 +83,7 @@ function Login() {
     //data.Pass = $("#password").val();
     data.Pass = "kcom";
     //data.DBINF = localStorage.getItem(domainType + "SYSTEMDB");
-    data.DB = localStorage.getItem(domainType + "SYSTEMDB");
+    data.DB = "KN";
 
     $.ajax(url, { type: "POST", data: data }).then(function (r) {
 
@@ -54,9 +92,14 @@ function Login() {
             localStorage.setItem(domainType + "COPCD", r.COPCD);
             localStorage.setItem(domainType + "SYSID", r.SYSID);
             localStorage.setItem(domainType + "MENUID", r.MENUID);
-            localStorage.setItem(domainType + "USERDBNM", r.USERDBNM);
+            //localStorage.setItem(domainType + "SYSDBSVRNM", r.SYSDBSVRNM);
+            //localStorage.setItem(domainType + "SYSDBSVRIP", r.SYSDBSVRIP);
+            //localStorage.setItem(domainType + "SYSDBNM", r.SYSDBNM);
+            //localStorage.setItem(domainType + "SYSDBSVRUR", r.SYSDBSVRUR);
+            //localStorage.setItem(domainType + "SYSDBSVRPW", r.SYSDBSVRPW);
             localStorage.setItem(domainType + "USERDBSVRNM", r.USERDBSVRNM);
             localStorage.setItem(domainType + "USERDBSVRIP", r.USERDBSVRIP);
+            localStorage.setItem(domainType + "USERDBNM", r.USERDBNM);
             localStorage.setItem(domainType + "USERDBSVRUR", r.USERDBSVRUR);
             localStorage.setItem(domainType + "USERDBSVRPW", r.USERDBSVRPW);
             localStorage.setItem(domainType + "INIGRPCD", r.INIGRPCD);
@@ -67,9 +110,15 @@ function Login() {
             localStorage.setItem(domainType + "INISHPCD", r.INISHPCD);
             localStorage.setItem(domainType + "USERID", r.Id);
 
+            localStorage.setItem(domainType + "SYSDBSVRNM", "kanda");
+            localStorage.setItem(domainType + "SYSDBSVRIP", "");
+            localStorage.setItem(domainType + "SYSDBNM", "KN_SYSTEM");
+            localStorage.setItem(domainType + "SYSDBSVRUR", r.USERDBSVRUR);
+            localStorage.setItem(domainType + "SYSDBSVRPW", r.USERDBSVRPW);
+
             localStorage.setItem("Local_PXAPI_DomainType", domainType);
             //window.location.href = r.SendUrl;
-            window.location.href = "http://" + window.location.host + "/PXAS/PXAS0010/PXAS0010VW";
+            window.location.href = "http://" + window.location.host + "/PXFRONT/PXAS/PXAS0010/PXAS0010VW";
         } else {
             createDialog("dialog", "1,0,ログイン画面,ALM," + r.ErrorMsg + ",ＯＫ,ALM000-01,OK");
             $("#dialog").dialog("open");
@@ -81,9 +130,7 @@ function Login() {
         $("#dialog").dialog("open");
         Ladda.stopAll();
     });
-
-    //window.location.href = "https://" + window.location.host + "/PXAS/PXAS0010/PXAS0010VW";
-
+    
     //var error = "2,0,アラーム,ALM,システム利用期限が間もなく終了します。,ＯＫ,ALM000-01_OK,OK,キャンセル,ALM000-01_NG,NG";
     //var dialog = $("#dialog");
     //if (dialog != null) {

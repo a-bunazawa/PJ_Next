@@ -14,13 +14,17 @@ function GetLoginData() {
     data.SYSID = localStorage.getItem(domainType + "SYSID");
     data.MENUID = localStorage.getItem(domainType + "MENUID");
     data.DBINF = localStorage.getItem(domainType + "SYSTEMDB");
-    data.USERDBNM = localStorage.getItem(domainType + "USERDBNM");
+    data.SYSDBSVRNM = localStorage.getItem(domainType + "SYSDBSVRNM");
+    data.SYSDBSVRIP = localStorage.getItem(domainType + "SYSDBSVRIP");
+    data.SYSDBNM = localStorage.getItem(domainType + "SYSDBNM");
+    data.SYSDBSVRUR = localStorage.getItem(domainType + "SYSDBSVRUR");
+    data.SYSDBSVRPW = localStorage.getItem(domainType + "SYSDBSVRPW");
     data.USERDBSVRNM = localStorage.getItem(domainType + "USERDBSVRNM");
     data.USERDBSVRIP = localStorage.getItem(domainType + "USERDBSVRIP");
+    data.USERDBNM = localStorage.getItem(domainType + "USERDBNM");
     data.USERDBSVRUR = localStorage.getItem(domainType + "USERDBSVRUR");
     data.USERDBSVRPW = localStorage.getItem(domainType + "USERDBSVRPW");
-
-
+    
     data.DB = "KN";
 
     return data;
@@ -587,8 +591,8 @@ function GetDialogIndicationProgram(dialogId, copcd, pgId, dialogMsgId) {
     var j$ = jQuery;
     dialogId = "#" + dialogId;
 
-    //var url = localStorage.getItem("LOGINEXT_WMSAPI_URL") + "api/LNAS0001/Login";
-    var url = "http://kanda/KANDANET/API/api/LNAS0001/Login";
+    //var url = localStorage.getItem(domainType + "URL") + "api/LNAS0001/Login";
+    var url = "http://localhost:53515/Common/GetDialogData";
 
     var sendData = {};
     sendData = GetLoginData();

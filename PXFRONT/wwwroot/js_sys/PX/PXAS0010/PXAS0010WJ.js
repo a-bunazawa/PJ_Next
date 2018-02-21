@@ -57,7 +57,7 @@ $(document).ready(function () {
         $("#bot2-Msg1").click(function () {
             $("#LogOutDisplay").hide();
             RemoveLocalStorage();
-            window.location.href = "http://" + window.location.host + "/PXAS/PXAS0000/PXAS0000VW";
+            window.location.href = "http://" + window.location.host + "/PXFRONT";
         });
 
     //} else {
@@ -70,6 +70,27 @@ $(document).ready(function () {
     //    });
     //}
 });
+
+//レイアウトオプションの日本語化
+function LocalLayoutOption() {
+    $(".demo").width(200);
+    $(".demo legend").text("レイアウト設定");
+    $("#smart-fixed-header").next("span").text("ヘッダー固定");
+    $("#smart-fixed-navigation").next("span").text("左部メニュー固定");
+    $("#smart-fixed-ribbon").next("span").text("リボン固定");
+    $("#smart-fixed-footer").next("span").text("フッター固定");
+    $("#smart-fixed-container").next("span").text("コンテナサイズに縮小");
+    $("#smart-rtl").next("span").text("左部メニューを右寄せ");
+    $("#smart-topmenu").next("span").text("左部メニューを上寄せ");
+    $("#colorblind-friendly").next("span").text("枠線の強調");
+    $("#reset-smart-widget").prev("h6").text("ローカルストレージの消去");
+    $("#reset-smart-widget").html("<i class='fa fa-refresh'></i> 初期化");
+    $("#smart-styles").prev("h6").text("スキンの変更");
+
+    $("#smart-fixed-container").click(function () {
+        $("#smart-bgimages h6").text("背景の変更");
+    });
+}
 
 var timer = false;
 $(window).resize(function () {
@@ -85,8 +106,116 @@ $(window).resize(function () {
 
 function TestStepIn() {
     TaskQue = 0;
+    
+    var url = "http://localhost/PXAPI2" + "/PXAS0010/CreateMenu";
 
-    GetDialogIndicationProgram("dialog", "00000", "P3AS0000", "ALM000-01");
+    var data = GetLoginData();
+
+    $.ajax(url, { type: "POST", data: data }).then(function (r) {
+        data = r;
+        if (data != "") {
+            $('#listMenu').empty();
+            $('#mainMenu').empty();
+            var newDivDataLeft = "";
+            var newDivDataRight = "";
+
+            // Home作成
+            //var homeRow = "<a href='LNAS0000VW' title='ホーム'><i class='fa fa-lg fa-fw fa-home'></i>";
+            var para = '"PXAS/PXAS0000/PXAS0000VW", "0",  "home", 0';
+            var homeRow = "<a href='#' id='home' title='ホーム' onclick='MenuLink(" + para + ")'><i class='fa fa-lg fa-fw fa-home'></i>";
+            homeRow += "<span class='menu-item-parent'>ホーム</span></a>";
+            var newLi = $('<li>').append(homeRow);
+            newLi.addClass("active");
+            newLi.addClass("MenuLinkLi");
+            $('#listMenu').append(newLi);
+            // liに追加する内容
+            for (var i = 0; i < data.length; i++) {
+                var rowData = data[i];
+                var childRow = "";
+                var parentClass = "";
+                // 子要素を格納するulタグを生成
+                var childRowUl = $('<ul>');
+                // 親要素の中身[<a>タグ等]
+                childRow = rowData.ChildRow;
+                if (rowData.ParentClass != "") {
+                    parentClass = rowData.ParentClass;
+                }
+
+                // 中央一覧メニュー部分
+                var childDivData = "";
+                var newDivData = "    <div class='jarviswidget jarviswidget-color-blueLight' id='' data-widget-editbutton='false'";
+                newDivData += " data-widget-colorbutton='false' data-widget-deletebutton='false' data-widget-fullscreenbutton='false'>" + "\r\n";
+                newDivData += "        <header>" + "\r\n";
+                newDivData += "            " + rowData.ChildRowMain + "\r\n";
+                newDivData += "        </header>" + "\r\n";
+                newDivData += "        <div>" + "\r\n";
+                newDivData += "            <div class='widget-body flex'>" + "\r\n";
+
+                for (var j = 0; j < rowData.ChildData.length; j++) {
+                    var childData = rowData.ChildData[j];
+                    // 子要素の中身[<a>タグ等]
+                    var childLi = $('<li>').html(childData[0]);
+                    childLi.addClass("MenuLinkLi");
+                    if (childData[1] == "active") {
+                        childLi.addClass('active');
+                    }
+                    childRowUl.append(childLi);
+
+                    // 中央一覧メニュー部分
+                    childDivData += "                <div class='box'>" + "\r\n";
+                    childDivData += "                    " + childData[2] + "\r\n";
+                    childDivData += "                </div>" + "\r\n";
+                }
+                // liタグを生成してテキスト追加
+                var newLi = $('<li>').append(childRow);
+                if (rowData.ChildRow.split("MenuLink")[1].split(",")[1].trim() == "\"\"") {
+                    newLi.append(childRowUl);
+                }
+                newLi.addClass("MenuLinkLi");
+                if (parentClass != "") {
+                    //newLi.addClass(parentClass);
+                }
+
+                // insertに生成したliタグを追加
+                $('#listMenu').append(newLi);
+
+                // 中央一覧メニュー部分
+                if (childDivData != "") {
+                    newDivData += childDivData;
+                    newDivData += "            </div>" + "\r\n";
+                    newDivData += "        </div>" + "\r\n";
+                    newDivData += "    </div>" + "\r\n";
+                    if (rowData.ChildRowMainFlag == "left") {
+                        newDivDataLeft += newDivData;
+                    } else {
+                        newDivDataRight += newDivData;
+                    }
+                }
+            }
+
+            var newMenuLeft = $('<article>').append(newDivDataLeft);
+            newMenuLeft.addClass("col-xs-12 col-sm-6 col-md-6 col-lg-6");
+            $('#mainMenu').append(newMenuLeft);
+            var newMenuRight = $('<article>').append(newDivDataRight);
+            newMenuRight.addClass("col-xs-12 col-sm-6 col-md-6 col-lg-6");
+            $('#mainMenu').append(newMenuRight);
+
+            $("nav ul").jarvismenu({
+                "accordion": menu_accordion || !0
+                , "speed": menu_speed || !0
+                , "closedSign": '<em class="fa fa-plus-square-o"></em>'
+                , "openedSign": '<em class="fa fa-minus-square-o"></em>'
+            });
+        }
+        pageReSetUp();
+    }, function (e) {
+        createDialog("dialog", "1,0,ログイン画面,ALM,error: " + e + ",ＯＫ,ALM000-01,OK");
+        $("#dialog").dialog("open");
+        Ladda.stopAll();
+    });
+
+
+
     //StepIn();
 }
 
@@ -142,7 +271,7 @@ function MenuLink(Link, Type, ID, parent) {
     TaskQue = 0;
     if (Type == "0") {
         //Link = "../../" + Link;
-        Link = "http://" + window.location.host + "/" + Link;
+        Link = "http://" + window.location.host + "/PXFRONT/" + Link;
     }
     if (Link != "" && Type != "") {
         LoaderControl("open");
