@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Html;
 using Newtonsoft.Json;
 using Microsoft.Extensions.Options;
 using static PXLIB.PXCL_stc;
@@ -14,30 +15,14 @@ namespace PXAPI.Areas.PXAS.Controllers
 {
     public class PXAS0000Controller : Controller
     {
-        readonly IOptions<PXAS_AppSetCL> appSettings;
-        /// <summary>
-        /// コンストラクターを定義し、引数に構成情報を取得するクラスを定義する。
-        /// </summary>
-        /// <param name="userSettings"></param>
-        public PXAS0000Controller(IOptions<PXAS_AppSetCL> _appSettings)
-        {
-            //ユーザー設定情報インスタンスをフィールドに保持
-            this.appSettings = _appSettings;
-        }
 
         public JsonGetMenuData Test(String id)
         {
-            JsonGetMenuData test = new JsonGetMenuData();
-            test.Id = id;
-            test.DB = "aaa";
-
-            JsonGetDialogData data = new JsonGetDialogData();
-            PX_COMMON PX_COMMONData = new PX_COMMON();
-            PX_COMMONData = PXAPI.Controllers.CommonController.SetSysDB(this.appSettings.Value, Request, (PX_COMMON)data);
-
-
-
-
+            JsonGetMenuData test = new JsonGetMenuData
+            {
+                Id = id,
+                DB = "aaa"
+            };
 
             return test;
         }

@@ -38,6 +38,8 @@ namespace PXAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            // AppSettings取得時エラーの場合は「ErrCode:PXERR201」発生（ここか？）
             services.Configure<PXAS_AppSetCL>(Configuration.GetSection("PXAS_AppSetCL"));
             services.AddMvc();
 
@@ -61,7 +63,7 @@ namespace PXAPI
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=PXAS0000}/{action=Test}/{id=2}");
+                    template: "api/{controller=Login}/{action=PrepareLogin}/{id=2}");
             });
         }
     }

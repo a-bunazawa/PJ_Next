@@ -1,7 +1,6 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using Newtonsoft.Json;
+
 
 namespace PXLIB
 {
@@ -139,8 +138,31 @@ namespace PXLIB
             /// <summary> ログイン遷移先 </summary>
             [JsonProperty(PropertyName = "CALLTOP")]
             public string CALLTOP { get; set; }
+            /// <summary>エラーステータス(空の場合正常)およびエラーコード</summary>
+            public string ERRORCODE { get; set; }
+            public string ERRORMSG { get; set; }
 
             public PX_COMMON()
+            {
+                Init_AllData();
+            }
+            public PX_COMMON(string typename, PX_COMMON data)
+            {
+                Init_AllData();
+
+                switch (typename)
+                {
+                    case "JsonGetDialogData":
+                        DBINF = data.DBINF;
+                        COPCD = data.COPCD;
+                        USERID = data.USERID;
+                        MENUID = data.MENUID;
+                        USERDBSVRNM = data.USERDBSVRNM;
+                        break;
+                }
+            }
+
+            private void Init_AllData()
             {
                 SERVERURL = "";
                 LOGINURL = "";
@@ -180,8 +202,8 @@ namespace PXLIB
                 DBINF = "";
                 BYTECHECKFLG = "";
                 CALLTOP = "";
+                ERRORCODE = "";
             }
-
         }
 
         /// <summary> 権限マスタ </summary>
@@ -258,5 +280,398 @@ namespace PXLIB
             public string SYSPARAID3 { get; set; }
 
         }
+
+        public class PX_SYSPARA
+        {
+            public string COPCD { get; set; }
+            public string SYSPARAID1 { get; set; }
+            public string SYSPARAID2 { get; set; }
+            public string SYSPARAID3 { get; set; }
+            public int SYSPARASEQ { get; set; }
+            public string SYSPARANM { get; set; }
+            public int DSPSORT { get; set; }
+            public string CTLCD1 { get; set; }
+            public string CTLCD2 { get; set; }
+            public string CTLCD3 { get; set; }
+            public string CTLCD4 { get; set; }
+            public string CTLCD5 { get; set; }
+            public string CTLPARA1 { get; set; }
+            public string CTLPARA2 { get; set; }
+            public string CTLPARA3 { get; set; }
+            public string CTLPARA4 { get; set; }
+            public string CTLPARA5 { get; set; }
+            public decimal CTLSEQ1 { get; set; }
+            public decimal CTLSEQ2 { get; set; }
+            public decimal CTLSEQ3 { get; set; }
+            public decimal CTLSEQ4 { get; set; }
+            public decimal CTLSEQ5 { get; set; }
+            public decimal CTLQNT1 { get; set; }
+            public decimal CTLQNT2 { get; set; }
+            public decimal CTLQNT3 { get; set; }
+            public decimal CTLQNT4 { get; set; }
+            public decimal CTLQNT5 { get; set; }
+            public string CTLFLG1 { get; set; }
+            public string CTLFLG2 { get; set; }
+            public string CTLFLG3 { get; set; }
+            public string CTLFLG4 { get; set; }
+            public string CTLFLG5 { get; set; }
+            public DateTime? CTLDATE1 { get; set; }
+            public DateTime? CTLDATE2 { get; set; }
+            public DateTime? CTLDATE3 { get; set; }
+            public DateTime? CTLDATE4 { get; set; }
+            public DateTime? CTLDATE5 { get; set; }
+            public string GUIDENM { get; set; }
+            public string SUBCMM { get; set; }
+
+            public PX_SYSPARA()
+            {
+                COPCD = "";
+                SYSPARAID1 = "";
+                SYSPARAID2 = "";
+                SYSPARAID3 = "";
+                SYSPARASEQ = 0;
+                SYSPARANM = "";
+                DSPSORT = 0;
+                CTLCD1 = "";
+                CTLCD2 = "";
+                CTLCD3 = "";
+                CTLCD4 = "";
+                CTLCD5 = "";
+                CTLPARA1 = "";
+                CTLPARA2 = "";
+                CTLPARA3 = "";
+                CTLPARA4 = "";
+                CTLPARA5 = "";
+                CTLSEQ1 = 0;
+                CTLSEQ2 = 0;
+                CTLSEQ3 = 0;
+                CTLSEQ4 = 0;
+                CTLSEQ5 = 0;
+                CTLQNT1 = 0.00M;
+                CTLQNT2 = 0.00M;
+                CTLQNT3 = 0.00M;
+                CTLQNT4 = 0.00M;
+                CTLQNT5 = 0.00M;
+                CTLFLG1 = "";
+                CTLFLG2 = "";
+                CTLFLG3 = "";
+                CTLFLG4 = "";
+                CTLFLG5 = "";
+                CTLDATE1 = null;
+                CTLDATE2 = null;
+                CTLDATE3 = null;
+                CTLDATE4 = null;
+                CTLDATE5 = null;
+                GUIDENM = null;
+                SUBCMM = null;
+            }
+        }
+        public class PX_PJ3CONFIG
+        {
+            /// <summary>タイトルロゴ：ファイル名を設定。未設定の場合、タイトルロゴは表示されない</summary>
+            public string TITLEPIC { get; set; }
+            /// <summary>画面背景：ファイル名を設定。未設定の場合、背景は表示されない(白)</summary>
+            public string BGPIC { get; set; }
+            /// <summary>アカウント追加ボタンの表示：[アカウント追加]ボタンの表示の有無</summary>
+            public string ADDACCOUNT { get; set; }
+            /// <summary>アカウント追加ボタンの表示：[ログイン状態の維持]のチェック有無(デフォルト)</summary>
+            public string KEEPLOGIN { get; set; }
+            /// <summary>インフォメーション表示：[表示テキスト]    ※未設定の場合は、テキスト表示なし</summary>
+            public string VIEWINFO { get; set; }
+            /// <summary>
+            /// デフォルトの言語コード：[言語コード] のデフォルト
+            /// 　※未設定の場合は、プルダウンの1件目とする
+            /// </summary>
+            public string DEFLANG { get; set; }
+            /// <summary>
+            /// ヘッダーフッターのカラーコード：[カラーコード]　
+            /// ※未設定の場合は、デフォルトのカラーコードとする（#F4F4F4）
+            /// </summary>
+            public string FLAMECOLOR { get; set; }
+            /// <summary>ユーザIDのポリシー：[ユーザIDのポリシー:文字列制御]</summary>
+            public string IDCHAR { get; set; }
+            /// <summary>ユーザIDのポリシー：ユーザIDの最低文字数　※0の場合は最低制限なし</summary>
+            public int IDLENMIN { get; set; }
+            /// <summary>ユーザIDのポリシー：ユーザIDの最大文字数　※0の場合は最大制限なし</summary>
+            public int IDLENMAX { get; set; }
+            /// <summary>パスワードのポリシー：[パスワードのポリシー:文字列制御]</summary>
+            public string PACHAR { get; set; }
+            /// <summary>パスワードのポリシー：ユーザIDの最低文字数　※0の場合は最低制限なし</summary>
+            public int PALENMIN { get; set; }
+            /// <summary>パスワードのポリシー：ユーザIDの最大文字数　※0の場合は最低制限なし</summary>
+            public int PALENMAX { get; set; }
+            /// <summary>パスワードロック処理：パスワード入力回数エラー発生時の処理</summary>
+            public string PALOCACT { get; set; }
+            /// <summary>パスワードロック処理：パスワード入力回数エラーの基準回数</summary>
+            public int PALOCCNT { get; set; }
+
+            /// <summary>起動元タイプ</summary>
+            public enum BROWSE_TYPE
+            {
+                BWS,  // ブラウザ
+                SSO,   // SSO
+                MOB,   // モバイル端末
+                OTH    // その他 
+            }
+            /// <summary>起動元</summary>
+            public BROWSE_TYPE BROWSETP { get; set; }
+
+            /// <summary>システム起動：</summary>
+            public enum PAGE_TYPE
+            {
+                MAN,  // 管理者サイト(ReOSYS/Filix/K-NET/WMS)
+                USE    // ユーザーサイト(ReOSYS/Filix)
+            }
+            /// <summary>システム起動</summary>
+            public PAGE_TYPE PAGETP { get; set; }
+
+            /// <summary>タイトルロゴ</summary>
+            public PX_PJ3CONFIG()
+            {
+                PAGETP = PAGE_TYPE.MAN; // Defaultは管理者里とする
+            }
+        }
+
+        public class PX_USERCTL
+        {
+            public string COPCD { get; set; }
+            public string SYSID { get; set; }
+            public string USERID { get; set; }
+            public string MENUID { get; set; }
+            public string MENUPATH { get; set; }
+            public string AUTKBN { get; set; }
+            public string GRPSELTP { get; set; }
+            public string INIGRPCD { get; set; }
+            public string INIDPTCD { get; set; }
+            public string INIWHSCD { get; set; }
+            public string INICMPCD { get; set; }
+            public string INICSTCD { get; set; }
+            public string INISHPCD { get; set; }
+            public string ADRCD1 { get; set; }
+            public string ADRCD2 { get; set; }
+            public decimal ODRDDMAXWGT { get; set; }
+            public decimal ODRDDMAXAMT { get; set; }
+            public decimal ODRDDMAXSUB { get; set; }
+            public decimal ODRWKMAXWGT { get; set; }
+            public decimal ODRWKMAXAMT { get; set; }
+            public decimal ODRWKMAXSUB { get; set; }
+            public decimal ODRMMMAXWGT { get; set; }
+            public decimal ODRMMMAXAMT { get; set; }
+            public decimal ODRMMMAXCNT { get; set; }
+            public decimal ODRMMMAXSUB { get; set; }
+            public string ODRMMMAXMON { get; set; }
+            public decimal ODRYYMAXWGT { get; set; }
+            public decimal ODRYYMAXAMT { get; set; }
+            public decimal ODRYYMAXCNT { get; set; }
+            public decimal ODRYYMAXSUB { get; set; }
+            public string ODRYYMAXSMD { get; set; }
+            public decimal ODRSZMAXWGT { get; set; }
+            public decimal ODRSZMAXAMT { get; set; }
+            public decimal ODRSZMAXSUB { get; set; }
+            public string USERLMTYMD { get; set; }
+            public string ACPTTP { get; set; }
+            public string LOGDUPKBN { get; set; }
+            public string LOGINSTS { get; set; }
+            public DateTime? LOGINDATE { get; set; }
+            public DateTime? LOGOUTDATE { get; set; }
+            public int LOGINNGCNT { get; set; }
+            public DateTime? LOGINTRYDATE { get; set; }
+            public string USERSTS { get; set; }
+            public string SUBCMM { get; set; }
+
+            public PX_USERCTL()
+            {
+                COPCD = "";
+                SYSID = "";
+                USERID = "";
+                MENUID = "";
+                MENUPATH = "";
+                AUTKBN = "";
+                GRPSELTP = "";
+                INIGRPCD = "";
+                INIDPTCD = "";
+                INIWHSCD = "";
+                INICMPCD = "";
+                INICSTCD = "";
+                INISHPCD = "";
+                ADRCD1 = "";
+                ADRCD2 = "";
+                ODRDDMAXWGT = 0;
+                ODRDDMAXAMT = 0;
+                ODRDDMAXSUB = 0;
+                ODRWKMAXWGT = 0;
+                ODRWKMAXAMT = 0;
+                ODRWKMAXSUB = 0;
+                ODRMMMAXWGT = 0;
+                ODRMMMAXAMT = 0;
+                ODRMMMAXCNT = 0;
+                ODRMMMAXSUB = 0;
+                ODRMMMAXMON = "";
+                ODRYYMAXWGT = 0;
+                ODRYYMAXAMT = 0;
+                ODRYYMAXCNT = 0;
+                ODRYYMAXSUB = 0;
+                ODRYYMAXSMD = "";
+                ODRSZMAXWGT = 0;
+                ODRSZMAXAMT = 0;
+                ODRSZMAXSUB = 0;
+                USERLMTYMD = "";
+                ACPTTP = "";
+                LOGDUPKBN = "";
+                LOGINSTS = "";
+                LOGINDATE = null;
+                LOGOUTDATE = null;
+                LOGINNGCNT = 0;
+                LOGINTRYDATE = null;
+                USERSTS = "";
+                SUBCMM = "";
+            }
+        }
+
+        public class PX_USEROPT
+        {
+            public string COPCD { get; set; }
+            public string SYSID { get; set; }
+            public string USERID { get; set; }
+            public string USERSEX { get; set; }
+            public string BRTDYMD { get; set; }
+            public string RECPYMD { get; set; }
+            public string JOINYMD { get; set; }
+            public string JOINACPTID { get; set; }
+            public string APPYM { get; set; }
+            public string CONTNAMENM1 { get; set; }
+            public string CONTNAMENM1C { get; set; }
+            public string CONTTEL11 { get; set; }
+            public string CONTTEL12 { get; set; }
+            public string CONTRLTN1 { get; set; }
+            public string CONTNAMENM2 { get; set; }
+            public string CONTNAMENM2C { get; set; }
+            public string CONTTEL21 { get; set; }
+            public string CONTTEL22 { get; set; }
+            public string CONTRLTN2 { get; set; }
+            public string FAMPRTNKBN { get; set; }
+            public string FAMPRTNYMFR { get; set; }
+            public string FAMPRTNYMTO { get; set; }
+            public string FAMCHLDKBN { get; set; }
+            public string FAMCHLDYMFR1 { get; set; }
+            public string FAMCHLDYMTO1 { get; set; }
+            public string FAMCHLDYMFR2 { get; set; }
+            public string FAMCHLDYMTO2 { get; set; }
+            public string FAMCHLDYMFR3 { get; set; }
+            public string FAMCHLDYMTO3 { get; set; }
+            public string FAMCHLDYMFR4 { get; set; }
+            public string FAMCHLDYMTO4 { get; set; }
+            public string FAMCHLDYMD1 { get; set; }
+            public int FAMCHLDQNT { get; set; }
+            public int FAMGSONQNT { get; set; }
+            public int FAMHMATQNT { get; set; }
+            public string MEMBERCD1 { get; set; }
+            public string MEMBERCD2 { get; set; }
+            public string MEMBERCD3 { get; set; }
+            public string MEMBERCD4 { get; set; }
+            public string MEMBERCD5 { get; set; }
+            public string MEMBERFLG1 { get; set; }
+            public string MEMBERFLG2 { get; set; }
+            public string MEMBERFLG3 { get; set; }
+            public string MEMBERFLG4 { get; set; }
+            public string MEMBERFLG5 { get; set; }
+            public string MEMPROCFLG1 { get; set; }
+            public string MEMPROCFLG2 { get; set; }
+            public string MEMPROCFLG3 { get; set; }
+            public string MEMPROCFLG4 { get; set; }
+            public string MEMPROCFLG5 { get; set; }
+            public string LOGPROCFLG1 { get; set; }
+            public string LOGPROCFLG2 { get; set; }
+            public string LOGPROCFLG3 { get; set; }
+            public string LOGPROCFLG4 { get; set; }
+            public string LOGPROCFLG5 { get; set; }
+            public string QUESTANSFLG01 { get; set; }
+            public string QUESTANSFLG02 { get; set; }
+            public string QUESTANSFLG03 { get; set; }
+            public string QUESTANSFLG04 { get; set; }
+            public string QUESTANSFLG05 { get; set; }
+            public string QUESTANSFLG06 { get; set; }
+            public string QUESTANSFLG07 { get; set; }
+            public string QUESTANSFLG08 { get; set; }
+            public string QUESTANSFLG09 { get; set; }
+            public string QUESTANSFLG10 { get; set; }
+            public string QUESTANSCMM1 { get; set; }
+            public string QUESTANSCMM2 { get; set; }
+            public string QUESTANSCMM3 { get; set; }
+
+
+            public PX_USEROPT()
+            {
+                COPCD = "";
+                SYSID = "";
+                USERID = "";
+                USERSEX = "";
+                BRTDYMD = "";
+                RECPYMD = "";
+                JOINYMD = "";
+                JOINACPTID = "";
+                APPYM = "";
+                CONTNAMENM1 = "";
+                CONTNAMENM1C = "";
+                CONTTEL11 = "";
+                CONTTEL12 = "";
+                CONTRLTN1 = "";
+                CONTNAMENM2 = "";
+                CONTNAMENM2C = "";
+                CONTTEL21 = "";
+                CONTTEL22 = "";
+                CONTRLTN2 = "";
+                FAMPRTNKBN = "";
+                FAMPRTNYMFR = "";
+                FAMPRTNYMTO = "";
+                FAMCHLDKBN = "";
+                FAMCHLDYMFR1 = "";
+                FAMCHLDYMTO1 = "";
+                FAMCHLDYMFR2 = "";
+                FAMCHLDYMTO2 = "";
+                FAMCHLDYMFR3 = "";
+                FAMCHLDYMTO3 = "";
+                FAMCHLDYMFR4 = "";
+                FAMCHLDYMTO4 = "";
+                FAMCHLDYMD1 = "";
+                FAMCHLDQNT = 0;
+                FAMGSONQNT = 0;
+                FAMHMATQNT = 0;
+                MEMBERCD1 = "";
+                MEMBERCD2 = "";
+                MEMBERCD3 = "";
+                MEMBERCD4 = "";
+                MEMBERCD5 = "";
+                MEMBERFLG1 = "";
+                MEMBERFLG2 = "";
+                MEMBERFLG3 = "";
+                MEMBERFLG4 = "";
+                MEMBERFLG5 = "";
+                MEMPROCFLG1 = "";
+                MEMPROCFLG2 = "";
+                MEMPROCFLG3 = "";
+                MEMPROCFLG4 = "";
+                MEMPROCFLG5 = "";
+                LOGPROCFLG1 = "";
+                LOGPROCFLG2 = "";
+                LOGPROCFLG3 = "";
+                LOGPROCFLG4 = "";
+                LOGPROCFLG5 = "";
+                QUESTANSFLG01 = "";
+                QUESTANSFLG02 = "";
+                QUESTANSFLG03 = "";
+                QUESTANSFLG04 = "";
+                QUESTANSFLG05 = "";
+                QUESTANSFLG06 = "";
+                QUESTANSFLG07 = "";
+                QUESTANSFLG08 = "";
+                QUESTANSFLG09 = "";
+                QUESTANSFLG10 = "";
+                QUESTANSCMM1 = "";
+                QUESTANSCMM2 = "";
+                QUESTANSCMM3 = "";
+            }
+        }
+
     }
 }

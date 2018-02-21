@@ -23,7 +23,7 @@
     "PXAPI": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "Common/GetDialogData",
+      "launchUrl": "http://localhost:53515/api/",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

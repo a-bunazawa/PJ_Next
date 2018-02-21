@@ -49,43 +49,47 @@ namespace PXLIB
             set { SqlTran = value; }
         }
 
+
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        /// <param name="Connect">接続先DB</param>
+        /// <param name="ConnectType">接続先DB:システム(ConnectionSystem = 0) ユーザ(ConnectionUser = 1)</param>
         /// <param name="PxASuserValData">PxASuserValのモデル</param>
-        public PXCL_dba(int Connect, PX_COMMON PxASuserValData)
+        public PXCL_dba(int ConnectType, PX_COMMON PxASuserValData)
         {
             if (SqlCon == null) { SqlCon = new SqlConnection(); }
             try
             {
                 // 接続文字列の設定
                 StringBuilder DbConnection = new StringBuilder();
-                if (Connect == ConnectionUser)
+                switch (ConnectType)
                 {
-                    DbConnection.Append("Data Source=");
-                    DbConnection.Append((!string.IsNullOrEmpty(PxASuserValData.USERDBSVRIP)) ? PxASuserValData.USERDBSVRIP : PxASuserValData.USERDBSVRNM);
-                    DbConnection.Append(";Initial Catalog=");
-                    DbConnection.Append(PxASuserValData.USERDBNM);
-                    DbConnection.Append(";User ID=");
-                    DbConnection.Append(PxASuserValData.USERDBSVRUR);
-                    DbConnection.Append(";Password=");
-                    DbConnection.Append(PXCL_com.Decrypt(PxASuserValData.USERDBSVRPW));
-                    DbConnection.Append("; Max Pool Size=100;");
-                    ConnectString = DbConnection.ToString();
-                }
-                else
-                {
-                    DbConnection.Append("Data Source=");
-                    DbConnection.Append((!string.IsNullOrEmpty(PxASuserValData.SYSDBSVRIP)) ? PxASuserValData.SYSDBSVRIP : PxASuserValData.SYSDBSVRNM);
-                    DbConnection.Append(";Initial Catalog=");
-                    DbConnection.Append(PxASuserValData.SYSDBNM);
-                    DbConnection.Append(";User ID=");
-                    DbConnection.Append(PxASuserValData.SYSDBSVRUR);
-                    DbConnection.Append(";Password=");
-                    DbConnection.Append(PXCL_com.Decrypt(PxASuserValData.SYSDBSVRPW));
-                    DbConnection.Append("; Max Pool Size=100;");
-                    ConnectString = DbConnection.ToString();
+                    case ConnectionSystem:
+                        DbConnection.Append("Data Source=");
+                        DbConnection.Append((!string.IsNullOrEmpty(PxASuserValData.SYSDBSVRIP)) ? PxASuserValData.SYSDBSVRIP : PxASuserValData.SYSDBSVRNM);
+                        DbConnection.Append(";Initial Catalog=");
+                        DbConnection.Append(PxASuserValData.SYSDBNM);
+                        DbConnection.Append(";User ID=");
+                        DbConnection.Append(PxASuserValData.SYSDBSVRUR);
+                        DbConnection.Append(";Password=");
+                        DbConnection.Append(PXCL_com.Decrypt(PxASuserValData.SYSDBSVRPW));
+                        DbConnection.Append("; Max Pool Size=100;");
+                        ConnectString = DbConnection.ToString();
+                        break;
+                    case ConnectionUser:
+                        DbConnection.Append("Data Source=");
+                        DbConnection.Append((!string.IsNullOrEmpty(PxASuserValData.USERDBSVRIP)) ? PxASuserValData.USERDBSVRIP : PxASuserValData.USERDBSVRNM);
+                        DbConnection.Append(";Initial Catalog=");
+                        DbConnection.Append(PxASuserValData.USERDBNM);
+                        DbConnection.Append(";User ID=");
+                        DbConnection.Append(PxASuserValData.USERDBSVRUR);
+                        DbConnection.Append(";Password=");
+                        DbConnection.Append(PXCL_com.Decrypt(PxASuserValData.USERDBSVRPW));
+                        DbConnection.Append("; Max Pool Size=100;");
+                        ConnectString = DbConnection.ToString();
+                        break;
+                    default:
+                        throw new Exception("ConnectTypeが不正です。");
                 }
                 this.PxASuserValData = PxASuserValData;
             }

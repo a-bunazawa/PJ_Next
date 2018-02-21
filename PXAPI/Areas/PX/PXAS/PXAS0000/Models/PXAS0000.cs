@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 
-namespace PXAPI.Areas.PX.PXAS.PXAS0000.Models
+namespace PXAPI.Areas.PXAS
 {
     public class PXAS0000
     {
