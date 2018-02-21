@@ -19,28 +19,21 @@ namespace PXAPI
     {
         public static IConfigurationRoot Configuration { get; private set; }
 
+        private IConfiguration _configuration { get; }
+
         public Startup(IConfiguration configuration)
         {
-            Configuration = (IConfigurationRoot)configuration;
+            // Expose the injected instance locally so we populate our settings instance
+            _configuration = configuration;
         }
 
-        public Startup(IHostingEnvironment env)
-        {
-            // appsettings.jsonファイルの読み込み
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
-            Configuration = builder.Build();
-        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
 
             // AppSettings取得時エラーの場合は「ErrCode:PXERR201」発生（ここか？）
-            services.Configure<PXAS_AppSetCL>(Configuration.GetSection("PXAS_AppSetCL"));
+            //services.Configure<PXAS_AppSetCL>(Configuration.GetSection("PXAS_AppSetCL"));
             services.AddMvc();
 
             // appsettings.jsonで設定したKeyValueをエンティティにバインド            
@@ -63,7 +56,7 @@ namespace PXAPI
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "api/{controller=Login}/{action=PrepareLogin}/{id=2}");
+                    template: "api/{controller=PXAS0000}/{action=PrepareLogin}/{HostName=Knet}");
             });
         }
     }

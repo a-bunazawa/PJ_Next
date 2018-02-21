@@ -590,14 +590,14 @@ namespace PXLIB
             return DrList;
         }
 
-        public static PX_PJ3CONFIG GetPJ3Config(string SysPrId1, string SysPrId2, string SysPrId3, ref PX_COMMON PX_COMMONData)
+        public static PX_PJ3CONFIG GetPJ3Config(string[] SysPrId, ref PX_COMMON PX_COMMONData)
         {
             StringBuilder CmdTxt = new StringBuilder();
             List<PX_SYSPARA> DrList = new List<PX_SYSPARA>();
             PX_PJ3CONFIG cfg = new PX_PJ3CONFIG();
             try
             {
-                DrList = GetPGParameter(SysPrId1, SysPrId2, SysPrId3, PX_COMMONData);
+                DrList = GetPGParameter(SysPrId[0], SysPrId[1], SysPrId[2], PX_COMMONData);
                 if (DrList.Count > 0)
                 {
                     foreach (var item in DrList)

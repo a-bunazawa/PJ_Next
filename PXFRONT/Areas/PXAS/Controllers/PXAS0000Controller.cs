@@ -34,7 +34,8 @@ namespace PXFRONT.Areas.PXAS.Controllers
             data.DomainType = Request.Query["DomainType"].ToString();
             
             String result = "";
-            String url = "http://kanda/KANDANET/API/api/LNAS0001/Login";
+            String url = "http://localhost/PXAPI/api/";
+            //String url = "http://localhost/PXAPI2/PXAS/PXAS0000";
 
             try
             {
@@ -48,10 +49,12 @@ namespace PXFRONT.Areas.PXAS.Controllers
                 
                 System.Collections.Specialized.NameValueCollection postData =
                     new System.Collections.Specialized.NameValueCollection();
-                postData.Add("Id", "pmt_admin");
-                postData.Add("Pass", "kcom");
-                postData.Add("DB", "KN");
-                
+                postData.Add("HostName", "Knet");
+                //postData.Add("SYSDBNM", "pmt_admin");
+                //postData.Add("Id", "pmt_admin");
+                //postData.Add("Pass", "kcom");
+                //postData.Add("DB", "KN");
+
                 byte[] resData = wc.UploadValues(url, postData);
 
                 wc.Dispose();

@@ -36,42 +36,13 @@ namespace PXAPI.Controllers
             XmlRoot xmlData = PXCL_com.LoadXmlData<XmlRoot>(path);
 
 
-            PX_COMMON PX_COMMONData = SetSysDB(_appSettings.Value, Request, data);
-            
+            //PX_COMMON PX_COMMONData = SetSysDB(_appSettings.Value, Request, data);
+            PX_COMMON PX_COMMONData = new PX_COMMON();
             result = PXCL_com.GetDialogIndication(data.COPCD, data.SNDMSGKBN, data.SNDMSGNO, PX_COMMONData);
-            
+
             return result;
         }
 
-        /// <summary>
-        ///  システムDB設定メソッド
-        /// </summary>
-        public static PX_COMMON SetSysDB(PXAS_AppSetCL appSettings, HttpRequest Request, PX_COMMON PX_COMMONData)
-        {
-            string host = Request.Host.ToString();
-            string domain = host.Split(".")[0];
-            
-            switch (domain)
-            {
-                case "Knet":
-                    PX_COMMONData.SYSDBSVRNM = appSettings.Knet.SVRName;
-                    PX_COMMONData.SYSDBSVRIP = appSettings.Knet.SVRIP;
-                    PX_COMMONData.SYSDBNM = appSettings.Knet.DBName;
-                    PX_COMMONData.SYSDBSVRUR = appSettings.Knet.DBUser;
-                    PX_COMMONData.SYSDBSVRPW = appSettings.Knet.DBPass;
-                    break;
-                default: break;
-            }
-
-            // 以下テストコード
-            PX_COMMONData.SYSDBSVRNM = appSettings.Knet.SVRName;
-            PX_COMMONData.SYSDBSVRIP = appSettings.Knet.SVRIP;
-            PX_COMMONData.SYSDBNM = appSettings.Knet.DBName;
-            PX_COMMONData.SYSDBSVRUR = appSettings.Knet.DBUser;
-            PX_COMMONData.SYSDBSVRPW = appSettings.Knet.DBPass;
-
-            return PX_COMMONData;
-        }
 
     }
 }
