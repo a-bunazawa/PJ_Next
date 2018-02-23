@@ -72,7 +72,8 @@ namespace PXLIB
                         DbConnection.Append(";User ID=");
                         DbConnection.Append(PxASuserValData.SYSDBSVRUR);
                         DbConnection.Append(";Password=");
-                        DbConnection.Append(PXCL_com.Decrypt(PxASuserValData.SYSDBSVRPW));
+                        DbConnection.Append(PxASuserValData.SYSDBSVRPW);
+                        //DbConnection.Append(PXCL_com.Decrypt(PxASuserValData.SYSDBSVRPW));
                         DbConnection.Append("; Max Pool Size=100;");
                         ConnectString = DbConnection.ToString();
                         break;
@@ -84,7 +85,8 @@ namespace PXLIB
                         DbConnection.Append(";User ID=");
                         DbConnection.Append(PxASuserValData.USERDBSVRUR);
                         DbConnection.Append(";Password=");
-                        DbConnection.Append(PXCL_com.Decrypt(PxASuserValData.USERDBSVRPW));
+                        DbConnection.Append(PxASuserValData.USERDBSVRPW);
+                        //DbConnection.Append(PXCL_com.Decrypt(PxASuserValData.USERDBSVRPW));
                         DbConnection.Append("; Max Pool Size=100;");
                         ConnectString = DbConnection.ToString();
                         break;
@@ -489,12 +491,19 @@ namespace PXLIB
             return Res;
         }
 
+        public enum TRNS_MODE
+        {
+            BEGIN = 1,
+            COMMIT = 2,
+            ROLLBACK = 3
+        }
+
         /// <summary>
         /// トランザクション開始処理・コミット処理・ロールバック処理(Return bool型)
         /// </summary>
         /// <param name="TrsMode">処理モード(1:トランザクション開始  2: コミット 3: ロールバック)</param>
         /// <returns>TRUE:処理成功 FALSE:処理失敗</returns>
-        public bool Tran(int TrsMode)
+        public bool Tran(TRNS_MODE TrsMode)
         {
             bool Res = true;
 
@@ -502,14 +511,14 @@ namespace PXLIB
             {
                 switch (TrsMode)
                 {
-                    case 1:
+                    case TRNS_MODE.BEGIN:
                         SqlTran = SqlCon.BeginTransaction();
                         break;
-                    case 2:
+                    case TRNS_MODE.COMMIT:
                         SqlTran.Commit();
                         SqlTran = null;
                         break;
-                    case 3:
+                    case TRNS_MODE.ROLLBACK:
                         SqlTran.Rollback();
                         SqlTran = null;
                         break;
@@ -521,13 +530,13 @@ namespace PXLIB
                 string ErrMsg = "";
                 switch (TrsMode)
                 {
-                    case 1:
+                    case TRNS_MODE.BEGIN:
                         ErrMsg = "トランザクション「" + Exc.Message + "」";
                         break;
-                    case 2:
+                    case TRNS_MODE.COMMIT:
                         ErrMsg = "コミット「" + Exc.Message + "」";
                         break;
-                    case 3:
+                    case TRNS_MODE.ROLLBACK:
                         ErrMsg = "ロールバック「" + Exc.Message + "」";
                         break;
                 }

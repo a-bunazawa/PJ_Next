@@ -34,8 +34,14 @@ namespace PXFRONT.Areas.PXAS.Controllers
             data.DomainType = Request.Query["DomainType"].ToString();
             
             String result = "";
-            String url = "http://localhost/PXAPI/api/";
-            //String url = "http://localhost/PXAPI2/PXAS/PXAS0000";
+            String url = "http://localhost/PXAPI/api/PXAS0000/PrepareStartView";
+            // →　言語リストを返すメソッド：引数なし
+
+            //String url = "http://localhost/PXAPI/api/PXAS0000/PrepareLogin";
+            // →　ログイン準備メソッド。Configを返す：引数　BrowserType：システム起動元, SelectedLanguage：選択された言語No
+
+            //String url = "http://localhost/PXAPI/api/PXAS0000/UserAuthenticationProcess";
+            // →　ログイン認証メソッド。PX_COMMONを返す：userid, pass
 
             try
             {
@@ -49,7 +55,10 @@ namespace PXFRONT.Areas.PXAS.Controllers
                 
                 System.Collections.Specialized.NameValueCollection postData =
                     new System.Collections.Specialized.NameValueCollection();
-                postData.Add("HostName", "Knet");
+                //postData.Add("userid", "1600008");
+                //postData.Add("pass", "kcom");
+
+                //postData.Add("HostName", "Knet");
                 //postData.Add("SYSDBNM", "pmt_admin");
                 //postData.Add("Id", "pmt_admin");
                 //postData.Add("Pass", "kcom");

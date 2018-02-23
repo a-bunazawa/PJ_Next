@@ -28,17 +28,17 @@ namespace PXLIB
             [JsonProperty(PropertyName = "CLIENTIP")]
             public string CLIENTIP { get; set; }
             /// <summary>クライアントホスト名</summary>
-            protected string ClientHostName { get; set; }
+            [JsonProperty(PropertyName = "CLIENTHNM")]
+            public string CLIENTHNM { get; set; }
+
             /// <summary>ユーザ種別</summary>
             /// 
             public enum USER_TYPE
             {
-                ONEIME,
+                ONETIME,
                 NORMAL
             }
-            protected USER_TYPE UserTP { get; set; }
-            [JsonProperty(PropertyName = "CLIENTHNM")]
-            public string CLIENTHNM { get; set; }
+            protected string USERTP { get; set; }
             /// <summary>ユーザＩＤ</summary>
             [JsonProperty(PropertyName = "USERID")]
             public string USERID { get; set; }
@@ -138,6 +138,10 @@ namespace PXLIB
             /// <summary> ログイン遷移先 </summary>
             [JsonProperty(PropertyName = "CALLTOP")]
             public string CALLTOP { get; set; }
+            /// <summary>  </summary>
+            [JsonProperty(PropertyName = "SYSVERNO")]
+            public string SYSVERNO { get; set; }
+
             /// <summary>エラーステータス(空の場合正常)およびエラーコード</summary>
             public string ERRORCODE { get; set; }
             public string ERRORMSG { get; set; }
@@ -170,6 +174,7 @@ namespace PXLIB
                 ACCESSURL = "";
                 CLIENTIP = "";
                 CLIENTHNM = "";
+                USERTP = Enum.GetName(typeof(USER_TYPE), USER_TYPE.NORMAL);
                 USERID = "";
                 USERNM = "";
                 DEFCOPTP = "";
@@ -203,6 +208,7 @@ namespace PXLIB
                 BYTECHECKFLG = "";
                 CALLTOP = "";
                 ERRORCODE = "";
+                ERRORMSG = "";
             }
         }
 
@@ -414,7 +420,7 @@ namespace PXLIB
                 OTH    // その他 
             }
             /// <summary>起動元</summary>
-            public BROWSE_TYPE BROWSETP { get; set; }
+            public string BROWSETP { get; set; }
 
             /// <summary>システム起動：</summary>
             public enum PAGE_TYPE
@@ -423,111 +429,129 @@ namespace PXLIB
                 USE    // ユーザーサイト(ReOSYS/Filix)
             }
             /// <summary>システム起動</summary>
-            public PAGE_TYPE PAGETP { get; set; }
+            public string PAGETP { get; set; }
+
+            // *CAPTION * //
+            /// <summary>[ログイン]</summary>
+            public string LOGIN { get; set; }
+            /// <summary>[ユーザーID]</summary>
+            public string USERID { get; set; }
+            /// <summary>[パスワード]</summary>
+            public string USERPASS { get; set; }
+            /// <summary>[ロパスワードを忘れた方へ]</summary>
+            public string PASSFORGET { get; set; }
+            /// <summary>[ログイン情報を保持]</summary>
+            public string LOGINKEEP { get; set; }
+            /// <summary>[アカウントを作成しますか？]</summary>
+            public string USERADD { get; set; }
 
             /// <summary>タイトルロゴ</summary>
             public PX_PJ3CONFIG()
             {
-                PAGETP = PAGE_TYPE.MAN; // Defaultは管理者里とする
+                BROWSETP = Enum.GetName(typeof(BROWSE_TYPE), BROWSE_TYPE.BWS);
+                PAGETP = Enum.GetName(typeof(PAGE_TYPE), PAGE_TYPE.MAN);  // Defaultは管理者里とする
             }
         }
 
-        public class PX_USERCTL
-        {
-            public string COPCD { get; set; }
-            public string SYSID { get; set; }
-            public string USERID { get; set; }
-            public string MENUID { get; set; }
-            public string MENUPATH { get; set; }
-            public string AUTKBN { get; set; }
-            public string GRPSELTP { get; set; }
-            public string INIGRPCD { get; set; }
-            public string INIDPTCD { get; set; }
-            public string INIWHSCD { get; set; }
-            public string INICMPCD { get; set; }
-            public string INICSTCD { get; set; }
-            public string INISHPCD { get; set; }
-            public string ADRCD1 { get; set; }
-            public string ADRCD2 { get; set; }
-            public decimal ODRDDMAXWGT { get; set; }
-            public decimal ODRDDMAXAMT { get; set; }
-            public decimal ODRDDMAXSUB { get; set; }
-            public decimal ODRWKMAXWGT { get; set; }
-            public decimal ODRWKMAXAMT { get; set; }
-            public decimal ODRWKMAXSUB { get; set; }
-            public decimal ODRMMMAXWGT { get; set; }
-            public decimal ODRMMMAXAMT { get; set; }
-            public decimal ODRMMMAXCNT { get; set; }
-            public decimal ODRMMMAXSUB { get; set; }
-            public string ODRMMMAXMON { get; set; }
-            public decimal ODRYYMAXWGT { get; set; }
-            public decimal ODRYYMAXAMT { get; set; }
-            public decimal ODRYYMAXCNT { get; set; }
-            public decimal ODRYYMAXSUB { get; set; }
-            public string ODRYYMAXSMD { get; set; }
-            public decimal ODRSZMAXWGT { get; set; }
-            public decimal ODRSZMAXAMT { get; set; }
-            public decimal ODRSZMAXSUB { get; set; }
-            public string USERLMTYMD { get; set; }
-            public string ACPTTP { get; set; }
-            public string LOGDUPKBN { get; set; }
-            public string LOGINSTS { get; set; }
-            public DateTime? LOGINDATE { get; set; }
-            public DateTime? LOGOUTDATE { get; set; }
-            public int LOGINNGCNT { get; set; }
-            public DateTime? LOGINTRYDATE { get; set; }
-            public string USERSTS { get; set; }
-            public string SUBCMM { get; set; }
+        //public class PX_USERCTL
+        //{
+        //    //public string COPCD { get; set; }
+        //    //public string SYSID { get; set; }
+        //    //public string USERID { get; set; }
+        //    public string MENUID { get; set; }
+        //    //public string MENUPATH { get; set; }
+        //    public string AUTKBN { get; set; }
+        //    //public string GRPSELTP { get; set; }
+        //    public string INIGRPCD { get; set; }
+        //    public string INIDPTCD { get; set; }
+        //    public string INIWHSCD { get; set; }
+        //    public string INICMPCD { get; set; }
+        //    public string INICSTCD { get; set; }
+        //    public string INISHPCD { get; set; }
+        //    //public string ADRCD1 { get; set; }
+        //    //public string ADRCD2 { get; set; }
+        //    //public decimal ODRDDMAXWGT { get; set; }
+        //    //public decimal ODRDDMAXAMT { get; set; }
+        //    //public decimal ODRDDMAXSUB { get; set; }
+        //    //public decimal ODRWKMAXWGT { get; set; }
+        //    //public decimal ODRWKMAXAMT { get; set; }
+        //    //public decimal ODRWKMAXSUB { get; set; }
+        //    //public decimal ODRMMMAXWGT { get; set; }
+        //    //public decimal ODRMMMAXAMT { get; set; }
+        //    //public decimal ODRMMMAXCNT { get; set; }
+        //    //public decimal ODRMMMAXSUB { get; set; }
+        //    //public string ODRMMMAXMON { get; set; }
+        //    //public decimal ODRYYMAXWGT { get; set; }
+        //    //public decimal ODRYYMAXAMT { get; set; }
+        //    //public decimal ODRYYMAXCNT { get; set; }
+        //    //public decimal ODRYYMAXSUB { get; set; }
+        //    //public string ODRYYMAXSMD { get; set; }
+        //    //public decimal ODRSZMAXWGT { get; set; }
+        //    //public decimal ODRSZMAXAMT { get; set; }
+        //    //public decimal ODRSZMAXSUB { get; set; }
+        //    //public string USERLMTYMD { get; set; }
+        //    public string ACPTTP { get; set; }
+        //    //public string LOGDUPKBN { get; set; }
+        //    //public string LOGINSTS { get; set; }
+        //    //public DateTime? LOGINDATE { get; set; }
+        //    //public DateTime? LOGOUTDATE { get; set; }
+        //    //public int LOGINNGCNT { get; set; }
+        //    //public DateTime? LOGINTRYDATE { get; set; }
+        //    //public string USERSTS { get; set; }
+        //    //public string SUBCMM { get; set; }
 
-            public PX_USERCTL()
-            {
-                COPCD = "";
-                SYSID = "";
-                USERID = "";
-                MENUID = "";
-                MENUPATH = "";
-                AUTKBN = "";
-                GRPSELTP = "";
-                INIGRPCD = "";
-                INIDPTCD = "";
-                INIWHSCD = "";
-                INICMPCD = "";
-                INICSTCD = "";
-                INISHPCD = "";
-                ADRCD1 = "";
-                ADRCD2 = "";
-                ODRDDMAXWGT = 0;
-                ODRDDMAXAMT = 0;
-                ODRDDMAXSUB = 0;
-                ODRWKMAXWGT = 0;
-                ODRWKMAXAMT = 0;
-                ODRWKMAXSUB = 0;
-                ODRMMMAXWGT = 0;
-                ODRMMMAXAMT = 0;
-                ODRMMMAXCNT = 0;
-                ODRMMMAXSUB = 0;
-                ODRMMMAXMON = "";
-                ODRYYMAXWGT = 0;
-                ODRYYMAXAMT = 0;
-                ODRYYMAXCNT = 0;
-                ODRYYMAXSUB = 0;
-                ODRYYMAXSMD = "";
-                ODRSZMAXWGT = 0;
-                ODRSZMAXAMT = 0;
-                ODRSZMAXSUB = 0;
-                USERLMTYMD = "";
-                ACPTTP = "";
-                LOGDUPKBN = "";
-                LOGINSTS = "";
-                LOGINDATE = null;
-                LOGOUTDATE = null;
-                LOGINNGCNT = 0;
-                LOGINTRYDATE = null;
-                USERSTS = "";
-                SUBCMM = "";
-            }
-        }
+        //    public PX_USERCTL()
+        //    {
+        //        COPCD = "";
+        //        SYSID = "";
+        //        USERID = "";
+        //        MENUID = "";
+        //        MENUPATH = "";
+        //        AUTKBN = "";
+        //        GRPSELTP = "";
+        //        INIGRPCD = "";
+        //        INIDPTCD = "";
+        //        INIWHSCD = "";
+        //        INICMPCD = "";
+        //        INICSTCD = "";
+        //        INISHPCD = "";
+        //        ADRCD1 = "";
+        //        ADRCD2 = "";
+        //        ODRDDMAXWGT = 0;
+        //        ODRDDMAXAMT = 0;
+        //        ODRDDMAXSUB = 0;
+        //        ODRWKMAXWGT = 0;
+        //        ODRWKMAXAMT = 0;
+        //        ODRWKMAXSUB = 0;
+        //        ODRMMMAXWGT = 0;
+        //        ODRMMMAXAMT = 0;
+        //        ODRMMMAXCNT = 0;
+        //        ODRMMMAXSUB = 0;
+        //        ODRMMMAXMON = "";
+        //        ODRYYMAXWGT = 0;
+        //        ODRYYMAXAMT = 0;
+        //        ODRYYMAXCNT = 0;
+        //        ODRYYMAXSUB = 0;
+        //        ODRYYMAXSMD = "";
+        //        ODRSZMAXWGT = 0;
+        //        ODRSZMAXAMT = 0;
+        //        ODRSZMAXSUB = 0;
+        //        USERLMTYMD = "";
+        //        ACPTTP = "";
+        //        LOGDUPKBN = "";
+        //        LOGINSTS = "";
+        //        LOGINDATE = null;
+        //        LOGOUTDATE = null;
+        //        LOGINNGCNT = 0;
+        //        LOGINTRYDATE = null;
+        //        USERSTS = "";
+        //        SUBCMM = "";
+        //    }
+        //}
 
+        /// <summary>
+        /// 今は使わないけど後々使用（2018/02/22現在）
+        /// </summary>
         public class PX_USEROPT
         {
             public string COPCD { get; set; }
@@ -672,6 +696,80 @@ namespace PXLIB
                 QUESTANSCMM3 = "";
             }
         }
+
+
+        public class PX_LANGUAGE
+        {
+            /// <summary>言語種別コード</summary>
+            public string LANGCLCODE { get; set; }
+            /// <summary>言語コード</summary>
+            public string LANGCODE { get; set; }
+            /// <summary>種別名</summary>
+            public string LANGNAME { get; set; }
+            /// <summary>フラグID</summary>
+            public string FLAGID { get; set; }
+            /// <summary>言語No.</summary>
+            public string LANGNO { get; set; }
+            /// <summary>表示順</summary>
+            public int DSPSORT { get; set; }
+            /// <summary>デフォルトの言語コード</summary>
+            public string DEFLANGCODE { get; set; }
+
+            public PX_LANGUAGE()
+            {
+                LANGCLCODE = "";
+                LANGCODE = "";
+                LANGNAME = "";
+                FLAGID = "";
+                LANGNO = "";
+                DEFLANGCODE = "";
+            }
+            public PX_LANGUAGE(string DefFlag)
+            {
+                LANGCLCODE = "JPN";
+                LANGCODE = "ja";
+                LANGNAME = "日本語";
+                FLAGID = "flag-jp";
+                LANGNO = "1041";
+                DEFLANGCODE = "ja";
+            }
+
+        }
+
+        public class PX_CAPTIONLOGIN
+        {
+            /// <summary>[ログイン]</summary>
+            public string LOGIN { get; set; }
+            /// <summary>[ユーザーID]</summary>
+            public string USERID { get; set; }
+            /// <summary>[パスワード]</summary>
+            public string USERPASS { get; set; }
+            /// <summary>[ロパスワードを忘れた方へ]</summary>
+            public string PASSFORGET { get; set; }
+            /// <summary>[ログイン情報を保持]</summary>
+            public string LOGINKEEP { get; set; }
+            /// <summary>[アカウントを作成しますか？]</summary>
+            public string USERADD { get; set; }
+
+            public PX_CAPTIONLOGIN()
+            {
+                LOGIN = "";
+                USERID = "";
+                USERPASS = "";
+                PASSFORGET = "";
+                LOGINKEEP = "";
+                USERADD = "";
+            }
+        }
+
+        public class PX_CAPTION
+        {
+            /// <summary>[ログイン]</summary>
+            public string CAPNAME { get; set; }
+            /// <summary>[ユーザーID]</summary>
+            public string CAPTION { get; set; }
+        }
+
 
     }
 }

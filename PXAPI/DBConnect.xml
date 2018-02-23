@@ -7,10 +7,10 @@
     <DBName>KN_SYSTEM</DBName>
     <DBUser>sa</DBUser>
     <DBPass>bigdream</DBPass>
-    <COPCD></COPCD>
-    <SYSPARAID1></SYSPARAID1>
-    <SYSPARAID2></SYSPARAID2>
-    <SYSPARAID3></SYSPARAID3>
+    <COPCD>00000</COPCD>
+    <SYSPARAID1>SYSTEM</SYSPARAID1>
+    <SYSPARAID2>LOGININFO</SYSPARAID2>
+    <SYSPARAID3>K-net.nextk.jp</SYSPARAID3>
   </Domain>
   <Domain>
     <DomainName>AAA</DomainName>

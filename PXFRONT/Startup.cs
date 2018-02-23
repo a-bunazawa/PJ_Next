@@ -72,7 +72,7 @@ namespace PXFRONT
             // Cache 200 (OK) server responses; any other responses, including error pages, are ignored.
             services.AddResponseCaching();
             
-            services.Configure<PXAS_AppSetCL>(_configuration.GetSection("PXAS_AppSetCL"));
+            //services.Configure<PXAS_AppSetCL>(_configuration.GetSection("PXAS_AppSetCL"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

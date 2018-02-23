@@ -56,7 +56,7 @@ namespace PXAPI
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "api/{controller=PXAS0000}/{action=PrepareLogin}/{HostName=Knet}");
+                    template: "api/{controller=PXAS0000}/{action=UserAuthenticationProcess}/");
             });
         }
     }
