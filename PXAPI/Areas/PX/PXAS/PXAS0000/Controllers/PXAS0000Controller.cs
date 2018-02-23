@@ -148,6 +148,7 @@ namespace PXAPI.Areas.PXAS
                 if (SelectedLanguage == null)
                 {
                     SelectedLanguage = "1041";
+                    // TEST
                 }
                 sysParaList = PXLIB.PXCL_com.GetLoginCaption(SelectedLanguage, sysParaList, PX_COMMONData);
                 sysParaList.PAGETP = ms_DomainTP;
